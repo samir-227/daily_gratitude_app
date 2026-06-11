@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:share_plus/share_plus.dart';
 import '../bloc/settings_cubit.dart';
 import '../bloc/theme_cubit.dart';
@@ -89,10 +90,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
   static Widget _buildSettingsList(
       BuildContext context, SettingsLoadedState state, Brightness brightness) {
     return ListView(
-      padding: const EdgeInsets.all(AppSpacing.standard),
+      padding: EdgeInsets.all(AppSpacing.standard),
       children: [
         _sectionHeader(AppStrings.appearanceSection, brightness),
-        const SizedBox(height: AppSpacing.tight),
+        SizedBox(height: AppSpacing.tight),
         BlocBuilder<ThemeCubit, Brightness>(
           builder: (context, themeBrightness) {
             final isDark = themeBrightness == Brightness.dark;
@@ -108,9 +109,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             );
           },
         ),
-        const SizedBox(height: AppSpacing.generous),
+        SizedBox(height: AppSpacing.generous),
         _sectionHeader(AppStrings.notificationsSection, brightness),
-        const SizedBox(height: AppSpacing.tight),
+        SizedBox(height: AppSpacing.tight),
         _buildCard(context,
           children: [
             _buildSwitchTile(
@@ -128,9 +129,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ],
         ),
-        const SizedBox(height: AppSpacing.generous),
+        SizedBox(height: AppSpacing.generous),
         _sectionHeader(AppStrings.speechRecognitionSection, brightness),
-        const SizedBox(height: AppSpacing.tight),
+        SizedBox(height: AppSpacing.tight),
         _buildCard(context,
           children: [
             _buildStatusTile(
@@ -141,9 +142,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ],
         ),
-        const SizedBox(height: AppSpacing.generous),
+        SizedBox(height: AppSpacing.generous),
         _sectionHeader(AppStrings.dataSection, brightness),
-        const SizedBox(height: AppSpacing.tight),
+        SizedBox(height: AppSpacing.tight),
         _buildCard(context,
           children: [
             _buildActionTile(
@@ -165,9 +166,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ],
         ),
-        const SizedBox(height: AppSpacing.generous),
+        SizedBox(height: AppSpacing.generous),
         _sectionHeader(AppStrings.aboutSection, brightness),
-        const SizedBox(height: AppSpacing.tight),
+        SizedBox(height: AppSpacing.tight),
         _buildCard(context,
           children: [
             _buildInfoTile(
@@ -178,14 +179,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ],
         ),
-        const SizedBox(height: AppSpacing.spacious),
+        SizedBox(height: AppSpacing.spacious),
       ],
     );
   }
 
   static Widget _sectionHeader(String title, Brightness brightness) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.compact),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.compact),
       child: Text(title,
         style: AppTextStyles.labelLarge.copyWith(
           color: AppColors.onSurface(brightness, secondary: true))),
@@ -211,7 +212,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   static Widget _buildSwitchTile(
       String label, bool value, Function(bool) onChanged, Brightness brightness) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.standard, vertical: AppSpacing.cozy),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.standard, vertical: AppSpacing.cozy),
       child: Row(
         children: [
           Text(label,
@@ -226,9 +227,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   static Widget _buildNavTile(
       String label, VoidCallback onTap, Brightness brightness, {bool isLast = false}) {
     return CupertinoButton(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.standard, vertical: AppSpacing.cozy),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.standard, vertical: AppSpacing.cozy),
       borderRadius: isLast
-          ? const BorderRadius.only(
+          ? BorderRadius.only(
               bottomLeft: Radius.circular(AppRadius.standard),
               bottomRight: Radius.circular(AppRadius.standard))
           : BorderRadius.zero,
@@ -238,7 +239,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           Text(label,
             style: AppTextStyles.bodyLarge.copyWith(color: AppColors.onSurface(brightness))),
           const Spacer(),
-          Icon(CupertinoIcons.chevron_right, color: AppColors.onSurface(brightness, secondary: true), size: 18),
+          Icon(CupertinoIcons.chevron_right, color: AppColors.onSurface(brightness, secondary: true), size: 18.w),
         ],
       ),
     );
@@ -247,14 +248,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   static Widget _buildStatusTile(
       String label, String statusText, Color statusColor, Brightness brightness) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.standard, vertical: AppSpacing.cozy),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.standard, vertical: AppSpacing.cozy),
       child: Row(
         children: [
           Text(label,
             style: AppTextStyles.bodyLarge.copyWith(color: AppColors.onSurface(brightness))),
           const Spacer(),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.tight, vertical: AppSpacing.compact),
+            padding: EdgeInsets.symmetric(horizontal: AppSpacing.tight, vertical: AppSpacing.compact),
             decoration: BoxDecoration(
               color: statusColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(AppRadius.pill),
@@ -271,23 +272,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
       String label, IconData icon, Color iconColor, VoidCallback onTap,
       Brightness brightness, {bool isLast = false, bool isDestructive = false}) {
     return CupertinoButton(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.standard, vertical: AppSpacing.cozy),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.standard, vertical: AppSpacing.cozy),
       borderRadius: isLast
-          ? const BorderRadius.only(
+          ? BorderRadius.only(
               bottomLeft: Radius.circular(AppRadius.standard),
               bottomRight: Radius.circular(AppRadius.standard))
           : BorderRadius.zero,
       onPressed: onTap,
       child: Row(
         children: [
-          Icon(icon, size: 20, color: isDestructive ? AppColors.error : AppColors.primary),
-          const SizedBox(width: AppSpacing.cozy),
+          Icon(icon, size: 20.w, color: isDestructive ? AppColors.error : AppColors.primary),
+          SizedBox(width: AppSpacing.cozy),
           Text(label,
             style: AppTextStyles.bodyLarge.copyWith(
               color: isDestructive ? AppColors.error : AppColors.onSurface(brightness))),
           const Spacer(),
           Icon(CupertinoIcons.chevron_right,
-            color: AppColors.onSurface(brightness, secondary: true), size: 18),
+            color: AppColors.onSurface(brightness, secondary: true), size: 18.w),
         ],
       ),
     );
@@ -296,7 +297,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   static Widget _buildInfoTile(
       String label, String value, Brightness brightness, {bool isLast = false}) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.standard, vertical: AppSpacing.cozy),
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.standard, vertical: AppSpacing.cozy),
       child: Row(
         children: [
           Text(label,
@@ -315,7 +316,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     showCupertinoModalPopup(
       context: context,
       builder: (_) => Container(
-        height: 300,
+        height: 300.h,
         color: AppColors.surface(1, brightness),
         child: Column(
           children: [

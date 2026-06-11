@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../bloc/analytics_cubit.dart';
 import '../../../../core/constants/app_colors.dart';
@@ -41,7 +42,7 @@ class AnalyticsScreen extends StatelessWidget {
                       Text(state.message,
                         style: AppTextStyles.bodyMedium.copyWith(
                           color: AppColors.onSurface(brightness, secondary: true))),
-                      const SizedBox(height: AppSpacing.standard),
+                      SizedBox(height: AppSpacing.standard),
                       CupertinoButton(
                         color: AppColors.primary,
                         borderRadius: BorderRadius.circular(AppRadius.standard),
@@ -55,28 +56,28 @@ class AnalyticsScreen extends StatelessWidget {
               }
               if (state is AnalyticsLoadedState) {
                 return SingleChildScrollView(
-                  padding: const EdgeInsets.all(AppSpacing.standard),
+                  padding: EdgeInsets.all(AppSpacing.standard),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildStatsRow(context, state),
-                      const SizedBox(height: AppSpacing.generous),
+                      SizedBox(height: AppSpacing.generous),
                       _buildSectionTitle(AppStrings.weeklyActivity, brightness),
-                      const SizedBox(height: AppSpacing.cozy),
+                      SizedBox(height: AppSpacing.cozy),
                       _buildWeeklyChart(context, state),
                       if (state.topTopics.isNotEmpty) ...[
-                        const SizedBox(height: AppSpacing.generous),
+                        SizedBox(height: AppSpacing.generous),
                         _buildSectionTitle(AppStrings.topTopics, brightness),
-                        const SizedBox(height: AppSpacing.cozy),
+                        SizedBox(height: AppSpacing.cozy),
                         _buildTopTopics(context, state, brightness),
                       ],
                       if (state.moodDistribution.isNotEmpty) ...[
-                        const SizedBox(height: AppSpacing.generous),
+                        SizedBox(height: AppSpacing.generous),
                         _buildSectionTitle(AppStrings.moodDistribution, brightness),
-                        const SizedBox(height: AppSpacing.cozy),
+                        SizedBox(height: AppSpacing.cozy),
                         _buildMoodDistribution(context, state, brightness),
                       ],
-                      const SizedBox(height: AppSpacing.spacious),
+                      SizedBox(height: AppSpacing.spacious),
                     ],
                   ),
                 );
@@ -99,10 +100,10 @@ class AnalyticsScreen extends StatelessWidget {
       children: [
         Expanded(child: _buildStatCard(
           context, '${state.stats.currentStreak}', AppStrings.currentStreak, AppColors.streakFire)),
-        const SizedBox(width: AppSpacing.cozy),
+        SizedBox(width: AppSpacing.cozy),
         Expanded(child: _buildStatCard(
           context, '${state.stats.longestStreak}', AppStrings.longestStreak, AppColors.primary)),
-        const SizedBox(width: AppSpacing.cozy),
+        SizedBox(width: AppSpacing.cozy),
         Expanded(child: _buildStatCard(
           context, '${state.stats.totalEntries}', AppStrings.totalEntries, AppColors.emotionPeace)),
       ],
@@ -113,7 +114,7 @@ class AnalyticsScreen extends StatelessWidget {
       BuildContext context, String value, String label, Color accentColor) {
     final brightness = CupertinoTheme.of(context).brightness ?? Brightness.dark;
     return Container(
-      padding: const EdgeInsets.all(AppSpacing.cozy),
+      padding: EdgeInsets.all(AppSpacing.cozy),
       decoration: BoxDecoration(
         color: AppColors.surface(1, brightness),
         borderRadius: BorderRadius.circular(AppRadius.standard),
@@ -123,7 +124,7 @@ class AnalyticsScreen extends StatelessWidget {
         children: [
           Text(value,
             style: AppTextStyles.headline.copyWith(color: accentColor, fontWeight: FontWeight.bold)),
-          const SizedBox(height: AppSpacing.compact),
+          SizedBox(height: AppSpacing.compact),
           Text(label,
             style: AppTextStyles.labelSmall.copyWith(
               color: AppColors.onSurface(brightness, secondary: true)),
@@ -138,8 +139,8 @@ class AnalyticsScreen extends StatelessWidget {
     final days = state.weekActivity.entries.toList();
     final maxVal = days.map((e) => e.value).reduce((a, b) => a > b ? a : b);
     return Container(
-      height: 200,
-      padding: const EdgeInsets.all(AppSpacing.standard),
+      height: 200.h,
+      padding: EdgeInsets.all(AppSpacing.standard),
       decoration: BoxDecoration(
         color: AppColors.surface(1, brightness),
         borderRadius: BorderRadius.circular(AppRadius.generous),
@@ -160,7 +161,7 @@ class AnalyticsScreen extends StatelessWidget {
                   if (idx >= 0 && idx < days.length) {
                     const weekdays = ['إث', 'ثل', 'أر', 'خم', 'جم', 'سب', 'أح'];
                     return Padding(
-                      padding: const EdgeInsets.only(top: AppSpacing.tight),
+                      padding: EdgeInsets.only(top: AppSpacing.tight),
                       child: Text(weekdays[days[idx].key.weekday - 1],
                         style: AppTextStyles.labelSmall.copyWith(
                           color: AppColors.onSurface(brightness, secondary: true))),
@@ -168,7 +169,7 @@ class AnalyticsScreen extends StatelessWidget {
                   }
                   return const Text('');
                 },
-                reservedSize: 24,
+                reservedSize: 24.w,
               ),
             ),
             leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
@@ -185,7 +186,7 @@ class AnalyticsScreen extends StatelessWidget {
                 BarChartRodData(
                   toY: entry.value.value.toDouble(),
                   color: isToday ? AppColors.primary : AppColors.primary.withValues(alpha: 0.3),
-                  width: 20,
+                  width: 20.w,
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(4)),
                 ),
               ],
@@ -206,7 +207,7 @@ class AnalyticsScreen extends StatelessWidget {
     final themeBrightness = brightness;
     final maxCount = state.topTopics.values.reduce((a, b) => a > b ? a : b);
     return Container(
-      padding: const EdgeInsets.all(AppSpacing.standard),
+      padding: EdgeInsets.all(AppSpacing.standard),
       decoration: BoxDecoration(
         color: AppColors.surface(1, themeBrightness),
         borderRadius: BorderRadius.circular(AppRadius.generous),
@@ -215,11 +216,11 @@ class AnalyticsScreen extends StatelessWidget {
       child: Column(
         children: state.topTopics.entries.map((e) {
           return Padding(
-            padding: const EdgeInsets.symmetric(vertical: AppSpacing.compact),
+            padding: EdgeInsets.symmetric(vertical: AppSpacing.compact),
             child: Row(
               children: [
                 SizedBox(
-                  width: 80,
+                  width: 80.w,
                   child: Text(e.key,
                     style: AppTextStyles.bodySmall.copyWith(
                       color: AppColors.onSurface(themeBrightness)),
@@ -227,12 +228,12 @@ class AnalyticsScreen extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                const SizedBox(width: AppSpacing.tight),
+                SizedBox(width: AppSpacing.tight),
                 Expanded(
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(AppRadius.tight),
                     child: Container(
-                      height: 20,
+                      height: 20.w,
                       color: AppColors.primary.withValues(alpha: 0.1),
                       child: FractionallySizedBox(
                         alignment: Alignment.centerLeft,
@@ -249,9 +250,9 @@ class AnalyticsScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(width: AppSpacing.tight),
+                SizedBox(width: AppSpacing.tight),
                 SizedBox(
-                  width: 24,
+                  width: 24.w,
                   child: Text('${e.value}',
                     style: AppTextStyles.bodySmall.copyWith(
                       color: AppColors.onSurface(themeBrightness, secondary: true)),
@@ -271,7 +272,7 @@ class AnalyticsScreen extends StatelessWidget {
     final total = state.moodDistribution.values.fold(0, (a, b) => a + b);
     if (total == 0) return const SizedBox.shrink();
     return Container(
-      padding: const EdgeInsets.all(AppSpacing.standard),
+      padding: EdgeInsets.all(AppSpacing.standard),
       decoration: BoxDecoration(
         color: AppColors.surface(1, themeBrightness),
         borderRadius: BorderRadius.circular(AppRadius.generous),
@@ -285,15 +286,15 @@ class AnalyticsScreen extends StatelessWidget {
           return Column(
             children: [
               Container(
-                width: 44,
-                height: 44,
+                width: 44.w,
+                height: 44.w,
                 decoration: BoxDecoration(
                   color: moodData.color.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(AppRadius.standard),
                 ),
-                child: Icon(moodData.icon, color: moodData.color, size: 22),
+                child: Icon(moodData.icon, color: moodData.color, size: 22.w),
               ),
-              const SizedBox(height: AppSpacing.compact),
+              SizedBox(height: AppSpacing.compact),
               Text('$pct%',
                 style: AppTextStyles.titleSmall.copyWith(
                   color: AppColors.onSurface(themeBrightness), fontWeight: FontWeight.bold)),

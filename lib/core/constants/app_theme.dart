@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'app_colors.dart';
 
 abstract class AppTheme {
@@ -42,99 +43,99 @@ abstract class AppTheme {
 abstract class AppTextStyles {
   AppTextStyles._();
 
-  static const TextStyle display = TextStyle(
+  static TextStyle get display => TextStyle(
     inherit: false,
     fontFamily: AppTheme.fontFamily,
-    fontSize: 32,
+    fontSize: 32.sp,
     fontWeight: FontWeight.bold,
     height: 1.25,
     letterSpacing: -0.5,
   );
 
-  static const TextStyle headline = TextStyle(
+  static TextStyle get headline => TextStyle(
     inherit: false,
     fontFamily: AppTheme.fontFamily,
-    fontSize: 28,
+    fontSize: 28.sp,
     fontWeight: FontWeight.bold,
     height: 1.29,
     letterSpacing: -0.3,
   );
 
-  static const TextStyle titleLarge = TextStyle(
+  static TextStyle get titleLarge => TextStyle(
     inherit: false,
     fontFamily: AppTheme.fontFamily,
-    fontSize: 24,
+    fontSize: 24.sp,
     fontWeight: FontWeight.w600,
     height: 1.33,
   );
 
-  static const TextStyle titleMedium = TextStyle(
+  static TextStyle get titleMedium => TextStyle(
     inherit: false,
     fontFamily: AppTheme.fontFamily,
-    fontSize: 20,
+    fontSize: 20.sp,
     fontWeight: FontWeight.w600,
     height: 1.4,
     letterSpacing: 0.1,
   );
 
-  static const TextStyle titleSmall = TextStyle(
+  static TextStyle get titleSmall => TextStyle(
     inherit: false,
     fontFamily: AppTheme.fontFamily,
-    fontSize: 16,
+    fontSize: 16.sp,
     fontWeight: FontWeight.w600,
     height: 1.5,
     letterSpacing: 0.1,
   );
 
-  static const TextStyle bodyLarge = TextStyle(
+  static TextStyle get bodyLarge => TextStyle(
     inherit: false,
     fontFamily: AppTheme.fontFamily,
-    fontSize: 16,
+    fontSize: 16.sp,
     fontWeight: FontWeight.w400,
     height: 1.5,
     letterSpacing: 0.5,
   );
 
-  static const TextStyle bodyMedium = TextStyle(
+  static TextStyle get bodyMedium => TextStyle(
     inherit: false,
     fontFamily: AppTheme.fontFamily,
-    fontSize: 14,
+    fontSize: 14.sp,
     fontWeight: FontWeight.w400,
     height: 1.43,
     letterSpacing: 0.25,
   );
 
-  static const TextStyle bodySmall = TextStyle(
+  static TextStyle get bodySmall => TextStyle(
     inherit: false,
     fontFamily: AppTheme.fontFamily,
-    fontSize: 12,
+    fontSize: 12.sp,
     fontWeight: FontWeight.w400,
     height: 1.33,
     letterSpacing: 0.4,
   );
 
-  static const TextStyle labelLarge = TextStyle(
+  static TextStyle get labelLarge => TextStyle(
     inherit: false,
     fontFamily: AppTheme.fontFamily,
-    fontSize: 14,
+    fontSize: 14.sp,
     fontWeight: FontWeight.w600,
     height: 1.43,
     letterSpacing: 0.1,
   );
 
-  static const TextStyle labelMedium = TextStyle(
+  static TextStyle get labelMedium => TextStyle(
     inherit: false,
     fontFamily: AppTheme.fontFamily,
-    fontSize: 12,
+    fontSize: 12.sp,
     fontWeight: FontWeight.w600,
     height: 1.33,
     letterSpacing: 0.5,
   );
 
-  static const TextStyle labelSmall = TextStyle(
+  static TextStyle get labelSmall => TextStyle(
     inherit: false,
     fontFamily: AppTheme.fontFamily,
-    fontSize: 11,
+    fontSize: 11.sp,
     fontWeight: FontWeight.w500,
     height: 1.27,
     letterSpacing: 0.5,
@@ -144,23 +145,23 @@ abstract class AppTextStyles {
 abstract class AppSpacing {
   AppSpacing._();
 
-  static const double compact = 4;
-  static const double tight = 8;
-  static const double cozy = 12;
-  static const double standard = 16;
-  static const double generous = 24;
-  static const double spacious = 32;
-  static const double abundant = 48;
+  static double get compact => 4.w;
+  static double get tight => 8.w;
+  static double get cozy => 12.w;
+  static double get standard => 16.w;
+  static double get generous => 24.w;
+  static double get spacious => 32.w;
+  static double get abundant => 48.w;
 }
 
 abstract class AppRadius {
   AppRadius._();
 
-  static const double tight = 4;
-  static const double cozy = 8;
-  static const double standard = 12;
-  static const double generous = 16;
-  static const double pill = 999;
+  static double get tight => 4.r;
+  static double get cozy => 8.r;
+  static double get standard => 12.r;
+  static double get generous => 16.r;
+  static double get pill => 999.r;
 }
 
 abstract class AppElevation {

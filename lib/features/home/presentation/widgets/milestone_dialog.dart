@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/app_theme.dart';
 
@@ -22,8 +23,8 @@ Future<bool?> showMilestoneDialog(BuildContext context, int streak) {
       title: Column(
         children: [
           Container(
-            width: 64,
-            height: 64,
+            width: kSpace64,
+            height: kSpace64,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
@@ -40,7 +41,7 @@ Future<bool?> showMilestoneDialog(BuildContext context, int streak) {
                 color: CupertinoColors.white, size: 32),
             ),
           ),
-          const SizedBox(height: AppSpacing.cozy),
+          SizedBox(height: AppSpacing.cozy),
           Text(
             '\u{1F389} $streak ${AppStrings.dayStreak}!',
             style: AppTextStyles.titleMedium.copyWith(
@@ -50,7 +51,7 @@ Future<bool?> showMilestoneDialog(BuildContext context, int streak) {
         ],
       ),
       content: Padding(
-        padding: const EdgeInsets.only(top: AppSpacing.cozy),
+        padding: EdgeInsets.only(top: AppSpacing.cozy),
         child: Text(
           _milestoneMessage(streak),
           style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),

@@ -1,3 +1,5 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 const String kEntriesBox = 'gratitude_entries';
 const String kStatsBox = 'user_stats';
 const String kSettingsBox = 'app_settings';
@@ -11,23 +13,23 @@ const String kDarkModeEnabled = 'dark_mode_enabled';
 const String kArabicLocaleEG = 'ar-EG';
 const String kArabicLocaleSA = 'ar-SA';
 
-const double kBorderRadius = 16.0;
-const double kButtonHeight = 52.0;
-const double kIconSize = 24.0;
-const double kRecordButtonSize = 80.0;
-const double kFABSize = 56.0;
+double get kBorderRadius => 16.0.r;
+double get kSpace4 => 4.0.w;
+double get kSpace6 => 6.0.w;
+double get kSpace8 => 8.0.w;
+double get kSpace10 => 10.0.w;
+double get kSpace12 => 12.0.w;
+double get kSpace16 => 16.0.w;
+double get kSpace20 => 20.0.w;
+double get kSpace24 => 24.0.w;
+double get kSpace32 => 32.0.w;
+double get kSpace48 => 48.0.w;
+double get kSpace64 => 64.0.w;
 
-const double kSpace4 = 4.0;
-const double kSpace6 = 6.0;
-const double kSpace8 = 8.0;
-const double kSpace10 = 10.0;
-const double kSpace12 = 12.0;
-const double kSpace16 = 16.0;
-const double kSpace20 = 20.0;
-const double kSpace24 = 24.0;
-const double kSpace32 = 32.0;
-const double kSpace48 = 48.0;
-const double kSpace64 = 64.0;
+double get kButtonHeight => 52.0.h;
+double get kIconSize => 24.0.w;
+double get kRecordButtonSize => 80.0.w;
+double get kFABSize => 56.0.w;
 
 const Duration kMaxRecordingDuration = Duration(minutes: 3);
 const Duration kPauseDuration = Duration(seconds: 20);

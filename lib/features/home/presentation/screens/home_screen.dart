@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../bloc/home_cubit.dart';
 import '../../../../core/constants/app_colors.dart';
@@ -45,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
         activeColor: AppColors.primary,
         inactiveColor: AppColors.onSurface(brightness, secondary: true),
         border: Border(top: BorderSide(color: AppColors.divider, width: 0.5)),
-        height: 56,
+        height: 56.h,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.house, size: 24),
@@ -111,7 +112,7 @@ class HomeDashboardTab extends StatelessWidget {
                     Text(state.message,
                       style: AppTextStyles.bodyMedium.copyWith(
                         color: AppColors.onSurface(brightness, secondary: true))),
-                    const SizedBox(height: kSpace16),
+                    SizedBox(height: kSpace16),
                     CupertinoButton(
                       color: AppColors.primary,
                       borderRadius: BorderRadius.circular(AppRadius.standard),
@@ -133,22 +134,22 @@ class HomeDashboardTab extends StatelessWidget {
                     border: null,
                   ),
                   SliverPadding(
-                    padding: const EdgeInsets.symmetric(horizontal: kSpace16),
+                    padding: EdgeInsets.symmetric(horizontal: kSpace16),
                     sliver: SliverList(
                       delegate: SliverChildListDelegate([
-                        const SizedBox(height: kSpace8),
+                        SizedBox(height: kSpace8),
                         _buildWelcomeGreeting(brightness),
-                        const SizedBox(height: kSpace20),
+                        SizedBox(height: kSpace20),
                         _buildTodayStatus(state.stats, state.todayEntry, brightness),
-                        const SizedBox(height: kSpace20),
+                        SizedBox(height: kSpace20),
                         _buildRecordHero(context, brightness),
-                        const SizedBox(height: kSpace24),
+                        SizedBox(height: kSpace24),
                         _buildStatsRow(state, brightness),
-                        const SizedBox(height: kSpace24),
+                        SizedBox(height: kSpace24),
                         _buildRecentEntries(context, state.recentEntries, brightness),
-                        const SizedBox(height: kSpace24),
+                        SizedBox(height: kSpace24),
                         _buildReflectionCard(context, brightness),
-                        const SizedBox(height: kSpace32),
+                        SizedBox(height: kSpace32),
                       ]),
                     ),
                   ),
@@ -171,7 +172,7 @@ class HomeDashboardTab extends StatelessWidget {
             : AppStrings.eveningGreeting;
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(kSpace20),
+      padding: EdgeInsets.all(kSpace20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topRight,
@@ -185,7 +186,7 @@ class HomeDashboardTab extends StatelessWidget {
         children: [
           Text(greeting,
             style: AppTextStyles.titleLarge.copyWith(color: AppColors.onSurface(brightness))),
-          const SizedBox(height: kSpace8),
+          SizedBox(height: kSpace8),
           Text(AppStrings.greetingSubtext,
             style: AppTextStyles.bodyMedium.copyWith(
               color: AppColors.onSurface(brightness, secondary: true), height: 1.6)),
@@ -199,7 +200,7 @@ class HomeDashboardTab extends StatelessWidget {
       children: [
         Expanded(
           child: Container(
-            padding: const EdgeInsets.all(kSpace16),
+            padding: EdgeInsets.all(kSpace16),
             decoration: BoxDecoration(
               color: AppColors.surface(2, brightness),
               borderRadius: BorderRadius.circular(AppRadius.standard),
@@ -210,7 +211,7 @@ class HomeDashboardTab extends StatelessWidget {
                 Text('${stats.totalEntries}',
                   style: AppTextStyles.titleLarge.copyWith(
                     color: AppColors.primary, fontWeight: FontWeight.bold)),
-                const SizedBox(height: kSpace4),
+                SizedBox(height: kSpace4),
                 Text(AppStrings.entries,
                   style: AppTextStyles.bodySmall.copyWith(
                     color: AppColors.onSurface(brightness, secondary: true))),
@@ -218,10 +219,10 @@ class HomeDashboardTab extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: kSpace12),
+        SizedBox(width: kSpace12),
         Expanded(
           child: Container(
-            padding: const EdgeInsets.all(kSpace16),
+            padding: EdgeInsets.all(kSpace16),
             decoration: BoxDecoration(
               color: AppColors.surface(2, brightness),
               borderRadius: BorderRadius.circular(AppRadius.standard),
@@ -231,15 +232,15 @@ class HomeDashboardTab extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const Icon(CupertinoIcons.flame_fill,
-                      size: 20, color: AppColors.streakFire),
-                    const SizedBox(width: kSpace8),
+                    Icon(CupertinoIcons.flame_fill,
+                      size: kSpace20, color: AppColors.streakFire),
+                    SizedBox(width: kSpace8),
                     Text('${stats.currentStreak}',
                       style: AppTextStyles.titleMedium.copyWith(
                         color: AppColors.streakFire, fontWeight: FontWeight.bold)),
                   ],
                 ),
-                const SizedBox(height: kSpace4),
+                SizedBox(height: kSpace4),
                 Text(AppStrings.dayStreak,
                   style: AppTextStyles.bodySmall.copyWith(
                     color: AppColors.onSurface(brightness, secondary: true))),
@@ -254,7 +255,7 @@ class HomeDashboardTab extends StatelessWidget {
   static Widget _buildRecordHero(BuildContext context, Brightness brightness) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(kSpace24),
+      padding: EdgeInsets.all(kSpace24),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           begin: Alignment.topRight,
@@ -268,8 +269,8 @@ class HomeDashboardTab extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: 44,
-                height: 44,
+                width: 44.w,
+                height: 44.w,
                 decoration: const BoxDecoration(
                   color: Color(0x26FFFFFF),
                   shape: BoxShape.circle,
@@ -277,7 +278,7 @@ class HomeDashboardTab extends StatelessWidget {
                 child: const Icon(CupertinoIcons.mic_fill,
                   color: CupertinoColors.white, size: 22),
               ),
-              const SizedBox(width: kSpace12),
+              SizedBox(width: kSpace12),
               Expanded(
                 child: Text(AppStrings.recordPrompt,
                   style: AppTextStyles.titleSmall.copyWith(
@@ -285,12 +286,12 @@ class HomeDashboardTab extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: kSpace16),
+          SizedBox(height: kSpace16),
           Text(AppStrings.recordDescription,
             style: AppTextStyles.bodyMedium.copyWith(
               color: CupertinoColors.white.withValues(alpha: 0.85), height: 1.6),
           ),
-          const SizedBox(height: kSpace24),
+          SizedBox(height: kSpace24),
           GestureDetector(
             onTap: () => _navigateToRecording(context),
             child: Container(
@@ -313,7 +314,7 @@ class HomeDashboardTab extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(height: kSpace12),
+          SizedBox(height: kSpace12),
           Text(AppStrings.tapToRecordAction,
             style: AppTextStyles.titleSmall.copyWith(
               color: CupertinoColors.white, fontWeight: FontWeight.w600)),
@@ -339,7 +340,7 @@ class HomeDashboardTab extends StatelessWidget {
               : 'سجل يومياتك',
           brightness: brightness,
         ),
-        const SizedBox(width: kSpace12),
+        SizedBox(width: kSpace12),
         _buildMiniCard(
           icon: state.todayEntry != null
               ? CupertinoIcons.checkmark_circle_fill
@@ -366,7 +367,7 @@ class HomeDashboardTab extends StatelessWidget {
   }) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.all(kSpace16),
+        padding: EdgeInsets.all(kSpace16),
         decoration: BoxDecoration(
           color: AppColors.surface(2, brightness),
           borderRadius: BorderRadius.circular(AppRadius.standard),
@@ -374,12 +375,12 @@ class HomeDashboardTab extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, size: 20, color: iconColor),
-            const SizedBox(height: kSpace8),
+            Icon(icon, size: kSpace20, color: iconColor),
+            SizedBox(height: kSpace8),
             Text(title,
               style: AppTextStyles.bodySmall.copyWith(
                 color: AppColors.onSurface(brightness, secondary: true))),
-            const SizedBox(height: kSpace4),
+            SizedBox(height: kSpace4),
             Text(subtitle,
               style: AppTextStyles.labelLarge.copyWith(
                 color: AppColors.onSurface(brightness)),
@@ -399,17 +400,17 @@ class HomeDashboardTab extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(right: kSpace4, bottom: kSpace12),
+          padding: EdgeInsets.only(right: kSpace4, bottom: kSpace12),
           child: Text(AppStrings.recentEntries,
             style: AppTextStyles.titleSmall.copyWith(
               color: AppColors.onSurface(brightness))),
         ),
         SizedBox(
-          height: 150,
+          height: 150.h,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             itemCount: entries.length,
-            separatorBuilder: (_, _) => const SizedBox(width: kSpace12),
+            separatorBuilder: (_, _) => SizedBox(width: kSpace12),
             itemBuilder: (context, index) {
               final entry = entries[index];
               return _buildEntryCard(context, entry, brightness);
@@ -433,8 +434,8 @@ class HomeDashboardTab extends StatelessWidget {
     return GestureDetector(
       onTap: () => context.push('/entry-detail', extra: entry),
       child: Container(
-        width: 220,
-        padding: const EdgeInsets.all(kSpace16),
+        width: 220.w,
+        padding: EdgeInsets.all(kSpace16),
         decoration: BoxDecoration(
           color: AppColors.surface(1, brightness),
           borderRadius: BorderRadius.circular(AppRadius.generous),
@@ -446,7 +447,7 @@ class HomeDashboardTab extends StatelessWidget {
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(
+                  padding: EdgeInsets.symmetric(
                     horizontal: kSpace10, vertical: kSpace6),
                   decoration: BoxDecoration(
                     color: moodColor.withValues(alpha: 0.15),
@@ -462,10 +463,10 @@ class HomeDashboardTab extends StatelessWidget {
                   entry.isVoiceEntry
                       ? CupertinoIcons.mic_fill
                       : CupertinoIcons.doc_text_fill,
-                  size: 14, color: AppColors.onSurface(brightness, tertiary: true)),
+                  size: 14.w, color: AppColors.onSurface(brightness, tertiary: true)),
               ],
             ),
-            const SizedBox(height: kSpace12),
+            SizedBox(height: kSpace12),
             Expanded(
               child: Text(
                 entry.text,
@@ -475,7 +476,7 @@ class HomeDashboardTab extends StatelessWidget {
                   color: AppColors.onSurface(brightness), height: 1.5),
               ),
             ),
-            const SizedBox(height: kSpace8),
+            SizedBox(height: kSpace8),
             Text(
               '${entry.createdAt.day}/${entry.createdAt.month}',
               style: AppTextStyles.bodySmall.copyWith(
@@ -490,7 +491,7 @@ class HomeDashboardTab extends StatelessWidget {
   static Widget _buildReflectionCard(BuildContext context, Brightness brightness) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(kSpace20),
+      padding: EdgeInsets.all(kSpace20),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -507,11 +508,11 @@ class HomeDashboardTab extends StatelessWidget {
         children: [
           Text(AppStrings.reflectionTitle,
             style: AppTextStyles.titleSmall.copyWith(color: AppColors.onSurface(brightness))),
-          const SizedBox(height: kSpace8),
+          SizedBox(height: kSpace8),
           Text(AppStrings.reflectionText,
             style: AppTextStyles.bodyMedium.copyWith(
               color: AppColors.onSurface(brightness, secondary: true), height: 1.7)),
-          const SizedBox(height: kSpace16),
+          SizedBox(height: kSpace16),
           SizedBox(
             width: double.infinity,
             child: CupertinoButton.filled(
@@ -530,7 +531,7 @@ class HomeDashboardTab extends StatelessWidget {
   static Widget _buildEmptyState(BuildContext context, Brightness brightness) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(kSpace24),
+      padding: EdgeInsets.all(kSpace24),
       decoration: BoxDecoration(
         color: AppColors.surface(1, brightness),
         borderRadius: BorderRadius.circular(AppRadius.generous),
@@ -539,12 +540,12 @@ class HomeDashboardTab extends StatelessWidget {
         children: [
           Text(AppStrings.noEntriesYet,
             style: AppTextStyles.titleSmall.copyWith(color: AppColors.onSurface(brightness))),
-          const SizedBox(height: kSpace8),
+          SizedBox(height: kSpace8),
           Text(AppStrings.noEntriesSubtitle,
             textAlign: TextAlign.center,
             style: AppTextStyles.bodyMedium.copyWith(
               color: AppColors.onSurface(brightness, secondary: true), height: 1.6)),
-          const SizedBox(height: kSpace16),
+          SizedBox(height: kSpace16),
           SizedBox(
             width: double.infinity,
             child: CupertinoButton.filled(

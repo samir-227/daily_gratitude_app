@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../bloc/timeline_cubit.dart';
 import '../bloc/timeline_state.dart';
 import '../../../../core/constants/app_colors.dart';
@@ -74,7 +75,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                       Text(state.message,
                         style: AppTextStyles.bodyMedium.copyWith(
                           color: AppColors.onSurface(brightness, secondary: true))),
-                      const SizedBox(height: kSpace16),
+                      SizedBox(height: kSpace16),
                       CupertinoButton(
                         onPressed: () => context.read<TimelineCubit>().loadEntries(),
                         child: Text(AppStrings.retry,
@@ -128,7 +129,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
 
   Widget _buildSearchBar(BuildContext context, Brightness brightness) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(kSpace16, kSpace12, kSpace16, kSpace4),
+      padding: EdgeInsets.fromLTRB(kSpace16, kSpace12, kSpace16, kSpace4),
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.surface(2, brightness),
@@ -144,7 +145,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
 
   Widget _buildFilterBar(BuildContext context, TimelineLoadedState state) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: kSpace16, vertical: kSpace8),
+      padding: EdgeInsets.symmetric(horizontal: kSpace16, vertical: kSpace8),
       child: CupertinoSlidingSegmentedControl<TimelineFilter>(
         groupValue: state.filter,
         children: const {
@@ -161,18 +162,18 @@ class _TimelineScreenState extends State<TimelineScreen> {
 
   Widget _buildSectionHeader(String header, Brightness brightness) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(kSpace16, kSpace20, kSpace16, kSpace8),
+      padding: EdgeInsets.fromLTRB(kSpace16, kSpace20, kSpace16, kSpace8),
       child: Row(
         children: [
           Container(
-            width: 4,
-            height: 20,
+            width: kSpace4,
+            height: kSpace20,
             decoration: BoxDecoration(
               color: AppColors.primary,
-              borderRadius: BorderRadius.circular(2),
+              borderRadius: BorderRadius.circular(2.r),
             ),
           ),
-          const SizedBox(width: kSpace8),
+          SizedBox(width: kSpace8),
           Text(header,
             style: AppTextStyles.titleSmall.copyWith(
               color: AppColors.onSurface(brightness), fontWeight: FontWeight.bold)),
@@ -252,9 +253,9 @@ class _TimelineEntryCardState extends State<_TimelineEntryCard> {
     final isPlaying = widget.playingEntryId == entry.id;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: kSpace16, vertical: kSpace6),
+      padding: EdgeInsets.symmetric(horizontal: kSpace16, vertical: kSpace6),
       child: Container(
-        padding: const EdgeInsets.all(kSpace16),
+        padding: EdgeInsets.all(kSpace16),
         decoration: BoxDecoration(
           color: AppColors.surface(1, brightness),
           borderRadius: BorderRadius.circular(AppRadius.generous),
@@ -273,7 +274,7 @@ class _TimelineEntryCardState extends State<_TimelineEntryCard> {
                 ),
                 if (entry.moodTag != null)
                   Container(
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                       horizontal: kSpace8, vertical: kSpace4),
                     decoration: BoxDecoration(
                       color: _moodColor(entry.moodTag).withValues(alpha: 0.12),
@@ -287,7 +288,7 @@ class _TimelineEntryCardState extends State<_TimelineEntryCard> {
                   ),
               ],
             ),
-            const SizedBox(height: kSpace8),
+            SizedBox(height: kSpace8),
             Text(
               entry.text,
               maxLines: _isExpanded ? null : 3,
@@ -312,9 +313,9 @@ class _TimelineEntryCardState extends State<_TimelineEntryCard> {
                 onPressed: () => setState(() => _isExpanded = false),
               ),
             if (entry.isVoiceEntry && entry.audioPath != null) ...[
-              const SizedBox(height: kSpace8),
+              SizedBox(height: kSpace8),
               Container(
-                padding: const EdgeInsets.all(kSpace12),
+                padding: EdgeInsets.all(kSpace12),
                 decoration: BoxDecoration(
                   color: AppColors.surface(2, brightness),
                   borderRadius: BorderRadius.circular(AppRadius.standard),
@@ -324,8 +325,8 @@ class _TimelineEntryCardState extends State<_TimelineEntryCard> {
                     GestureDetector(
                       onTap: () => context.read<TimelineCubit>().playEntry(entry),
                       child: Container(
-                        width: 36,
-                        height: 36,
+                        width: 36.w,
+                        height: 36.w,
                         decoration: BoxDecoration(
                           color: AppColors.primary.withValues(alpha: 0.15),
                           shape: BoxShape.circle,
@@ -334,12 +335,12 @@ class _TimelineEntryCardState extends State<_TimelineEntryCard> {
                           isPlaying
                               ? CupertinoIcons.pause_fill
                               : CupertinoIcons.play_fill,
-                          size: 16,
+                          size: kSpace16,
                           color: AppColors.primary,
                         ),
                       ),
                     ),
-                    const SizedBox(width: kSpace8),
+                    SizedBox(width: kSpace8),
                     Expanded(
                       child: isPlaying
                           ? StreamBuilder<Duration>(
@@ -378,26 +379,26 @@ class _TimelineEntryCardState extends State<_TimelineEntryCard> {
                 ),
               ),
             ],
-            const SizedBox(height: kSpace8),
+            SizedBox(height: kSpace8),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
                   onTap: () => _showEditDialog(context, entry),
                   child: Container(
-                    padding: const EdgeInsets.all(kSpace8),
+                    padding: EdgeInsets.all(kSpace8),
                     decoration: BoxDecoration(
                       color: AppColors.surface(2, brightness),
                       borderRadius: BorderRadius.circular(AppRadius.cozy),
                     ),
                     child: Icon(CupertinoIcons.pencil,
-                      size: 16, color: AppColors.onSurface(brightness, secondary: true)),
+                      size: kSpace16, color: AppColors.onSurface(brightness, secondary: true)),
                   ),
                 ),
                 GestureDetector(
                   onTap: () => _confirmDelete(context, entry),
                   child: Container(
-                    padding: const EdgeInsets.all(kSpace8),
+                    padding: EdgeInsets.all(kSpace8),
                     decoration: BoxDecoration(
                       color: AppColors.error.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(AppRadius.cozy),
@@ -450,7 +451,7 @@ class _EditEntryDialogState extends State<_EditEntryDialog> {
       title: Text(AppStrings.editEntry,
         style: AppTextStyles.titleMedium.copyWith(color: AppColors.onSurface(brightness))),
       content: Padding(
-        padding: const EdgeInsets.only(top: AppSpacing.tight),
+        padding: EdgeInsets.only(top: AppSpacing.tight),
         child: CupertinoTextField(
           controller: _controller,
           maxLines: 5,

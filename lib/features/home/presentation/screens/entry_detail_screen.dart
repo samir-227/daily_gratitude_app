@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_audio/just_audio.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_theme.dart';
 import '../../../../data/models/gratitude_entry.dart';
 
@@ -102,7 +104,7 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
       ),
       child: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(AppSpacing.generous),
+          padding: EdgeInsets.all(AppSpacing.generous),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -110,7 +112,7 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(
+                      padding: EdgeInsets.symmetric(
                         horizontal: AppSpacing.cozy, vertical: AppSpacing.compact),
                       decoration: BoxDecoration(
                         color: _moodColor(entry.moodTag).withOpacity(0.12),
@@ -120,33 +122,33 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(_moodEmoji(entry.moodTag), style: const TextStyle(fontSize: 16)),
-                          const SizedBox(width: AppSpacing.tight),
+                          SizedBox(width: AppSpacing.tight),
                           Text(entry.moodTag!,
                             style: AppTextStyles.labelLarge.copyWith(
                               color: _moodColor(entry.moodTag))),
                         ],
                       ),
                     ),
-                    const SizedBox(width: AppSpacing.cozy),
+                    SizedBox(width: AppSpacing.cozy),
                     Text(_formatTime(entry.createdAt),
                       style: AppTextStyles.bodySmall.copyWith(color: AppColors.textTertiary)),
                   ],
                 ),
-                const SizedBox(height: AppSpacing.generous),
+                SizedBox(height: AppSpacing.generous),
               ],
               if (entry.isVoiceEntry && entry.audioPath != null) ...[
                 _buildAudioPlayer(entry.audioPath!),
                 if (_error != null)
                   Padding(
-                    padding: const EdgeInsets.only(top: AppSpacing.tight),
+                    padding: EdgeInsets.only(top: AppSpacing.tight),
                     child: Text(_error!,
                       style: AppTextStyles.bodySmall.copyWith(color: AppColors.error)),
                   ),
-                const SizedBox(height: AppSpacing.generous),
+                SizedBox(height: AppSpacing.generous),
               ],
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(AppSpacing.generous),
+                padding: EdgeInsets.all(AppSpacing.generous),
                 decoration: BoxDecoration(
                   color: AppColors.surface1,
                   borderRadius: BorderRadius.circular(AppRadius.generous),
@@ -158,15 +160,15 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                 ),
               ),
               if (entry.topics.isNotEmpty) ...[
-                const SizedBox(height: AppSpacing.generous),
+                SizedBox(height: AppSpacing.generous),
                 Text('المواضيع',
                   style: AppTextStyles.labelLarge.copyWith(color: AppColors.textSecondary)),
-                const SizedBox(height: AppSpacing.tight),
+                SizedBox(height: AppSpacing.tight),
                 Wrap(
                   spacing: AppSpacing.tight,
                   runSpacing: AppSpacing.tight,
                   children: entry.topics.map((topic) => Container(
-                    padding: const EdgeInsets.symmetric(
+                    padding: EdgeInsets.symmetric(
                       horizontal: AppSpacing.cozy, vertical: AppSpacing.compact),
                     decoration: BoxDecoration(
                       color: AppColors.primary.withOpacity(0.12),
@@ -186,7 +188,7 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
 
   Widget _buildAudioPlayer(String audioPath) {
     return Container(
-      padding: const EdgeInsets.all(AppSpacing.standard),
+      padding: EdgeInsets.all(AppSpacing.standard),
       decoration: BoxDecoration(
         color: AppColors.surface1,
         borderRadius: BorderRadius.circular(AppRadius.generous),
@@ -228,8 +230,8 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                   }
                 },
                 child: Container(
-                  width: 48,
-                  height: 48,
+                  width: kSpace48,
+                  height: kSpace48,
                   decoration: BoxDecoration(
                     color: AppColors.primary.withOpacity(0.15),
                     shape: BoxShape.circle,
@@ -238,12 +240,12 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                     _isPlaying
                         ? CupertinoIcons.pause_fill
                         : CupertinoIcons.play_fill,
-                    size: 22,
+                    size: 22.w,
                     color: AppColors.primary,
                   ),
                 ),
               ),
-              const SizedBox(width: AppSpacing.standard),
+              SizedBox(width: AppSpacing.standard),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

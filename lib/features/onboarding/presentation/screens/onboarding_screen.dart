@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../bloc/onboarding_cubit.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_theme.dart';
 import '../../../../core/di/injection.dart';
 
@@ -27,7 +29,7 @@ class OnboardingScreen extends StatelessWidget {
                 backgroundColor: AppColors.surface0,
                 child: SafeArea(
                   child: Padding(
-                    padding: const EdgeInsets.all(AppSpacing.generous),
+                    padding: EdgeInsets.all(AppSpacing.generous),
                     child: Column(
                       children: [
                         _buildPageIndicator(state.page),
@@ -38,7 +40,7 @@ class OnboardingScreen extends StatelessWidget {
                         ),
                         const Spacer(),
                         _buildBottomButton(context, state),
-                        const SizedBox(height: AppSpacing.standard),
+                        SizedBox(height: AppSpacing.standard),
                       ],
                     ),
                   ),
@@ -58,9 +60,9 @@ class OnboardingScreen extends StatelessWidget {
       children: List.generate(3, (index) {
         return AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          margin: const EdgeInsets.symmetric(horizontal: 4),
-          width: index == page ? 32 : 8,
-          height: 8,
+          margin: EdgeInsets.symmetric(horizontal: kSpace4),
+          width: index == page ? kSpace32 : kSpace8,
+          height: kSpace8,
           decoration: BoxDecoration(
             color: index == page ? AppColors.primary : AppColors.surface3,
             borderRadius: BorderRadius.circular(AppRadius.pill),
@@ -89,8 +91,8 @@ class OnboardingScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          width: 120,
-          height: 120,
+          width: 120.w,
+          height: 120.w,
           decoration: BoxDecoration(
             gradient: const LinearGradient(
               begin: Alignment.topLeft,
@@ -110,13 +112,13 @@ class OnboardingScreen extends StatelessWidget {
             child: Icon(CupertinoIcons.heart_fill, size: 52, color: CupertinoColors.white),
           ),
         ),
-        const SizedBox(height: AppSpacing.spacious),
+        SizedBox(height: AppSpacing.spacious),
         Text(AppStrings.startJourney,
           style: AppTextStyles.display.copyWith(color: AppColors.textPrimary),
           textAlign: TextAlign.center),
-        const SizedBox(height: AppSpacing.standard),
+        SizedBox(height: AppSpacing.standard),
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.generous),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.generous),
           child: Text(AppStrings.appSubtitle,
             style: AppTextStyles.bodyLarge.copyWith(color: AppColors.textSecondary),
             textAlign: TextAlign.center),
@@ -132,21 +134,21 @@ class OnboardingScreen extends StatelessWidget {
       children: [
         Text(AppStrings.howItWorks,
           style: AppTextStyles.headline.copyWith(color: AppColors.textPrimary)),
-        const SizedBox(height: AppSpacing.spacious),
+        SizedBox(height: AppSpacing.spacious),
         _buildStep(
           icon: CupertinoIcons.mic_fill,
           color: AppColors.emotionPeace,
           title: AppStrings.record,
           subtitle: AppStrings.speakFreely,
         ),
-        const SizedBox(height: AppSpacing.generous),
+        SizedBox(height: AppSpacing.generous),
         _buildStep(
           icon: CupertinoIcons.text_bubble_fill,
           color: AppColors.emotionJoy,
           title: AppStrings.reflect,
           subtitle: AppStrings.readReview,
         ),
-        const SizedBox(height: AppSpacing.generous),
+        SizedBox(height: AppSpacing.generous),
         _buildStep(
           icon: CupertinoIcons.chart_pie_fill,
           color: AppColors.emotionLoved,
@@ -166,22 +168,22 @@ class OnboardingScreen extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: 56,
-          height: 56,
+          width: 56.w,
+          height: 56.w,
           decoration: BoxDecoration(
             color: color.withOpacity(0.15),
             borderRadius: BorderRadius.circular(AppRadius.generous),
           ),
-          child: Icon(icon, color: color, size: 26),
+          child: Icon(icon, color: color, size: 26.w),
         ),
-        const SizedBox(width: AppSpacing.standard),
+        SizedBox(width: AppSpacing.standard),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(title,
                 style: AppTextStyles.titleSmall.copyWith(color: AppColors.textPrimary)),
-              const SizedBox(height: AppSpacing.compact),
+              SizedBox(height: AppSpacing.compact),
               Text(subtitle,
                 style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary)),
             ],
@@ -200,8 +202,8 @@ class OnboardingScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 100,
-              height: 100,
+              width: 100.w,
+              height: 100.w,
               decoration: BoxDecoration(
                 color: AppColors.primary.withOpacity(0.12),
                 shape: BoxShape.circle,
@@ -209,15 +211,15 @@ class OnboardingScreen extends StatelessWidget {
               child: const Icon(CupertinoIcons.bell_fill,
                 size: 44, color: AppColors.primary),
             ),
-            const SizedBox(height: AppSpacing.generous),
+            SizedBox(height: AppSpacing.generous),
             Text(AppStrings.setReminder,
               style: AppTextStyles.headline.copyWith(color: AppColors.textPrimary),
               textAlign: TextAlign.center),
-            const SizedBox(height: AppSpacing.spacious),
+            SizedBox(height: AppSpacing.spacious),
             CupertinoButton(
               onPressed: () => _showTimePicker(context, s.reminderHour, s.reminderMinute),
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.spacious, vertical: AppSpacing.standard),
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.spacious, vertical: AppSpacing.standard),
                 decoration: BoxDecoration(
                   color: AppColors.surface2,
                   borderRadius: BorderRadius.circular(AppRadius.standard),
@@ -237,7 +239,7 @@ class OnboardingScreen extends StatelessWidget {
     showCupertinoModalPopup(
       context: context,
       builder: (_) => Container(
-        height: 300,
+        height: 300.h,
         color: AppColors.surface1,
         child: Column(
           children: [
