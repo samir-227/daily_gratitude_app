@@ -7,6 +7,8 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_theme.dart';
+import '../../../../core/widgets/staggered_fade_in.dart';
+import '../../../../core/widgets/animated_tab_icon.dart';
 import '../../../recording/presentation/screens/record_screen.dart';
 import '../../../timeline/presentation/screens/timeline_screen.dart';
 import '../../../analytics/presentation/screens/analytics_screen.dart';
@@ -28,10 +30,16 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _tabController = CupertinoTabController(initialIndex: 0);
+    _tabController.addListener(_onTabChanged);
+  }
+
+  void _onTabChanged() {
+    if (mounted) setState(() {});
   }
 
   @override
   void dispose() {
+    _tabController.removeListener(_onTabChanged);
     _tabController.dispose();
     super.dispose();
   }
@@ -47,25 +55,35 @@ class _HomeScreenState extends State<HomeScreen> {
         inactiveColor: AppColors.onSurface(brightness, secondary: true),
         border: Border(top: BorderSide(color: AppColors.divider, width: 0.5)),
         height: 56.h,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.house, size: 24),
+            icon: AnimatedTabIcon(
+              tabIndex: 0, currentIndex: _tabController.index,
+              icon: CupertinoIcons.house),
             label: AppStrings.home,
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.mic_fill, size: 24),
+            icon: AnimatedTabIcon(
+              tabIndex: 1, currentIndex: _tabController.index,
+              icon: CupertinoIcons.mic_fill),
             label: AppStrings.recordGratitude,
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.calendar, size: 24),
+            icon: AnimatedTabIcon(
+              tabIndex: 2, currentIndex: _tabController.index,
+              icon: CupertinoIcons.calendar),
             label: AppStrings.timeline,
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.chart_bar_fill, size: 24),
+            icon: AnimatedTabIcon(
+              tabIndex: 3, currentIndex: _tabController.index,
+              icon: CupertinoIcons.chart_bar_fill),
             label: AppStrings.analytics,
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.gear, size: 24),
+            icon: AnimatedTabIcon(
+              tabIndex: 4, currentIndex: _tabController.index,
+              icon: CupertinoIcons.gear),
             label: AppStrings.settings,
           ),
         ],
@@ -252,77 +270,111 @@ class HomeDashboardTab extends StatelessWidget {
     );
   }
 
-  static Widget _buildRecordHero(BuildContext context, Brightness brightness) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(kSpace24),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: [AppColors.primary, AppColors.primaryDark],
-        ),
-        borderRadius: BorderRadius.circular(AppRadius.generous),
+ static Widget _buildRecordHero(BuildContext context, Brightness brightness) {
+  return Container(
+    width: double.infinity,
+    // حددنا ارتفاع ثابت للكارت (مثلاً 180 أو 190) علشان الـ Stack جواه يتنفس وتتحكم في الأبعاد الرأسية براحتك
+    height: 185.h, 
+    padding: EdgeInsets.all(kSpace24),
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          AppColors.primary,
+          AppColors.primaryDark.withValues(alpha: 0.85),
+        ],
       ),
-      child: Column(
-        children: [
-          Row(
+      borderRadius: BorderRadius.circular(AppRadius.generous),
+      boxShadow: [
+        BoxShadow(
+          color: AppColors.primary.withValues(alpha: 0.25),
+          blurRadius: 20,
+          offset: const Offset(0, 10),
+        ),
+      ],
+    ),
+    child: Stack(
+      clipBehavior: Clip.none, 
+      children: [
+       
+        Positioned(
+          right: 0,
+          top: 0,
+          left: 110.w, 
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                width: 44.w,
-                height: 44.w,
-                decoration: const BoxDecoration(
-                  color: Color(0x26FFFFFF),
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(CupertinoIcons.mic_fill,
-                  color: CupertinoColors.white, size: 22),
-              ),
-              SizedBox(width: kSpace12),
-              Expanded(
-                child: Text(AppStrings.recordPrompt,
-                  style: AppTextStyles.titleSmall.copyWith(
-                    color: CupertinoColors.white, fontWeight: FontWeight.w700)),
-              ),
-            ],
-          ),
-          SizedBox(height: kSpace16),
-          Text(AppStrings.recordDescription,
-            style: AppTextStyles.bodyMedium.copyWith(
-              color: CupertinoColors.white.withValues(alpha: 0.85), height: 1.6),
-          ),
-          SizedBox(height: kSpace24),
-          GestureDetector(
-            onTap: () => _navigateToRecording(context),
-            child: Container(
-              width: kRecordButtonSize + 20,
-              height: kRecordButtonSize + 20,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: CupertinoColors.white.withValues(alpha: 0.95),
-                boxShadow: [
-                  BoxShadow(
-                    color: CupertinoColors.white.withValues(alpha: 0.25),
-                    blurRadius: 28,
-                    offset: const Offset(0, 12),
+              Row(
+                children: [
+                  Container(
+                    width: 32.w,
+                    height: 32.w,
+                    decoration: const BoxDecoration(
+                      color: Color(0x1AFFFFFF),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      CupertinoIcons.waveform_circle_fill,
+                      color: CupertinoColors.white,
+                      size: 18,
+                    ),
+                  ),
+                  SizedBox(width: kSpace8),
+                  Text(
+                    AppStrings.recordPrompt,
+                    style: AppTextStyles.titleSmall.copyWith(
+                      color: CupertinoColors.white.withValues(alpha: 0.9),
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ],
               ),
-              child: const Center(
-                child: Icon(CupertinoIcons.mic_fill,
-                  size: 36, color: AppColors.surface0),
+              
+              SizedBox(height: kSpace16),
+              
+              Text(
+                AppStrings.recordDescription,
+                style: AppTextStyles.bodyMedium.copyWith(
+                  color: CupertinoColors.white,
+                  fontWeight: FontWeight.w500,
+                  height: 1.4.h,
+                  fontSize: 14.sp,
+                ),
               ),
-            ),
+            ],
           ),
-          SizedBox(height: kSpace12),
-          Text(AppStrings.tapToRecordAction,
-            style: AppTextStyles.titleSmall.copyWith(
-              color: CupertinoColors.white, fontWeight: FontWeight.w600)),
-        ],
-      ),
-    );
-  }
+        ),
 
+        Positioned(
+          left: 0,
+          top: 15.h, 
+          width: 95.w,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _BreathingRecordButton(
+                onTap: () => _navigateToRecording(context),
+              ),
+              SizedBox(height: kSpace8),
+              Text(
+                AppStrings.tapToRecordAction,
+                textAlign: TextAlign.center,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: CupertinoColors.white.withValues(alpha: 0.9),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12.sp,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
   static void _navigateToRecording(BuildContext context) {
     final parentState = context.findAncestorStateOfType<_HomeScreenState>();
     parentState?._tabController.index = 1;
@@ -413,7 +465,10 @@ class HomeDashboardTab extends StatelessWidget {
             separatorBuilder: (_, _) => SizedBox(width: kSpace12),
             itemBuilder: (context, index) {
               final entry = entries[index];
-              return _buildEntryCard(context, entry, brightness);
+              return StaggeredFadeIn(
+                index: index,
+                child: _buildEntryCard(context, entry, brightness),
+              );
             },
           ),
         ),
@@ -529,34 +584,118 @@ class HomeDashboardTab extends StatelessWidget {
   }
 
   static Widget _buildEmptyState(BuildContext context, Brightness brightness) {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.all(kSpace24),
-      decoration: BoxDecoration(
-        color: AppColors.surface(1, brightness),
-        borderRadius: BorderRadius.circular(AppRadius.generous),
-      ),
-      child: Column(
-        children: [
-          Text(AppStrings.noEntriesYet,
-            style: AppTextStyles.titleSmall.copyWith(color: AppColors.onSurface(brightness))),
-          SizedBox(height: kSpace8),
-          Text(AppStrings.noEntriesSubtitle,
-            textAlign: TextAlign.center,
-            style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.onSurface(brightness, secondary: true), height: 1.6)),
-          SizedBox(height: kSpace16),
-          SizedBox(
-            width: double.infinity,
-            child: CupertinoButton.filled(
-              borderRadius: BorderRadius.circular(AppRadius.standard),
-              onPressed: () => _navigateToRecording(context),
-              child: Text(AppStrings.recordNow,
-                style: AppTextStyles.titleSmall.copyWith(
-                  color: CupertinoColors.white, fontWeight: FontWeight.w600)),
-            ),
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0.0, end: 1.0),
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeOutCubic,
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value,
+          child: Transform.translate(
+            offset: Offset(0, 20 * (1 - value)),
+            child: child,
           ),
-        ],
+        );
+      },
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(kSpace24),
+        decoration: BoxDecoration(
+          color: AppColors.surface(1, brightness),
+          borderRadius: BorderRadius.circular(AppRadius.generous),
+        ),
+        child: Column(
+          children: [
+            Text(AppStrings.noEntriesYet,
+              style: AppTextStyles.titleSmall.copyWith(color: AppColors.onSurface(brightness))),
+            SizedBox(height: kSpace8),
+            Text(AppStrings.noEntriesSubtitle,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.onSurface(brightness, secondary: true), height: 1.6)),
+            SizedBox(height: kSpace16),
+            SizedBox(
+              width: double.infinity,
+              child: CupertinoButton.filled(
+                borderRadius: BorderRadius.circular(AppRadius.standard),
+                onPressed: () => _navigateToRecording(context),
+                child: Text(AppStrings.recordNow,
+                  style: AppTextStyles.titleSmall.copyWith(
+                    color: CupertinoColors.white, fontWeight: FontWeight.w600)),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _BreathingRecordButton extends StatefulWidget {
+  final VoidCallback onTap;
+  const _BreathingRecordButton({required this.onTap});
+
+  @override
+  State<_BreathingRecordButton> createState() => _BreathingRecordButtonState();
+}
+
+class _BreathingRecordButtonState extends State<_BreathingRecordButton>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _scale;
+  late final Animation<double> _glow;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    )..repeat(reverse: true);
+    _scale = Tween<double>(begin: 1.0, end: 1.06).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOutSine),
+    );
+    _glow = Tween<double>(begin: 0.5, end: 1.0).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOutSine),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) {
+          return Transform.scale(
+            scale: _scale.value,
+            child: Container(
+              width: kRecordButtonSize + 20,
+              height: kRecordButtonSize + 20,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: CupertinoColors.white.withValues(alpha: 0.95),
+                boxShadow: [
+                  BoxShadow(
+                    color: CupertinoColors.white.withValues(alpha: 0.15 * _glow.value),
+                    blurRadius: 20 + 12 * _glow.value,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
+              ),
+              child: const Center(
+                child: Icon(CupertinoIcons.mic_fill,
+                  size: 36, color: AppColors.surface0),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

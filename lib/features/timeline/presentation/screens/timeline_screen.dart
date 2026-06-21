@@ -7,6 +7,7 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_theme.dart';
+import '../../../../core/widgets/staggered_fade_in.dart';
 import '../../../../core/utils/date_utils.dart';
 import '../../../../core/di/injection.dart';
 import '../../../../core/services/audio_service.dart';
@@ -107,10 +108,13 @@ class _TimelineScreenState extends State<TimelineScreen> {
                         SliverToBoxAdapter(child: _buildSectionHeader(group.key, brightness)),
                         SliverList(
                           delegate: SliverChildBuilderDelegate(
-                            (context, index) => _TimelineEntryCard(
-                              entry: group.value[index],
-                              playingEntryId: state.playingEntryId,
-                              audioService: _audioService,
+                            (context, index) => StaggeredFadeIn(
+                              index: index,
+                              child: _TimelineEntryCard(
+                                entry: group.value[index],
+                                playingEntryId: state.playingEntryId,
+                                audioService: _audioService,
+                              ),
                             ),
                             childCount: group.value.length,
                           ),

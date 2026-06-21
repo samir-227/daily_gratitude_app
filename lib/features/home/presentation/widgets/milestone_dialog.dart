@@ -20,44 +20,8 @@ Future<bool?> showMilestoneDialog(BuildContext context, int streak) {
   return showCupertinoDialog<bool>(
     context: context,
     builder: (ctx) => CupertinoAlertDialog(
-      title: Column(
-        children: [
-          Container(
-            width: kSpace64,
-            height: kSpace64,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  AppColors.streakFire,
-                  AppColors.warning,
-                ],
-              ),
-              shape: BoxShape.circle,
-            ),
-            child: const Center(
-              child: Icon(CupertinoIcons.flame_fill,
-                color: CupertinoColors.white, size: 32),
-            ),
-          ),
-          SizedBox(height: AppSpacing.cozy),
-          Text(
-            '\u{1F389} $streak ${AppStrings.dayStreak}!',
-            style: AppTextStyles.titleMedium.copyWith(
-              color: AppColors.textPrimary, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-      content: Padding(
-        padding: EdgeInsets.only(top: AppSpacing.cozy),
-        child: Text(
-          _milestoneMessage(streak),
-          style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
-          textAlign: TextAlign.center,
-        ),
-      ),
+      title: _MilestoneCelebration(streak: streak),
+      content: const SizedBox.shrink(),
       actions: [
         CupertinoDialogAction(
           child: Text(AppStrings.keepGoing,
@@ -68,4 +32,106 @@ Future<bool?> showMilestoneDialog(BuildContext context, int streak) {
       ],
     ),
   );
+}
+
+class _MilestoneCelebration extends StatefulWidget {
+  final int streak;
+  const _MilestoneCelebration({required this.streak});
+
+  @override
+  State<_MilestoneCelebration> createState() => _MilestoneCelebrationState();
+}
+
+class _MilestoneCelebrationState extends State<_MilestoneCelebration>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 900),
+    )..forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: AppSpacing.cozy),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ScaleTransition(
+            scale: CurvedAnimation(
+              parent: _controller,
+              curve: const Interval(0.0, 0.45, curve: Curves.elasticOut),
+            ),
+            child: Container(
+              width: kSpace64,
+              height: kSpace64,
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    AppColors.streakFire,
+                    AppColors.warning,
+                  ],
+                ),
+                shape: BoxShape.circle,
+              ),
+              child: const Center(
+                child: Icon(CupertinoIcons.flame_fill,
+                  color: CupertinoColors.white, size: 32),
+              ),
+            ),
+          ),
+          SizedBox(height: AppSpacing.cozy),
+          SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, 0.3),
+              end: Offset.zero,
+            ).animate(CurvedAnimation(
+              parent: _controller,
+              curve: const Interval(0.2, 0.6, curve: Curves.easeOutCubic),
+            )),
+            child: FadeTransition(
+              opacity: CurvedAnimation(
+                parent: _controller,
+                curve: const Interval(0.2, 0.6, curve: Curves.easeOut),
+              ),
+              child: Text(
+                '\u{1F389} ${widget.streak} ${AppStrings.dayStreak}!',
+                style: AppTextStyles.titleMedium.copyWith(
+                  color: AppColors.textPrimary, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          SizedBox(height: AppSpacing.compact),
+          FadeTransition(
+            opacity: CurvedAnimation(
+              parent: _controller,
+              curve: const Interval(0.4, 0.85, curve: Curves.easeOut),
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: AppSpacing.compact),
+              child: Text(
+                _milestoneMessage(widget.streak),
+                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
