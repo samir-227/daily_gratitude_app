@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
-import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_theme.dart';
 import '../../../../data/models/gratitude_entry.dart';
 
@@ -78,33 +78,22 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
     }
   }
 
-  String _moodEmoji(String? mood) {
-    switch (mood) {
-      case 'grateful': return '\u{1F60A}';
-      case 'happy': return '\u{1F600}';
-      case 'calm': return '\u{1F9D8}';
-      case 'loved': return '\u{1F497}';
-      case 'reflective': return '\u{1F914}';
-      case 'grounded': return '\u{1F331}';
-      default: return '';
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final entry = widget.entry;
+    final brightness = CupertinoTheme.of(context).brightness ?? Brightness.dark;
     return CupertinoPageScaffold(
-      backgroundColor: AppColors.surface0,
+      backgroundColor: AppColors.surface(0, brightness),
       navigationBar: CupertinoNavigationBar(
-        backgroundColor: AppColors.surface1,
-        border: Border.all(color: AppColors.surface1),
+        backgroundColor: AppColors.surface(1, brightness),
+        border: Border.all(color: AppColors.surface(1, brightness)),
         middle: Text(_formatDate(entry.createdAt),
-          style: AppTextStyles.titleSmall.copyWith(color: AppColors.textPrimary)),
+          style: AppTextStyles.titleSmall.copyWith(color: AppColors.onSurface(brightness))),
         previousPageTitle: AppStrings.home,
       ),
       child: SafeArea(
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(AppSpacing.generous),
+          padding: EdgeInsets.all(AppSpacing.standard),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -115,15 +104,13 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                       padding: EdgeInsets.symmetric(
                         horizontal: AppSpacing.cozy, vertical: AppSpacing.compact),
                       decoration: BoxDecoration(
-                        color: _moodColor(entry.moodTag).withOpacity(0.12),
+                        color: _moodColor(entry.moodTag).withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(AppRadius.pill),
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(_moodEmoji(entry.moodTag), style: const TextStyle(fontSize: 16)),
-                          SizedBox(width: AppSpacing.tight),
-                          Text(entry.moodTag!,
+                          Text(AppStrings.moodLabel(entry.moodTag),
                             style: AppTextStyles.labelLarge.copyWith(
                               color: _moodColor(entry.moodTag))),
                         ],
@@ -131,38 +118,38 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                     ),
                     SizedBox(width: AppSpacing.cozy),
                     Text(_formatTime(entry.createdAt),
-                      style: AppTextStyles.bodySmall.copyWith(color: AppColors.textTertiary)),
+                      style: AppTextStyles.bodySmall.copyWith(color: AppColors.onSurface(brightness, tertiary: true))),
                   ],
                 ),
-                SizedBox(height: AppSpacing.generous),
+                SizedBox(height: AppSpacing.standard),
               ],
               if (entry.isVoiceEntry && entry.audioPath != null) ...[
-                _buildAudioPlayer(entry.audioPath!),
+                _buildAudioPlayer(entry.audioPath!, brightness),
                 if (_error != null)
                   Padding(
                     padding: EdgeInsets.only(top: AppSpacing.tight),
                     child: Text(_error!,
                       style: AppTextStyles.bodySmall.copyWith(color: AppColors.error)),
                   ),
-                SizedBox(height: AppSpacing.generous),
+                SizedBox(height: AppSpacing.standard),
               ],
               Container(
                 width: double.infinity,
-                padding: EdgeInsets.all(AppSpacing.generous),
+          padding: EdgeInsets.all(AppSpacing.standard),
                 decoration: BoxDecoration(
-                  color: AppColors.surface1,
+                  color: AppColors.surface(1, brightness),
                   borderRadius: BorderRadius.circular(AppRadius.generous),
                 ),
                 child: Text(
                   entry.text,
-                  style: AppTextStyles.bodyLarge.copyWith(
-                    color: AppColors.textPrimary, height: 1.8),
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.onSurface(brightness), height: 1.6),
                 ),
               ),
               if (entry.topics.isNotEmpty) ...[
-                SizedBox(height: AppSpacing.generous),
+                SizedBox(height: AppSpacing.standard),
                 Text('المواضيع',
-                  style: AppTextStyles.labelLarge.copyWith(color: AppColors.textSecondary)),
+                  style: AppTextStyles.labelLarge.copyWith(color: AppColors.onSurface(brightness, secondary: true))),
                 SizedBox(height: AppSpacing.tight),
                 Wrap(
                   spacing: AppSpacing.tight,
@@ -171,11 +158,11 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                     padding: EdgeInsets.symmetric(
                       horizontal: AppSpacing.cozy, vertical: AppSpacing.compact),
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.12),
+                      color: AppColors.primary.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(AppRadius.pill),
                     ),
                     child: Text(topic,
-                      style: AppTextStyles.labelMedium.copyWith(color: AppColors.primary)),
+                      style: AppTextStyles.labelSmall.copyWith(color: AppColors.primary)),
                   )).toList(),
                 ),
               ],
@@ -186,13 +173,14 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
     );
   }
 
-  Widget _buildAudioPlayer(String audioPath) {
+  Widget _buildAudioPlayer(String audioPath, Brightness brightness) {
+    final outlineColor = brightness == Brightness.dark ? AppColors.outline : AppColors.lightOutline;
     return Container(
       padding: EdgeInsets.all(AppSpacing.standard),
       decoration: BoxDecoration(
-        color: AppColors.surface1,
+        color: AppColors.surface(1, brightness),
         borderRadius: BorderRadius.circular(AppRadius.generous),
-        border: Border.all(color: AppColors.outline.withOpacity(0.3)),
+        border: Border.all(color: outlineColor.withValues(alpha: 0.3)),
       ),
       child: Column(
         children: [
@@ -206,14 +194,20 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                     setState(() => _isPlaying = false);
                   } else {
                     try {
-                      final file = File(audioPath);
+                      final appDir = await getApplicationDocumentsDirectory();
+                      final recordingsDir = Directory('${appDir.path}/recordings');
+                      var file = File(audioPath);
+                      if (!await file.exists()) {
+                        final filename = audioPath.split('/').last;
+                        file = File('${recordingsDir.path}/$filename');
+                      }
                       if (!await file.exists()) {
                         if (!mounted) return;
                         setState(() => _error = AppStrings.audioFileNotFound);
                         return;
                       }
                       await _player.stop();
-                      await _player.setAudioSource(AudioSource.file(audioPath));
+                      await _player.setAudioSource(AudioSource.file(file.path));
                       await _player.play();
                       if (!mounted) return;
                       setState(() {
@@ -229,21 +223,21 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                     }
                   }
                 },
-                child: Container(
-                  width: kSpace48,
-                  height: kSpace48,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.15),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Icon(
-                    _isPlaying
-                        ? CupertinoIcons.pause_fill
-                        : CupertinoIcons.play_fill,
-                    size: 22.w,
-                    color: AppColors.primary,
-                  ),
-                ),
+                    child: Container(
+                      width: 40.w,
+                      height: 40.w,
+                      decoration: BoxDecoration(
+                        color: AppColors.primary.withValues(alpha: 0.15),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        _isPlaying
+                            ? CupertinoIcons.pause_fill
+                            : CupertinoIcons.play_fill,
+                        size: 18.w,
+                        color: AppColors.primary,
+                      ),
+                    ),
               ),
               SizedBox(width: AppSpacing.standard),
               Expanded(
@@ -252,7 +246,7 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                   children: [
                     Text(
                       '${_formatDuration(_position)} / ${_formatDuration(_duration ?? Duration.zero)}',
-                      style: AppTextStyles.labelMedium.copyWith(color: AppColors.textSecondary)),
+                      style: AppTextStyles.labelMedium.copyWith(color: AppColors.onSurface(brightness, secondary: true))),
                     CupertinoSlider(
                       value: _duration != null && _duration!.inMilliseconds > 0
                           ? (_position.inMilliseconds / _duration!.inMilliseconds).clamp(0.0, 1.0)
@@ -267,7 +261,6 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
                   ],
                 ),
               ),
-              const Icon(CupertinoIcons.waveform_path, size: 20, color: AppColors.textTertiary),
             ],
           ),
         ],

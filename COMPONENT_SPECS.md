@@ -17,43 +17,39 @@ Size Specs:
   Font:               Cairo Bold 16px
   
 Color (Dark Mode):
-  Background:         Gradient: #2DD4A4 → #10B981 (top-left to bottom-right)
+  Background:         Solid #0A7E6B
   Text:               #FFFFFF (white)
   Border:             None
   Shadow:             Elevation 3 (8px blur, 30% opacity black, 4px offset)
   
 Color (Light Mode):
-  Background:         Gradient: #10B981 → #059669 (same angle)
+  Background:         Solid #0A7E6B
   Text:               #FFFFFF
   Border:             None
   Shadow:             Elevation 2 (4px blur, 12% opacity black)
 
 States:
   Idle:
-    Background:       Gradient as above
+    Background:       Solid #0A7E6B
     Transform:        Scale 1.0
     Cursor:           Pointer
-  
-  Hover/Long Press:
-    Background:       Gradient lightened by 10%
-    Transform:        Scale 1.02
     
   Pressed/Active:
-    Background:       Gradient darkened by 5%
+    Background:       Darkened by 5%
     Transform:        Scale 0.98
     Shadow:           Elevation 2 (reduced)
     Duration:         150ms (Curves.easeInOutCubic)
     Haptic:           Medium
     
   Disabled:
-    Background:       Gradient at 50% opacity
+    Background:       Solid #0A7E6B at 50% opacity
     Text:             #9CA3AF (grey)
     Transform:        Scale 1.0
     Cursor:           Not-allowed
     Opacity:          0.6
     
   Loading:
-    Background:       Gradient unchanged
+    Background:       Solid #0A7E6B
     Text:             Hidden
     Spinner:          20px CupertinoActivityIndicator (white)
     Duration:         Continuous
@@ -86,13 +82,13 @@ Size Specs:
 
 Color (Dark Mode):
   Background:         Transparent
-  Text:               #2DD4A4 (primary green)
-  Border:             #2DD4A4
+  Text:               #0A7E6B (primary green)
+  Border:             #0A7E6B
   
 Color (Light Mode):
   Background:         Transparent
-  Text:               #10B981
-  Border:             #10B981
+  Text:               #0A7E6B
+  Border:             #0A7E6B
 
 States:
   Idle:
@@ -116,7 +112,7 @@ States:
 
 ```
 ┌──────┐
-│ ⚙️   │ ← 24px icon
+│      │ ← 24px icon
 └──────┘
 
 Size Specs:
@@ -176,15 +172,15 @@ Color (Dark Mode):
   Text:               #E5E7EB (primary text)
   Placeholder:        #9CA3AF (secondary text)
   Border (Idle):      #374151 (outline)
-  Border (Focused):   #2DD4A4 (primary)
-  Cursor:             #2DD4A4
+  Border (Focused):   #0A7E6B (primary)
+  Cursor:             #0A7E6B
   
 Color (Light Mode):
   Background:         #F9FAFB
   Text:               #1F2937
   Placeholder:        #9CA3AF
   Border (Idle):      #E5E7EB
-  Border (Focused):   #10B981
+  Border (Focused):   #0A7E6B
 
 States:
   Idle:
@@ -192,11 +188,11 @@ States:
     Shadow:           None
     
   Focused:
-    Border:           1px solid #2DD4A4
+    Border:           1px solid #0A7E6B
     Shadow:           Elevation 1 (8px blur)
     
   Filled (with text):
-    Border:           1px solid #2DD4A4
+    Border:           1px solid #0A7E6B
     Text:             #E5E7EB
     
   Disabled:
@@ -207,12 +203,12 @@ States:
     
   Error State:
     Border:           1px solid #EF4444 (red)
-    Icon:             ⚠️ red indicator
+    Icon:             Red indicator
     Helper Text:      "هذا الحقل مطلوب" (12px red)
     
   Success State:
     Border:           1px solid #10B981 (green)
-    Icon:             ✓ green checkmark
+    Icon:             Green checkmark
 ```
 
 ### Textarea (Multi-line)
@@ -254,7 +250,7 @@ Counter Colors:
 
 ```
 ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐ ┌────────┐
-│   😊   │ │   😌   │ │   💗   │ │   🌟   │ │   🌿   │
+│        │ │        │ │        │ │        │ │        │
 │ مسرور  │ │ هادئ   │ │ محبوب  │ │ آمل    │ │ متجذر  │
 └────────┘ └────────┘ └────────┘ └────────┘ └────────┘
   Joy    +  Peace   +   Love   +   Hope   +  Grounded
@@ -265,7 +261,7 @@ Container Size:
   
 Single Chip:
   Icon Container:     44px diameter circle
-  Icon Size:          24px (emoji)
+  Icon Size:          24px (icon)
   Label Font:         Cairo Regular 12px
   Label Color:        #E5E7EB
   Gap (icon to text): 8px vertical
@@ -307,7 +303,7 @@ States:
 
 ```
 ┌────────────────────────────────────────┐
-│ 🎯 [2:45 PM - 12 minutes ago]         │ ← Emotion icon + timestamp
+│ [2:45 PM - 12 minutes ago]            │ ← Emotion icon + timestamp
 ├────────────────────────────────────────┤
 │ شكرت على دعم الأسرة والأصدقاء الذين  │ ← Title (2 lines max, truncated)
 │ وقفوا بجانبي في وقت الحاجة           │
@@ -331,8 +327,8 @@ Color (Dark Mode):
   Background:         #252D37 (surface2Dark)
   Text (Primary):     #E5E7EB
   Text (Secondary):   #9CA3AF
-  Badge BG:           #2DD4A4 at 15% opacity
-  Badge Text:         #2DD4A4
+  Badge BG:           #0A7E6B at 15% opacity
+  Badge Text:         #0A7E6B
 
 States:
   Idle:
@@ -346,7 +342,7 @@ States:
     Background:       Lightened by 5%
     
   Selected:
-    Border:           Left 4px solid #2DD4A4 (stripe)
+    Border:           Left 4px solid #0A7E6B (stripe)
     Background:       Unchanged
     
   Pressed:
@@ -387,29 +383,30 @@ Typography:
   Trend:              Label Small (11px Semibold) - green or orange
   
 Color (Dark Mode):
-  Number:             #2DD4A4 (primary green)
+  Number:             #0A7E6B (primary green)
   Label:              #9CA3AF (secondary)
   Trend Up:           #10B981 (green)
   Trend Down:         #F59E0B (orange)
 ```
 
-### Floating Action Button (FAB)
+### Breathing Button (44px circular)
 
 ```
-    ┌─────────┐
-    │    │    │ ← 4px drag handle
-    │  🎤  │ ← 24px icon
-    └─────────┘
-       56px
+    ┌───────────┐
+    │           │
+    │     +     │ ← 24px icon
+    │           │
+    └───────────┘
+       44px
 
 Size Specs:
-  Diameter:           56px (base), 48px (compact)
+  Diameter:           44px
   Icon Size:          24px
   Border Radius:      999px (fully rounded)
   Position:           Bottom-right (LTR) / Bottom-left (RTL), 24px inset
   
 Color (Dark Mode):
-  Background:         Gradient: #2DD4A4 → #10B981
+  Background:         Solid #0A7E6B
   Icon Color:         #FFFFFF
   
 Elevation:
@@ -440,16 +437,16 @@ RTL Adjustment:
 
 ```
 ┌─────────────────────────────────────────┐
-│ ◄───── ◄──────────────► ─────► (Drag)   │ ← 4px × 48px handle
+│ ────── Drag ────────────────────       │ ← 4px × 48px handle
 ├─────────────────────────────────────────┤
-│ سجل شكرك        [✕ Close]              │ ← Header
+│ سجل شكرك        [Close]                │ ← Header
 │ [خطوات: 1 / 3]                          │ ← Progress bar
 ├─────────────────────────────────────────┤
 │                                         │
 │ [Main Content Area - Scrollable]       │
 │                                         │
 ├─────────────────────────────────────────┤
-│ [← الرجوع]  [التالي →]                 │ ← Button footer
+│ [الرجوع]  [التالي]                     │ ← Button footer
 └─────────────────────────────────────────┘
 
 Size Specs:
@@ -475,7 +472,7 @@ Header:
 Progress Bar:
   Height:             4px
   Background:         #374151 (outline dark)
-  Fill Color:         #2DD4A4 (primary)
+  Fill Color:         #0A7E6B (primary)
   Fill Progress:      Based on step (1/3, 2/3, 3/3)
   
 Button Footer:
@@ -502,8 +499,8 @@ Animations:
 
 ```
 ┌─────────────────────────────────────────┐
-│ Home │ Record │ Timeline │ Chart │ ⚙️   │
-│  🏠  │   🎤   │   📅    │  📊   │     │
+│ Home │ Record │ Timeline │ Chart │       │
+│      │        │          │       │       │
 └─────────────────────────────────────────┘
 
 Size Specs:
@@ -522,18 +519,18 @@ Icon:
   Opacity (inactive): 0.6
   Opacity (active):   1.0
   Color (inactive):   #9CA3AF (secondary grey)
-  Color (active):     #2DD4A4 (primary green)
+  Color (active):     #0A7E6B (primary green)
   
 Label:
   Font:               Label Medium (12px Semibold)
   Opacity:            0 (hidden by default)
   Appears on Active:  Fades in (150ms)
-  Color:              #2DD4A4 when active
+  Color:              #0A7E6B when active
 
 Indicator:
   Style:              Underline or pill background
   Height:             3px (underline) or background fill
-  Color:              #2DD4A4
+  Color:              #0A7E6B
   Animation:          Slide to position (200ms ease-out)
 
 States:
@@ -542,12 +539,12 @@ States:
     Label:            Hidden
     
   Active Tab:
-    Icon:             #2DD4A4, scale 1.0
+    Icon:             #0A7E6B, scale 1.0
     Label:            Visible, fade-in 150ms
     Indicator:        Animated to position
     
   Pressed:
-    Icon:             #2DD4A4
+    Icon:             #0A7E6B
     Haptic:           Light impact
     Transition:       Instant icon color, smooth animation for content
 
@@ -642,7 +639,7 @@ Playback:
 ```
 Element Type         Color Token         Hex Code      Usage
 ────────────────────────────────────────────────────────
-Primary Action       primary             #2DD4A4       Buttons, links, active states
+Primary Action       primary             #0A7E6B       Buttons, links, active states
 Primary Container    primaryContainer    #1A3D35       Button backgrounds
 Secondary Accent     secondary           #E85A8F       Emotion: Love
 Tertiary Accent      tertiary            #FFD85C       Emotion: Joy
@@ -734,7 +731,7 @@ Component Adjustments:
 | Gratitude Card | 80px+ | Full | 12px | 16px | Elev 2 |
 | Stat Card | 100px+ | Full | 12px | 24px | Elev 2 |
 | Bottom Tab Bar | 56px | Full | 0px | 12px | Border top |
-| FAB | 56px | 56px | 999px | 24px icon | Elev 3 |
+| Breathing Button | 44px | 44px | 999px | 24px icon | Elev 3 |
 
 ---
 

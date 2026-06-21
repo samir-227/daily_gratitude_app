@@ -71,11 +71,11 @@ class _RecordScreenState extends State<RecordScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          SizedBox(height: kSpace20),
+                          SizedBox(height: kSpace12),
                           _buildStatusHeader(state, brightness),
-                          SizedBox(height: kSpace24),
+                          SizedBox(height: kSpace16),
                           _buildRecordingButton(context, state, brightness),
-                          SizedBox(height: kSpace24),
+                          SizedBox(height: kSpace16),
                           if (state is RecordingDoneState) ...[
                             _buildTextEnrichment(context, brightness),
                             SizedBox(height: kSpace16),
@@ -155,11 +155,11 @@ class _RecordScreenState extends State<RecordScreen> {
       child: Row(
         children: [
           Container(
-            width: kSpace4,
-            height: 40.w,
+            width: 3.w,
+            height: 36.h,
             decoration: BoxDecoration(
               color: accent,
-              borderRadius: BorderRadius.circular(2.r),
+              borderRadius: BorderRadius.circular(1),
             ),
           ),
           SizedBox(width: kSpace12),
@@ -186,7 +186,7 @@ class _RecordScreenState extends State<RecordScreen> {
     final isDone = state is RecordingDoneState;
 
     return Container(
-      padding: EdgeInsets.all(kSpace24),
+      padding: EdgeInsets.all(kSpace16),
       decoration: BoxDecoration(
         color: AppColors.surface(1, brightness),
         borderRadius: BorderRadius.circular(AppRadius.generous + 4),
@@ -203,8 +203,8 @@ class _RecordScreenState extends State<RecordScreen> {
             },
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 300),
-              width: kRecordButtonSize + 20,
-              height: kRecordButtonSize + 20,
+              width: 72.w,
+              height: 72.w,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 gradient: isRecording
@@ -216,7 +216,7 @@ class _RecordScreenState extends State<RecordScreen> {
                   BoxShadow(
                     color: (isRecording ? AppColors.error : AppColors.primary)
                         .withValues(alpha: 0.3),
-                    blurRadius: 28,
+                    blurRadius: 28.r,
                     offset: const Offset(0, 12),
                   ),
                 ],
@@ -226,18 +226,18 @@ class _RecordScreenState extends State<RecordScreen> {
                   isRecording
                       ? CupertinoIcons.stop_fill
                       : CupertinoIcons.mic_fill,
-                  color: CupertinoColors.white,
-                  size: 36.w,
+                  color: AppColors.textOnPrimary,
+                  size: 28.w,
                 ),
               ),
             ),
           ),
-          SizedBox(height: kSpace16),
+          SizedBox(height: kSpace12),
           Text(
             isRecording ? AppStrings.stopRecordingText : AppStrings.tapToRecordAction,
-            style: AppTextStyles.titleSmall.copyWith(
+            style: AppTextStyles.labelLarge.copyWith(
               color: isRecording ? AppColors.error : AppColors.onSurface(brightness),
-              fontWeight: FontWeight.w700),
+              fontWeight: FontWeight.w600),
           ),
         ],
       ),
@@ -247,7 +247,7 @@ class _RecordScreenState extends State<RecordScreen> {
   Widget _buildLiveText(RecordingInProgressState state, Brightness brightness) {
     if (state.liveText.isEmpty) return const SizedBox.shrink();
     return Container(
-      padding: EdgeInsets.all(kSpace16),
+      padding: EdgeInsets.all(kSpace12),
       decoration: BoxDecoration(
         color: AppColors.surface(1, brightness),
         borderRadius: BorderRadius.circular(AppRadius.generous),
@@ -264,7 +264,7 @@ class _RecordScreenState extends State<RecordScreen> {
       children: [
         Text(AppStrings.addDescription,
           style: AppTextStyles.labelLarge.copyWith(color: AppColors.onSurface(brightness))),
-        SizedBox(height: kSpace12),
+        SizedBox(height: kSpace8),
         Container(
           decoration: BoxDecoration(
             color: AppColors.surface(2, brightness),
@@ -293,9 +293,9 @@ class _RecordScreenState extends State<RecordScreen> {
   Widget _buildMoodSection(BuildContext context, RecordingDoneState state, Brightness brightness) {
     final moods = [
       _MoodOption('grateful', AppStrings.emotionJoy, AppColors.emotionJoy, CupertinoIcons.heart_fill),
-      _MoodOption('happy', AppStrings.emotionPeace, AppColors.emotionPeace, CupertinoIcons.smiley_fill),
-      _MoodOption('calm', AppStrings.emotionLoved, AppColors.emotionLoved, CupertinoIcons.moon_fill),
-      _MoodOption('loved', AppStrings.emotionHope, AppColors.emotionHope, CupertinoIcons.sparkles),
+      _MoodOption('happy', AppStrings.emotionHope, AppColors.emotionHope, CupertinoIcons.smiley_fill),
+      _MoodOption('calm', AppStrings.emotionPeace, AppColors.emotionPeace, CupertinoIcons.moon_fill),
+      _MoodOption('loved', AppStrings.emotionLoved, AppColors.emotionLoved, CupertinoIcons.sparkles),
       _MoodOption('grounded', AppStrings.emotionGrounded, AppColors.emotionGrounded, CupertinoIcons.leaf_arrow_circlepath),
     ];
     return Column(
@@ -303,7 +303,7 @@ class _RecordScreenState extends State<RecordScreen> {
       children: [
         Text(AppStrings.howDoYouFeel,
           style: AppTextStyles.labelLarge.copyWith(color: AppColors.onSurface(brightness))),
-        SizedBox(height: kSpace12),
+        SizedBox(height: kSpace8),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
@@ -335,8 +335,8 @@ class _RecordScreenState extends State<RecordScreen> {
       ),
       child: Row(
         children: [
-          const Icon(CupertinoIcons.exclamationmark_triangle_fill,
-            color: AppColors.error, size: 18),
+          Icon(CupertinoIcons.exclamationmark_triangle_fill,
+            color: AppColors.error, size: 18.w),
           SizedBox(width: kSpace12),
           Expanded(
             child: Text(state.message,
@@ -367,23 +367,31 @@ class _RecordScreenState extends State<RecordScreen> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (isDone)
-          CupertinoButton.filled(
-            borderRadius: BorderRadius.circular(AppRadius.standard),
-            onPressed: state.text.trim().isEmpty
-                ? null
-                : () => context.read<RecordingCubit>().saveEntry(),
-            child: Text(AppStrings.save,
-              style: AppTextStyles.titleSmall.copyWith(
-                color: CupertinoColors.white, fontWeight: FontWeight.w600)),
+          SizedBox(
+            height: 50.sp,
+            child: CupertinoButton.filled(
+              borderRadius: BorderRadius.circular(AppRadius.standard),
+              padding: EdgeInsets.zero,
+              onPressed: state.text.trim().isEmpty
+                  ? null
+                  : () => context.read<RecordingCubit>().saveEntry(),
+              child: Text(AppStrings.save,
+                style: AppTextStyles.labelLarge.copyWith(
+                  color: AppColors.textOnPrimary, fontWeight: FontWeight.w600)),
+            ),
           )
         else if (state is RecordingIdleState || state is RecordingErrorState)
-          CupertinoButton(
-            color: AppColors.surface(2, brightness),
-            borderRadius: BorderRadius.circular(AppRadius.standard),
-            onPressed: () => context.read<RecordingCubit>().startRecording(),
-            child: Text(AppStrings.startRecordingText,
-              style: AppTextStyles.titleSmall.copyWith(
-                color: AppColors.onSurface(brightness), fontWeight: FontWeight.w600)),
+          SizedBox(
+            height: 36.h,
+            child: CupertinoButton(
+              color: AppColors.surface(2, brightness),
+              borderRadius: BorderRadius.circular(AppRadius.standard),
+              padding: EdgeInsets.zero,
+              onPressed: () => context.read<RecordingCubit>().startRecording(),
+              child: Text(AppStrings.startRecordingText,
+                style: AppTextStyles.labelLarge.copyWith(
+                  color: AppColors.onSurface(brightness), fontWeight: FontWeight.w600)),
+            ),
           ),
       ],
     );
@@ -405,7 +413,7 @@ class _MoodCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
-      padding: EdgeInsets.all(kSpace12),
+      padding: EdgeInsets.all(kSpace10),
       decoration: BoxDecoration(
         color: selected
             ? mood.color.withValues(alpha: 0.15)
@@ -413,13 +421,13 @@ class _MoodCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.standard),
         border: Border.all(
           color: selected ? mood.color : AppColors.surface(3, brightness),
-          width: selected ? 2 : 1,
+          width: selected ? 2.w : 1.w,
         ),
       ),
       child: Column(
         children: [
           Icon(mood.icon,
-            size: kIconSize,
+            size: 20.w,
             color: selected ? mood.color : AppColors.onSurface(brightness, tertiary: true)),
           SizedBox(height: kSpace4),
           Text(mood.label,

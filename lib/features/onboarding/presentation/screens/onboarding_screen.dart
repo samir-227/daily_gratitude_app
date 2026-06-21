@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import '../bloc/onboarding_cubit.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
-import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_theme.dart';
 import '../../../../core/di/injection.dart';
 
@@ -29,7 +28,7 @@ class OnboardingScreen extends StatelessWidget {
                 backgroundColor: AppColors.surface0,
                 child: SafeArea(
                   child: Padding(
-                    padding: EdgeInsets.all(AppSpacing.generous),
+                     padding: EdgeInsets.all(AppSpacing.lg),
                     child: Column(
                       children: [
                         _buildPageIndicator(state.page),
@@ -40,7 +39,7 @@ class OnboardingScreen extends StatelessWidget {
                         ),
                         const Spacer(),
                         _buildBottomButton(context, state),
-                        SizedBox(height: AppSpacing.standard),
+                        SizedBox(height: AppSpacing.sm),
                       ],
                     ),
                   ),
@@ -60,9 +59,9 @@ class OnboardingScreen extends StatelessWidget {
       children: List.generate(3, (index) {
         return AnimatedContainer(
           duration: const Duration(milliseconds: 300),
-          margin: EdgeInsets.symmetric(horizontal: kSpace4),
-          width: index == page ? kSpace32 : kSpace8,
-          height: kSpace8,
+          margin: EdgeInsets.symmetric(horizontal: 3),
+          width: index == page ? 24.w : 6.w,
+          height: 6.h,
           decoration: BoxDecoration(
             color: index == page ? AppColors.primary : AppColors.surface3,
             borderRadius: BorderRadius.circular(AppRadius.pill),
@@ -91,8 +90,8 @@ class OnboardingScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          width: 120.w,
-          height: 120.w,
+          width: 96.w,
+          height: 96.w,
           decoration: BoxDecoration(
             gradient: const LinearGradient(
               begin: Alignment.topLeft,
@@ -102,25 +101,25 @@ class OnboardingScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppRadius.generous * 2),
             boxShadow: [
               BoxShadow(
-                color: AppColors.primary.withOpacity(0.3),
-                blurRadius: 32,
+                color: AppColors.primary.withValues(alpha: 0.3),
+                blurRadius: 32.r,
                 offset: const Offset(0, 12),
               ),
             ],
           ),
-          child: const Center(
-            child: Icon(CupertinoIcons.heart_fill, size: 52, color: CupertinoColors.white),
+          child: Center(
+            child: Icon(CupertinoIcons.heart_fill, size: 40.w, color: AppColors.textOnPrimary),
           ),
         ),
-        SizedBox(height: AppSpacing.spacious),
+        SizedBox(height: AppSpacing.xxl),
         Text(AppStrings.startJourney,
-          style: AppTextStyles.display.copyWith(color: AppColors.textPrimary),
+          style: AppTextStyles.headline.copyWith(color: AppColors.textPrimary),
           textAlign: TextAlign.center),
-        SizedBox(height: AppSpacing.standard),
+        SizedBox(height: AppSpacing.sm),
         Padding(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.generous),
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
           child: Text(AppStrings.appSubtitle,
-            style: AppTextStyles.bodyLarge.copyWith(color: AppColors.textSecondary),
+            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
             textAlign: TextAlign.center),
         ),
       ],
@@ -134,21 +133,21 @@ class OnboardingScreen extends StatelessWidget {
       children: [
         Text(AppStrings.howItWorks,
           style: AppTextStyles.headline.copyWith(color: AppColors.textPrimary)),
-        SizedBox(height: AppSpacing.spacious),
+        SizedBox(height: AppSpacing.xxl),
         _buildStep(
           icon: CupertinoIcons.mic_fill,
           color: AppColors.emotionPeace,
           title: AppStrings.record,
           subtitle: AppStrings.speakFreely,
         ),
-        SizedBox(height: AppSpacing.generous),
+        SizedBox(height: AppSpacing.lg),
         _buildStep(
           icon: CupertinoIcons.text_bubble_fill,
           color: AppColors.emotionJoy,
           title: AppStrings.reflect,
           subtitle: AppStrings.readReview,
         ),
-        SizedBox(height: AppSpacing.generous),
+        SizedBox(height: AppSpacing.lg),
         _buildStep(
           icon: CupertinoIcons.chart_pie_fill,
           color: AppColors.emotionLoved,
@@ -168,24 +167,24 @@ class OnboardingScreen extends StatelessWidget {
     return Row(
       children: [
         Container(
-          width: 56.w,
-          height: 56.w,
+          width: 44.w,
+          height: 44.w,
           decoration: BoxDecoration(
-            color: color.withOpacity(0.15),
-            borderRadius: BorderRadius.circular(AppRadius.generous),
+            color: color.withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(AppRadius.standard),
           ),
-          child: Icon(icon, color: color, size: 26.w),
+          child: Icon(icon, color: color, size: 20.w),
         ),
-        SizedBox(width: AppSpacing.standard),
+        SizedBox(width: AppSpacing.md),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(title,
                 style: AppTextStyles.titleSmall.copyWith(color: AppColors.textPrimary)),
-              SizedBox(height: AppSpacing.compact),
+              SizedBox(height: 2.h),
               Text(subtitle,
-                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary)),
+                style: AppTextStyles.bodySmall.copyWith(color: AppColors.textSecondary)),
             ],
           ),
         ),
@@ -202,20 +201,20 @@ class OnboardingScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 100.w,
-              height: 100.w,
+              width: 72.w,
+              height: 72.w,
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.12),
+                color: AppColors.primary.withValues(alpha: 0.12),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(CupertinoIcons.bell_fill,
-                size: 44, color: AppColors.primary),
+              child: Icon(CupertinoIcons.bell_fill,
+                size: 32.w, color: AppColors.primary),
             ),
-            SizedBox(height: AppSpacing.generous),
+            SizedBox(height: AppSpacing.xxl),
             Text(AppStrings.setReminder,
-              style: AppTextStyles.headline.copyWith(color: AppColors.textPrimary),
+              style: AppTextStyles.titleLarge.copyWith(color: AppColors.textPrimary),
               textAlign: TextAlign.center),
-            SizedBox(height: AppSpacing.spacious),
+            SizedBox(height: AppSpacing.xxl),
             CupertinoButton(
               onPressed: () => _showTimePicker(context, s.reminderHour, s.reminderMinute),
               child: Container(
@@ -226,7 +225,7 @@ class OnboardingScreen extends StatelessWidget {
                 ),
                 child: Text(
                   '${s.reminderHour.toString().padLeft(2, '0')}:${s.reminderMinute.toString().padLeft(2, '0')}',
-                  style: AppTextStyles.display.copyWith(color: AppColors.primary)),
+                  style: AppTextStyles.titleLarge.copyWith(color: AppColors.primary)),
               ),
             ),
           ],
@@ -286,7 +285,7 @@ class OnboardingScreen extends StatelessWidget {
         },
         child: Text(label,
           style: AppTextStyles.titleSmall.copyWith(
-            color: CupertinoColors.white, fontWeight: FontWeight.w600)),
+            color: AppColors.textOnPrimary, fontWeight: FontWeight.w600)),
       ),
     );
   }

@@ -36,4 +36,4 @@ const Duration kPauseDuration = Duration(seconds: 20);
 
 const List<int> kMilestones = [3, 7, 14, 30, 60, 100];
 
-const String kAppName = 'Daily Gratitude';
+const String kAppName = 'أثر';

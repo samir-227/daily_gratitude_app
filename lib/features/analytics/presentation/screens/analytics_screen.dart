@@ -48,7 +48,7 @@ class AnalyticsScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(AppRadius.standard),
                         onPressed: () => context.read<AnalyticsCubit>().loadAnalytics(),
                         child: Text(AppStrings.retry,
-                          style: AppTextStyles.titleSmall.copyWith(color: CupertinoColors.white)),
+                          style: AppTextStyles.titleSmall.copyWith(color: AppColors.textOnPrimary)),
                       ),
                     ],
                   ),
@@ -61,23 +61,23 @@ class AnalyticsScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildStatsRow(context, state),
-                      SizedBox(height: AppSpacing.generous),
+                      SizedBox(height: AppSpacing.standard),
                       _buildSectionTitle(AppStrings.weeklyActivity, brightness),
                       SizedBox(height: AppSpacing.cozy),
                       _buildWeeklyChart(context, state),
                       if (state.topTopics.isNotEmpty) ...[
-                        SizedBox(height: AppSpacing.generous),
+                        SizedBox(height: AppSpacing.standard),
                         _buildSectionTitle(AppStrings.topTopics, brightness),
-                        SizedBox(height: AppSpacing.cozy),
+                        SizedBox(height: AppSpacing.compact),
                         _buildTopTopics(context, state, brightness),
                       ],
                       if (state.moodDistribution.isNotEmpty) ...[
-                        SizedBox(height: AppSpacing.generous),
+                        SizedBox(height: AppSpacing.standard),
                         _buildSectionTitle(AppStrings.moodDistribution, brightness),
-                        SizedBox(height: AppSpacing.cozy),
+                        SizedBox(height: AppSpacing.compact),
                         _buildMoodDistribution(context, state, brightness),
                       ],
-                      SizedBox(height: AppSpacing.spacious),
+                      SizedBox(height: AppSpacing.lg),
                     ],
                   ),
                 );
@@ -123,7 +123,7 @@ class AnalyticsScreen extends StatelessWidget {
       child: Column(
         children: [
           Text(value,
-            style: AppTextStyles.headline.copyWith(color: accentColor, fontWeight: FontWeight.bold)),
+            style: AppTextStyles.titleLarge.copyWith(color: accentColor, fontWeight: FontWeight.bold)),
           SizedBox(height: AppSpacing.compact),
           Text(label,
             style: AppTextStyles.labelSmall.copyWith(
@@ -139,7 +139,7 @@ class AnalyticsScreen extends StatelessWidget {
     final days = state.weekActivity.entries.toList();
     final maxVal = days.map((e) => e.value).reduce((a, b) => a > b ? a : b);
     return Container(
-      height: 200.h,
+      height: 180.h,
       padding: EdgeInsets.all(AppSpacing.standard),
       decoration: BoxDecoration(
         color: AppColors.surface(1, brightness),
@@ -233,7 +233,7 @@ class AnalyticsScreen extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(AppRadius.tight),
                     child: Container(
-                      height: 20.w,
+                      height: 18.h,
                       color: AppColors.primary.withValues(alpha: 0.1),
                       child: FractionallySizedBox(
                         alignment: Alignment.centerLeft,
@@ -278,33 +278,59 @@ class AnalyticsScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.generous),
         border: Border.all(color: AppColors.divider, width: 0.5),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: state.moodDistribution.entries.map((e) {
-          final pct = (e.value / total * 100).round();
-          final moodData = _moodData(e.key);
-          return Column(
-            children: [
-              Container(
-                width: 44.w,
-                height: 44.w,
-                decoration: BoxDecoration(
-                  color: moodData.color.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(AppRadius.standard),
-                ),
-                child: Icon(moodData.icon, color: moodData.color, size: 22.w),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            for (final e in state.moodDistribution.entries) ...[
+              if (e != state.moodDistribution.entries.first)
+                SizedBox(width: AppSpacing.lg),
+              _MoodColumn(
+                pct: (e.value / total * 100).round(),
+                moodData: _moodData(e.key),
+                themeBrightness: themeBrightness,
               ),
-              SizedBox(height: AppSpacing.compact),
-              Text('$pct%',
-                style: AppTextStyles.titleSmall.copyWith(
-                  color: AppColors.onSurface(themeBrightness), fontWeight: FontWeight.bold)),
-              Text(moodData.label,
-                style: AppTextStyles.labelSmall.copyWith(
-                  color: AppColors.onSurface(themeBrightness, secondary: true))),
             ],
-          );
-        }).toList(),
+          ],
+        ),
       ),
+    );
+  }
+}
+
+class _MoodColumn extends StatelessWidget {
+  final int pct;
+  final _MoodData moodData;
+  final Brightness themeBrightness;
+
+  const _MoodColumn({
+    required this.pct,
+    required this.moodData,
+    required this.themeBrightness,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          width: 36.w,
+          height: 36.w,
+          decoration: BoxDecoration(
+            color: moodData.color.withValues(alpha: 0.15),
+            borderRadius: BorderRadius.circular(AppRadius.standard),
+          ),
+          child: Icon(moodData.icon, color: moodData.color, size: 18.w),
+        ),
+        SizedBox(height: AppSpacing.compact),
+        Text('$pct%',
+          style: AppTextStyles.titleSmall.copyWith(
+            color: AppColors.onSurface(themeBrightness), fontWeight: FontWeight.bold)),
+        Text(moodData.label,
+          style: AppTextStyles.labelSmall.copyWith(
+            color: AppColors.onSurface(themeBrightness, secondary: true))),
+      ],
     );
   }
 }
@@ -322,13 +348,13 @@ _MoodData _moodData(String mood) {
     case 'joy':
       return _MoodData(AppColors.emotionJoy, CupertinoIcons.heart_fill, AppStrings.emotionJoy);
     case 'happy':
-    case 'peace':
-      return _MoodData(AppColors.emotionPeace, CupertinoIcons.smiley_fill, AppStrings.emotionPeace);
-    case 'calm':
-      return _MoodData(AppColors.emotionLoved, CupertinoIcons.moon_fill, AppStrings.emotionLoved);
-    case 'loved':
     case 'hope':
-      return _MoodData(AppColors.emotionHope, CupertinoIcons.sparkles, AppStrings.emotionHope);
+      return _MoodData(AppColors.emotionHope, CupertinoIcons.smiley_fill, AppStrings.emotionHope);
+    case 'calm':
+    case 'peace':
+      return _MoodData(AppColors.emotionPeace, CupertinoIcons.moon_fill, AppStrings.emotionPeace);
+    case 'loved':
+      return _MoodData(AppColors.emotionLoved, CupertinoIcons.sparkles, AppStrings.emotionLoved);
     case 'grounded':
       return _MoodData(AppColors.emotionGrounded, CupertinoIcons.leaf_arrow_circlepath, AppStrings.emotionGrounded);
     default:

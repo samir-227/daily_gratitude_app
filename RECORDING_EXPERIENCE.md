@@ -79,7 +79,7 @@ Header:
 Progress Bar:
   Height:           4px
   Background:       #374151
-  Fill:             #2DD4A4 (animated)
+  Fill:             #0A7E6B (animated)
   Position:         Below header, full width
 
 Content Area:
@@ -104,16 +104,16 @@ Button Footer:
 ```
         ┌──────────────┐
         │              │
-        │     ⏹ 🔴     │  ← 80px diameter with icon
+        │     ⏹ 🔴     │  ← 72px diameter with icon
         │              │
         └──────────────┘
            Recording...
           (00:32)
 
 Size & Appearance:
-  Diameter:           80px
+  Diameter:           72px
   Border Radius:      999px (fully rounded)
-  Background:         Gradient: #2DD4A4 → #10B981
+  Background:         Solid #0A7E6B
   Icon:               ⏹ (Circle icon), 32px, white
   Inner Glow:         Optional animated ring (1.2s cycle)
   Shadow:             Elevation 3 (24px blur, 8px offset)
@@ -126,7 +126,7 @@ Typography:
 States:
 
 Idle (not recording):
-  Background:         Gradient (#2DD4A4 → #10B981)
+  Background:         Solid (#0A7E6B)
   Icon:               ▶ Play icon (24px)
   Scale:              1.0
   Ring:               Subtle pulse (0.8 → 1.0 opacity, 1.2s)
@@ -139,7 +139,7 @@ Press (starting):
   Text:               Fade to "Recording..."
   
 Recording (active):
-  Background:         Gradient unchanged
+  Background:         Solid #0A7E6B
   Icon:               ⏹ Stop icon (24px)
   Scale:              1.0
   Ring:               Pulsing glow (1.0 → 1.3 opacity, 600ms cycle)
@@ -181,7 +181,7 @@ Specifications:
   Container BG:       Transparent
 
 Colors:
-  Active Bars:        #2DD4A4 (primary green)
+  Active Bars:        #0A7E6B (primary green)
   Inactive Bars:      #374151 (grey outline)
   Background:         Transparent (or #252D37 container)
 
@@ -383,9 +383,9 @@ Tag Chip Specs:
     Border:           1px #374151
     
   State (Selected):
-    Background:       #2DD4A4 @ 15% opacity
-    Text:             #2DD4A4
-    Border:           1px #2DD4A4
+    Background:       #0A7E6B @ 15% opacity
+    Text:             #0A7E6B
+    Border:           1px #0A7E6B
     Checkmark:        ✓ icon
     
   Interaction:
@@ -424,7 +424,7 @@ Preview (Photo Selected):
   
 Metadata:
   Caption:            "1 photo attached"
-  Color:              Green (#2DD4A4)
+  Color:              Green (#0A7E6B)
 
 Storage:
   Store:              Referenced in recording metadata
@@ -484,7 +484,7 @@ Edit Actions:
   Delete Button:      Red, dangerous, confirmation dialog
 
 Save Button:
-  Style:              Primary button (green gradient)
+  Style:              Primary button (solid #0A7E6B)
   Text:               "✓ احفظ الشكر"
   Size:               Full-width, 52px height
   Haptic:             Heavy impact on success

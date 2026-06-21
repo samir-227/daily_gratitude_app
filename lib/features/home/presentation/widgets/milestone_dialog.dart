@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_constants.dart';
 import '../../../../core/constants/app_strings.dart';
@@ -74,22 +75,22 @@ class _MilestoneCelebrationState extends State<_MilestoneCelebration>
               curve: const Interval(0.0, 0.45, curve: Curves.elasticOut),
             ),
             child: Container(
-              width: kSpace64,
-              height: kSpace64,
+              width: kSpace48,
+              height: kSpace48,
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    AppColors.streakFire,
-                    AppColors.warning,
+                    AppColors.primary,
+                    AppColors.primaryDark,
                   ],
                 ),
                 shape: BoxShape.circle,
               ),
-              child: const Center(
-                child: Icon(CupertinoIcons.flame_fill,
-                  color: CupertinoColors.white, size: 32),
+              child: Center(
+                child: Icon(CupertinoIcons.star_fill,
+                  color: AppColors.textOnPrimary, size: 24.w),
               ),
             ),
           ),
@@ -108,7 +109,7 @@ class _MilestoneCelebrationState extends State<_MilestoneCelebration>
                 curve: const Interval(0.2, 0.6, curve: Curves.easeOut),
               ),
               child: Text(
-                '\u{1F389} ${widget.streak} ${AppStrings.dayStreak}!',
+                '${widget.streak} ${AppStrings.dayStreak}!',
                 style: AppTextStyles.titleMedium.copyWith(
                   color: AppColors.textPrimary, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,

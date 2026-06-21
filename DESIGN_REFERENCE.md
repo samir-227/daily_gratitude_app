@@ -6,18 +6,19 @@
 
 ```
 PRIMARY BRAND
-  Gratitude Green:  #2DD4A4  ■■■■■■■■■■ Primary Action
+  Deep Emerald:     #0A7E6B  ■■■■■■■■■■ Primary Action
+  Gold Accent:      #D4A574  ■■■■■■■■■■ Secondary
   
 NEUTRAL SURFACES
-  Dark 0 (BG):      #0F1419  ■■■■■■■■■■ True Black Background
-  Dark 1 (Surface): #1A1F26  ■■■■■■■■■■ Primary Surface
-  Dark 2 (Cards):   #252D37  ■■■■■■■■■■ Elevated Cards
-  Dark 3 (Float):   #2E3847  ■■■■■■■■■■ Floating Elements
+  Surface 0 (BG):   #0F1419  ■■■■■■■■■■ True Black Background
+  Surface 1:        #1A1F26  ■■■■■■■■■■ Primary Surface
+  Surface 2:        #252D37  ■■■■■■■■■■ Elevated Cards
+  Surface 3:        #2E3847  ■■■■■■■■■■ Floating Elements
   
-TEXT HIERARCHY
-  Primary:          #E5E7EB  ■■■■■■■■■■ Main Text (95%)
-  Secondary:        #9CA3AF  ■■■■■■■■■■ Metadata (70%)
-  Tertiary:         #6B7280  ■■■■■■■■■■ Disabled (50%)
+TEXT HIERARCHY (Dark)
+  Primary:          #E5E7EB  ■■■■■■■■■■ Main Text (14.5:1)
+  Secondary:        #9CA3AF  ■■■■■■■■■■ Metadata (7.5:1)
+  Tertiary:         #85909D  ■■■■■■■■■■ Deemphasized (4.8:1) ✓ WCAG AA
   
 EMOTION COLORS
   Joy/Grateful:     #FFD85C  ■■■■■■■■■■ Warm Yellow
@@ -30,6 +31,7 @@ STATUS
   Success:          #10B981  ■■■■■■■■■■ Green
   Warning:          #F59E0B  ■■■■■■■■■■ Orange
   Error:            #EF4444  ■■■■■■■■■■ Red
+  Streak:           #FF6B35  ■■■■■■■■■■ Orange
 ```
 
 ---
@@ -55,18 +57,22 @@ Label Small   11px Semibold   "شارات صغيرة جداً"
 
 ---
 
-## SPACING SYSTEM
+## SPACING SYSTEM (4-pt Scale)
+
+Token file: `lib/core/theme/tokens/app_spacing.dart`
 
 ```
-Compact:    4px    ■ Internal padding
-Tight:      8px    ■ Small gaps
-Cozy:      12px    ■ Input fields
-Standard:  16px    ■ Card padding (DEFAULT)
-Generous:  24px    ■ Section breaks
-Spacious:  32px    ■ Full-screen margins
-Abundant:  48px    ■ Top/bottom breathing room
-
-Grid Base:  4px (all measurements align to 4px grid)
+xxs:        2px  — Tiny gaps
+xs:         4px  — Internal padding (also compact)
+sm:         8px  — Small gaps (also tight)
+md:        12px  — Input padding (also cozy)
+lg:        16px  — Card padding (also standard)
+xl:        20px  — Larger gaps
+xxl:       24px  — Section breaks (also generous)
+xxxl:      32px  — Full-screen margins (also spacious)
+huge:      40px  — Large spacing
+massive:   48px  — Breathing room (also abundant)
+giant:     64px  — Hero spacing
 ```
 
 ---
@@ -75,14 +81,12 @@ Grid Base:  4px (all measurements align to 4px grid)
 
 | Component | Height | Width | Radius | Notes |
 |-----------|--------|-------|--------|-------|
-| Primary Button | 52px | Auto | 12px | Green gradient, white text |
-| Secondary Button | 44px | Auto | 12px | Outlined, no fill |
-| Icon Button | 44px | 44px | 8px | Compact action |
-| Text Input | 48px | Full | 12px | 16px padding |
-| Gratitude Card | 80px+ | Full | 12px | List item |
-| Stat Card | 100px+ | Full | 12px | Analytics |
-| FAB | 56px | 56px | 999px | Green gradient, fixed |
-| Tab Bar | 56px | Full | 0px | Fixed bottom |
+| Primary Button | 52px | Auto | 12px | Deep Emerald, white text |
+| Secondary Button | 48px | Auto | 12px | Outlined, no fill |
+| GratitudeCard | 80px+ | Full | 12px | Shared widget |
+| EmotionSelector | 52px | Auto | 8px | Chips, 20px icons |
+| Breathing Button | 44px | 44px | 999px | Home CTA mic button |
+| Bottom Nav Bar | 44px | Full | 0px | Fixed bottom |
 
 ---
 
@@ -285,7 +289,7 @@ Primary Surface        #FFFFFF           #1A1F26
 Secondary Surface      #F3F4F6           #252D37
 Primary Text           #1F2937           #E5E7EB
 Secondary Text         #6B7280           #9CA3AF
-Primary Action         #10B981           #2DD4A4
+Primary Action         #075E50           #0A7E6B
 Card Shadow            8% black opacity  25% black opacity
 Dividers               #E5E7EB           #374151
 ```
@@ -363,37 +367,30 @@ CupertinoTextField(
 
 ### Colors
 ```dart
-AppColors.primary              // #2DD4A4
-AppColors.surface1Dark         // #1A1F26
-AppColors.onSurfaceDarkPrimary // #E5E7EB
+AppColors.primary              // #0A7E6B
+AppColors.surface1             // #1A1F26
+AppColors.textPrimary          // #E5E7EB
 AppColors.emotionJoy           // #FFD85C
 ```
 
 ### Typography
 ```dart
 AppTypography.display          // 32px Bold
-AppTypography.bodyLarge        // 16px Regular
+AppTypography.bodyMedium       // 14px Regular
 AppTypography.labelSmall       // 11px Semibold
 ```
 
 ### Spacing
 ```dart
-AppSpacing.standard            // 16px
-AppSpacing.generous            // 24px
-AppSpacing.abundant            // 48px
+AppSpacing.lg                  // 16px (standard)
+AppSpacing.xxl                 // 24px (generous)
+AppSpacing.massive             // 48px (abundant)
 ```
 
 ### Border Radius
 ```dart
-AppBorderRadius.standard       // 12px
-AppBorderRadius.pill           // 999px (FAB)
-```
-
-### Animations
-```dart
-AppAnimations.normal           // 300ms
-AppAnimations.easeOut          // Curves.easeOutCubic
-AppAnimations.buttonPressTween // 1.0 → 0.98
+AppRadius.standard             // 12px
+AppRadius.pill                 // 999px
 ```
 
 ---
@@ -474,11 +471,9 @@ AppAnimations.buttonPressTween // 1.0 → 0.98
 
 ---
 
-**Design System Reference v1.0**  
-**Print this page for quick reference during development**
+**Design System Reference v2.0 — Deep Emerald**
 
 For detailed specifications, see:
 - `DESIGN_SYSTEM.md` (complete specs)
-- `DESIGN_IMPLEMENTATION.md` (Flutter code)
+- `DESIGN_IMPLEMENTATION.md` (Flutter code & architecture)
 - `COMPONENT_SPECS.md` (detailed dimensions)
-- `RECORDING_EXPERIENCE.md` (core feature deep-dive)

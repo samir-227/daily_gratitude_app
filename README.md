@@ -1,120 +1,117 @@
-# Daily Gratitude
+# أثر (Athar)
 
-A gratitude journal app for Arabic speakers with voice recording, speech-to-text, and analytics. Built with Flutter using Clean Architecture and Cubit state management.
+كل امتنان... أثر. تطبيق امتنان يومي يساعدك تسجّل اللحظات الصغيرة اللي بتشكر عليها — بصوتك أو بكتابتك، في ثواني. مبني بـ Flutter باستخدام Clean Architecture و Cubit.
 
-## Features
+## المميزات
 
-### 📝 Recording
-- **Voice recording** — record your gratitude entries with a single tap. WAV audio saved locally, no cloud storage.
-- **Arabic speech-to-text** — on-device STT (no API key needed) auto-detects Arabic locales (ar-EG → ar-SA → fallback). Partial live transcription updates in real time.
-- **Editable transcription** — correct STT mistakes with the editable text field before saving.
-- **Mood tagging** — select a mood (grateful, happy, calm, reflective) to accompany each entry.
-- **Auto-topic extraction** — Arabic keywords are automatically extracted from your text (stopwords, diacritics, punctuation removed).
+### 📝 التسجيل
+- **تسجيل صوتي** — سجّل لحظات الامتنان بضغطة واحدة. الصوت بيتحفظ محليًا، مش في السحابة.
+- **تحويل الصوت لنص عربي** — STT على الجهاز (مش محتاج API key) بيكتشف العربية تلقائيًا.
+- **تعديل النص** — صحّح أي خطأ في التفريغ قبل الحفظ.
+- **إضافة المشاعر** — اختار شعورك (ممتن، مبسوط، هادي) مع كل لحظة.
+- **استخراج الكلمات المفتاحية** — الكلمات العربية بتتنقا تلقائيًا من النص.
 
-### 🏠 Home Dashboard
-- **Streak tracking** — current streak with flame icon and total entry count.
-- **Today's entry card** — shows first 60 characters of today's entry, tappable to open full detail with audio playback.
-- **Quick actions** — record button and timeline shortcut.
+### 🏠 الشاشة الرئيسية
+- **الأيام المتتالية** — عدد الأيام المتتالية مع أيقونة.
+- **بطاقة النهارده** — أول ٦٠ حرف من تسجيل النهارده، تقدر تضغط عشان تفتحه كاملًا.
+- **إجراءات سريعة** — زرار التسجيل واختصار لللحظات.
 
-### 📖 Entry Detail
-- **Full text view** — read the complete entry in a clean card layout.
-- **Audio playback** — play/pause and seek through the recorded audio.
-- **Mood badge** — mood emoji and name shown when present.
+### 📖 تفاصيل اللحظة
+- **عرض النص كاملًا** — اقرأ اللحظة في بطاقة مرتبة.
+- **تشغيل الصوت** — play/pause و seek في التسجيل الصوتي.
+- **شعار المزاج** — إيموجي واسم المزاج لو موجود.
 
-### 📅 Timeline
-- **Entry history** — browse all past entries in reverse chronological order.
-- **Filtering** — view All, This Week, or This Month.
-- **Inline audio playback** — play/pause audio directly from the timeline. Only one entry plays at a time.
-- **Delete entries** — with confirmation dialog.
+### 📅 الجدول الزمني
+- **تاريخ اللحظات** — تصفّح كل اللحظات السابقة من الأحدث للأقدم.
+- **تصفية** — كل اللحظات، الأسبوع ده، أو الشهر ده.
+- **تشغيل الصوت** — شغّل الصوت مباشرة من الجدول. لحظة واحدة بتشتغل في كل مرة.
+- **حذف اللحظات** — مع تأكيد قبل الحذف.
 
-### 📊 Analytics
-- **Weekly activity chart** — bar chart showing entries per day for the last 7 days.
-- **Streak stats** — current streak, longest streak, total entries.
-- **Top topics** — most frequent keywords with proportional bars (max 5).
-- **Mood distribution** — percentage breakdown of mood tags.
+### 📊 الإحصائيات
+- **نشاطك الأسبوعي** — رسم بياني بعدد اللحظات كل يوم لآخر ٧ أيام.
+- **إحصائيات** — الأيام المتتالية الحالية، أطول عدد أيام، إجمالي اللحظات.
+- **المواضيع الأكثر تكرارًا** — الكلمات المفتاحية الأكثر ظهورًا.
+- **توزيع المشاعر** — النسبة المئوية لكل مزاج.
 
-### ⚙️ Settings
-- **Daily reminder** — toggle and set notification time for daily gratitude prompts.
-- **Arabic locale status** — shows detected Arabic speech locale.
-- **Export data** — export all entries as a .txt file and share via system share sheet.
-- **Clear all data** — delete all entries, audio files, and stats with confirmation.
+### ⚙️ الإعدادات
+- **تذكير يومي** — شغّل التذكير وحدد الوقت اللي يناسبك.
+- **حالة العربية** — بيظهر locale الكلام اللي بيتكشف.
+- **تصدير البيانات** — صدّر كل اللحظات كملف .txt.
+- **مسح كل البيانات** — امسح كل اللحظات والملفات الصوتية والبيانات.
 
-### 🏆 Streak Milestones
-- Celebrate reaching 3, 7, 14, 30, 60, and 100 consecutive days with congratulatory dialogs. Each milestone shown only once.
+## التقنية
 
-## Tech Stack
-
-| Category | Choice |
-|----------|--------|
-| State Management | flutter_bloc (Cubit only) |
-| Architecture | Clean Architecture: `presentation → domain → data` |
-| Local Database | Hive with custom TypeAdapters |
-| Navigation | go_router |
+| التصنيف | الاختيار |
+|---------|----------|
+| إدارة الحالة | flutter_bloc (Cubit فقط) |
+| البنية | Clean Architecture: presentation → domain → data |
+| قاعدة البيانات المحلية | Hive مع TypeAdapters |
+| التنقل | go_router |
 | DI | get_it |
-| Audio Recording | `record` package (WAV, 16kHz) |
-| Audio Playback | `just_audio` (AVAudioPlayer) |
-| Speech-to-Text | `speech_to_text` (on-device, offline) |
-| Charts | fl_chart |
-| Notifications | flutter_local_notifications |
-| UI | Cupertino only (zero Material widgets) |
-| Text Direction | RTL (Arabic-first) |
-| Font | Cairo |
+| التسجيل الصوتي | record package (WAV) |
+| تشغيل الصوت | just_audio |
+| تحويل الصوت لنص | speech_to_text (على الجهاز) |
+| الرسوم البيانية | fl_chart |
+| الإشعارات | flutter_local_notifications |
+| الواجهة | Cupertino فقط (بدون Material) |
+| اتجاه الكتابة | RTL (عربي) |
+| الخط | Cairo |
 
-## Project Structure
+## بنية المشروع
 
 ```
 lib/
-├── main.dart                          # Entry point, Hive init, DI setup
+├── main.dart                          # نقطة الدخول
 ├── core/
-│   ├── constants/                     # Colors, strings, theme, app constants
-│   ├── di/injection.dart              # get_it service locator
-│   ├── errors/failures.dart           # Failure types
-│   ├── router/app_router.dart         # GoRouter configuration
-│   ├── services/                      # Audio, Speech, Notification, Permission
-│   └── utils/                         # Arabic text extraction, date formatting
+│   ├── constants/                     # الألوان، النصوص، الثيم
+│   ├── di/injection.dart              # get_it
+│   ├── errors/failures.dart           # أنواع الأخطاء
+│   ├── router/app_router.dart         # GoRouter
+│   ├── services/                      # Audio, Speech, Notification
+│   └── utils/                         # أدوات النصوص والتواريخ
 ├── data/
-│   ├── models/                        # GratitudeEntry, UserStats (Hive)
+│   ├── models/                        # GratitudeEntry, UserStats
 │   └── repositories/                  # EntryRepository, StatsRepository
 └── features/
-    ├── onboarding/                    # 3-page onboarding flow
-    ├── home/                          # Dashboard, entry detail, milestone dialog
-    ├── recording/                     # Voice recording + STT screen
-    ├── timeline/                      # Entry history with filters
-    ├── analytics/                     # Charts and statistics
-    └── settings/                      # Notifications, export, clear data
+    ├── onboarding/                    # 3 شاشات ترحيب
+    ├── home/                          # الرئيسية، تفاصيل اللحظة
+    ├── recording/                     # التسجيل الصوتي
+    ├── timeline/                      # الجدول الزمني
+    ├── analytics/                     # الإحصائيات والرسوم
+    └── settings/                      # الإعدادات
 ```
 
-## Getting Started
+## البدء
 
-### Prerequisites
+### المتطلبات
 - Flutter SDK 3.11+
-- iOS 13+ or Android 5.0+
+- iOS 13+ أو Android 5.0+
 
-### Run
+### التشغيل
 
 ```bash
 flutter pub get
 flutter run
 ```
 
-### Commands
+### الأوامر
 
 ```bash
-flutter analyze        # Lint + static analysis
-flutter test           # Run tests
-flutter run -d "iPhone 15"  # Run on iOS simulator
+flutter analyze
+flutter test
+flutter run -d "iPhone 15"
 ```
 
-## Architecture Rules
+## قواعد البنية
 
-- **Cubit only** — no Riverpod, Provider, or GetX for state management.
-- **Domain layer purity** — no `package:flutter/` imports in `domain/` files.
-- **No code generation** — Dart 3 sealed classes, records, switch expressions instead of Freezed/build_runner.
-- **Error handling** — cubits use try/catch and emit typed error states. No raw exceptions escape.
+- **Cubit فقط** — مفيش Riverpod أو Provider أو GetX.
+- **Domain layer نظيف** — مفيش `package:flutter/` في ملفات `domain/`.
+- **مفيش code generation** — Dart 3 sealed classes, records, switch expressions بدل Freezed/build_runner.
+- **معالجة الأخطاء** — cubits بتستخدم try/catch وتبعث error states. مفيش raw exceptions.
 
-## Data Flow
+## تدفق البيانات
 
-1. **Record** → AudioService records WAV + SpeechService transcribes Arabic → Cubit holds text + path
-2. **Save** → UUID generated → Audio file moved to permanent storage → Entry saved to Hive → Stats updated (streak, topics)
-3. **View** → Entry loaded from Hive → Full text shown → Audio playback via just_audio
-4. **Analyze** → All entries fetched from Hive → Week activity, topics, mood distribution calculated
+1. **سجّل** → AudioService يسجل WAV + SpeechService يحوله لنص عربي → Cubit بيحتفظ بالنص والمسار
+2. **احفظ** → UUID بيتولد → ملف الصوت بيتنقل للتخزين الدائم → اللحظة بتتسجل في Hive → الإحصائيات بتتحدث
+3. **شوف** → اللحظة بتتنقل من Hive → النص كامل بيتعرض → الصوت بيتشغل
+4. **حلّل** → كل اللحظات بتتجب من Hive → النشاط الأسبوعي، المواضيع، المشاعر بتتحسب

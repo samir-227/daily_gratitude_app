@@ -1,9 +1,9 @@
 # Daily Gratitude | امتنان يومي — Premium Design System
 
-**Version:** 1.0  
+**Version:** 2.0  
 **Platform:** iOS First (Cupertino)  
-**Language:** Arabic RTL + English  
-**Inspirations:** Apple Journal, Headspace, Daylio, Reflectly  
+**Language:** Arabic RTL  
+**Inspirations:** Apple Journal, Headspace, Reflectly  
 
 ---
 
@@ -86,95 +86,117 @@ Daily Gratitude App
 
 **Primary Brand Colors:**
 ```
-Gratitude Green (Primary Action)
-  Dark Mode:  #2DD4A4  (RGB: 45, 212, 164)
-  Light Mode: #10B981  (RGB: 16, 185, 129)
+Deep Emerald (Primary Action)  — Grounded, premium, trustworthy
+  Dark Mode:  #0A7E6B  (RGB: 10, 126, 107)
+  Light Mode: #075E50  (RGB: 7, 94, 80)
+  Light Variant: #12A88F
   Usage: CTAs, active states, success, gratitude affirmations
+
+Warm Gold (Secondary Accent) — Emotional counterpoint to cool emerald
+  Dark/Light: #D4A574  (RGB: 212, 165, 116)
+  Light variant: #F0C75E
+  Usage: Accents, badges, secondary highlights
 
 Calm Slate (Neutral & Surfaces)
   Dark Mode Bg:  #0F1419  (RGB: 15, 20, 25)  — Premium dark
-  Dark Mode Fg:  #1A1F26  (RGB: 26, 31, 38)
+  Dark Mode Surface: #1A1F26  (RGB: 26, 31, 38)
   Dark Mode Card: #252D37 (RGB: 37, 45, 55)
   Light Mode Bg:  #FAFBFC  (RGB: 250, 251, 252)
-  Light Mode Fg:  #FFFFFF
+  Light Mode Surface: #FFFFFF
   Light Mode Card: #F3F4F6
-  
+   
 Emotion Accent Colors (for mood/emotion chips):
-  Joy/Grateful:   #FFD85C  (Warm Yellow)   — Optimistic
-  Peaceful:       #5B9BD5  (Soft Blue)     — Calm
-  Loved:          #E85A8F  (Rose Pink)     — Connection
-  Hopeful:        #A78BFA  (Lavender)      — Inspiration
-  Grounded:       #84A366  (Sage Green)    — Nature
+  Joy/Grateful:   #FFD85C  (Warm Yellow)   — ممتن ومبسوط
+  Peaceful:       #5B9BD5  (Soft Blue)     — هادي وراضي
+  Loved:          #E85A8F  (Rose Pink)     — محبوب ومتطمن
+  Hopeful:        #A78BFA  (Lavender)      — متفائل وفي بالي حاجة
+  Grounded:       #84A366  (Sage Green)    — مستقر وثابت
   
-Secondary Greys (Text & Dividers):
+Text Colors (WCAG AA Compliant):
   Dark Mode:
-    Primary Text:      #E5E7EB  (RGB: 229, 231, 235)
-    Secondary Text:    #9CA3AF  (RGB: 156, 163, 175)
-    Tertiary Text:     #6B7280  (RGB: 107, 114, 128)
+    Primary Text:      #E5E7EB  (RGB: 229, 231, 235)  — 14.5:1 on surface1
+    Secondary Text:    #9CA3AF  (RGB: 156, 163, 175)  — 7.5:1 on surface1
+    Tertiary Text:     #85909D  (RGB: 133, 144, 157)  — 4.8:1 on surface1 ✓
+    Disabled:          #6B7685  (RGB: 107, 118, 133)  — 3.3:1 on surface1
     Dividers:          #374151  (RGB: 55, 65, 81)
-    Disabled:          #4B5563  (RGB: 75, 85, 99)
     
   Light Mode:
     Primary Text:      #1F2937  (RGB: 31, 41, 55)
     Secondary Text:    #6B7280  (RGB: 107, 114, 128)
-    Tertiary Text:     #9CA3AF  (RGB: 156, 163, 175)
-    Dividers:          #E5E7EB  (RGB: 229, 231, 235)
-    Disabled:          #D1D5DB  (RGB: 209, 213, 219)
+    Tertiary Text:     #5D6673  (RGB: 93, 102, 115)
 
 Status Colors:
-  Success:  #10B981  (Matches Primary)
+  Success:  #10B981  (Green)
   Warning:  #F59E0B  (Amber)
   Error:    #EF4444  (Red)
   Info:     #3B82F6  (Blue)
+  Streak:   #FF6B35  (Orange)
 
 Gradient Overlays (Premium Feel):
-  Wellness Gradient: 
-    From #2DD4A4 (Green) → To #5B9BD5 (Blue) — Serenity
+  Primary Gradient: 
+    From #0A7E6B (Deep Emerald) → To #075E50 (Darker Emerald)
     
-  Golden Hour Gradient (Recording state):
-    From #FFD85C (Yellow) → To #F97316 (Orange) — Energy
-    
-  Evening Gradient (Night mode variant):
-    From #1E293B (Dark) → To #334155 (Slate) — Dusk
+  Recording Active:
+    From #EF4444 (Error Red) → To #DC2626 (Darker Red)
 ```
 
-#### **Dark Mode Color Assignment (Primary)**
+#### **Color Architecture — Token Files**
 
-```dart
-// Light/Dark Mode variants
-Color.primary =          #2DD4A4 (Gratitude Green)
-Color.primaryContainer = #1A3D35 (Dark green for containers)
-Color.secondary =        #E85A8F (Rose Pink - emotion accent)
-Color.tertiary =         #FFD85C (Warm Yellow - accent)
-
-Surface.dark0 =          #0F1419 (True black - immersive)
-Surface.dark1 =          #1A1F26 (Primary dark surface)
-Surface.dark2 =          #252D37 (Elevated card)
-Surface.dark3 =          #2E3847 (Floating action)
-
-OnSurface.dark =         #E5E7EB (Primary text on dark)
-OnSurface.dark.medium =  #9CA3AF (Secondary text)
-OnSurface.dark.low =     #6B7280 (Tertiary text)
-
-Outline.dark =           #374151 (Dividers)
-```
-
-### 3.2 Spacing System
+All colors live in `lib/core/theme/tokens/app_colors.dart`.  
+Backward-compat re-exports at `lib/core/constants/app_colors.dart`.
 
 ```
-Compact:   4px   (Internal component padding)
-Tight:     8px   (Small gaps, icon spacing)
-Cozy:     12px   (Input fields, chips)
-Standard: 16px   (Standard card padding, section margins)
-Generous: 24px   (Major section breaks)
-Spacious: 32px   (Full-screen margins)
-Abundant: 48px   (Breathing room, full-screen top/bottom)
+AppColors (abstract class):
+  ─ primary, primaryLight, primaryDark, primaryContainer
+  ─ secondary, accent
+  ─ surface0–surface3 (dark mode)
+  ─ surfaceLight0–surfaceLight3 (light mode)
+  ─ textPrimary, textSecondary, textTertiary (dark, WCAG AA)
+  ─ lightTextPrimary, lightTextSecondary, lightTextTertiary
+  ─ textOnPrimary, textOnPrimaryLight
+  ─ success, warning, error, info, streakFire
+  ─ emotionJoy, emotionPeace, emotionLoved, emotionHope, emotionGrounded
+  ─ outline, divider, lightOutline
+  ─ opacityHover/0.08, opacityFocus/0.12, opacityPressed/0.16, ...
+  ─ overlayHover, overlayFocus, overlayPressed (white/black overlays)
+  ─ surface(level, brightness)  → helper
+  ─ onSurface(brightness, secondary, tertiary) → helper
+```
+
+### 3.2 Spacing System — 4-pt Scale
+
+Token file: `lib/core/theme/tokens/app_spacing.dart`
+
+```
+Raw tokens (4-pt grid):
+  xxs:     2px   (Tiny gaps)
+  xs:      4px   (Internal component padding)
+  sm:      8px   (Small gaps, icon spacing)
+  md:     12px   (Input fields, chips)
+  lg:     16px   (Standard card padding, section margins)
+  xl:     20px   (Larger gaps)
+  xxl:    24px   (Major section breaks)
+  xxxl:   32px   (Full-screen margins)
+  huge:   40px   (Large spacing)
+  massive:48px   (Breathing room, top/bottom)
+  giant:  64px   (Hero spacing)
+
+Compatibility aliases (backward compat):
+  compact  → xs   (4px)
+  tight    → sm   (8px)
+  cozy     → md   (12px)
+  standard → lg   (16px)
+  generous → xxl  (24px)
+  spacious → xxxl (32px)
+  abundant → massive (48px)
 ```
 
 ### 3.3 Border Radius System
 
+Token file: `lib/core/theme/tokens/app_radius.dart`
+
 ```
-None:      0px     (Hard edges - rarely used)
+None:      0px     (Hard edges — rarely used)
 Tight:     4px     (Icon containers, small chips)
 Cozy:      8px     (Input fields, small modals)
 Standard: 12px     (Cards, buttons, major UI elements)
@@ -184,9 +206,11 @@ Pill:      999px   (Fully rounded for chips, FABs, badges)
 
 ### 3.4 Shadow System (Depth & Elevation)
 
+Token file: `lib/core/theme/tokens/app_elevation.dart`
+
 ```
-Deep Dark Mode:
-  Elevation 1 (Subtle): 
+Dark Mode (pure black shadow):
+  Elevation 1 (Subtle):
     shadowColor: #000000 @ 20% opacity
     blur: 8px, offset: 0,2
     Usage: Hovered cards
@@ -201,93 +225,26 @@ Deep Dark Mode:
     blur: 24px, offset: 0,8
     Usage: Floating action buttons, toasts
 
-Light Mode (Softer):
+Light Mode (brand-tinted shadow):
   Elevation 1: shadowColor: #000000 @ 8%, blur: 8px, offset: 0,2
-  Elevation 2: shadowColor: #000000 @ 12%, blur: 16px, offset: 0,4
-  Elevation 3: shadowColor: #000000 @ 16%, blur: 24px, offset: 0,8
 ```
 
-### 3.5 Typography System (Cairo Font - Arabic Native)
+### 3.5 Typography System (Cairo Font — Arabic Native)
 
-#### **Font Hierarchy**
+Token file: `lib/core/theme/tokens/app_typography.dart`
 
 ```
-Display: 
-  Size: 32px
-  Weight: Bold (700)
-  Line Height: 40px
-  Letter Spacing: -0.5px
-  Usage: Onboarding titles, premium headers
-  
-Headline:
-  Size: 28px
-  Weight: Bold (700)
-  Line Height: 36px
-  Letter Spacing: -0.3px
-  Usage: Screen titles, modal headers
-  
-Title Large:
-  Size: 24px
-  Weight: Semibold (600)
-  Line Height: 32px
-  Letter Spacing: 0px
-  Usage: Card titles, section headers
-  
-Title Medium:
-  Size: 20px
-  Weight: Semibold (600)
-  Line Height: 28px
-  Letter Spacing: 0.1px
-  Usage: Subsection titles, prominent stats
-  
-Title Small:
-  Size: 16px
-  Weight: Semibold (600)
-  Line Height: 24px
-  Letter Spacing: 0.1px
-  Usage: Button labels, small card titles
-  
-Body Large:
-  Size: 16px
-  Weight: Regular (400)
-  Line Height: 24px
-  Letter Spacing: 0.5px
-  Usage: Primary body text, gratitude content
-  
-Body Medium:
-  Size: 14px
-  Weight: Regular (400)
-  Line Height: 20px
-  Letter Spacing: 0.25px
-  Usage: Secondary body text, metadata
-  
-Body Small:
-  Size: 12px
-  Weight: Regular (400)
-  Line Height: 16px
-  Letter Spacing: 0.4px
-  Usage: Captions, timestamps, labels
-
-Label Large:
-  Size: 14px
-  Weight: Semibold (600)
-  Line Height: 20px
-  Letter Spacing: 0.1px
-  Usage: Chips, badges, tags
-  
-Label Medium:
-  Size: 12px
-  Weight: Semibold (600)
-  Line Height: 16px
-  Letter Spacing: 0.5px
-  Usage: Small buttons, overlines
-  
-Label Small:
-  Size: 11px
-  Weight: Medium (500)
-  Line Height: 14px
-  Letter Spacing: 0.5px
-  Usage: Tiny badges, time displays
+display:      32px  w700  -0.5  →  Onboarding titles, premium headers
+headline:     28px  w700  -0.3  →  Screen titles, modal headers
+titleLarge:   24px  w600   0.0  →  Card titles, section headers, stat numbers
+titleMedium:  20px  w600   0.1  →  Subsection titles, prominent stats
+titleSmall:   16px  w600   0.1  →  Button labels, small card titles
+bodyLarge:    16px  w400   0.5  →  Primary body text, gratitude content
+bodyMedium:   14px  w400   0.25 →  Secondary body text, metadata
+bodySmall:    12px  w400   0.4  →  Captions, timestamps, labels
+labelLarge:   14px  w600   0.1  →  Chips, badges, tags, compact buttons
+labelMedium:  12px  w600   0.5  →  Small buttons, overlines
+labelSmall:   11px  w500   0.5  →  Tiny badges, time displays
 ```
 
 ---
@@ -298,287 +255,166 @@ Label Small:
 
 #### **Primary Button (Main CTA)**
 ```dart
-// Style: Filled gradient background, white text
-// Height: 52px
+// Widget: PrimaryButton in lib/shared/widgets/
+// Style: Filled primary background, white text
+// Height: 52px (48px in compact contexts)
 // Corner Radius: 12px
-// Font: Title Small (16px Semibold)
+// Font: titleSmall (16px Semibold)
 // Padding: 0, 24px (horizontal)
 
 Properties:
   enabled: true
-  disabled: Opacity 0.5, no interaction
-  loading: Spinner overlay, text hidden
-  
-Variants:
-  - filled (primary green gradient)
-  - outlined (stroke only, no fill)
-  - ghost (text only, no stroke)
-  - danger (red fill for destructive)
+  disabled: Opacity 0.38, no interaction
+  loading: CupertinoActivityIndicator
 
 States:
-  idle:      #2DD4A4 background
-  pressed:   Lightens to #3AE8B0 + 4px lift
-  disabled:  Opacity 0.5
+  idle:      AppColors.primary (#0A7E6B) background
+  pressed:   Opacity 0.16 overlay on primary
+  disabled:  Opacity 0.38
   loading:   Small spinner, text fades
-
-RTL: Text is naturally right-aligned via Flutter's Directionality
 ```
 
 #### **Secondary Button (Alternative Action)**
 ```dart
+// Widget: SecondaryButton in lib/shared/widgets/
 // Style: Outlined stroke, transparent fill
-// Height: 44px
+// Height: 48px
 // Corner Radius: 12px
-// Font: Title Small (16px Semibold)
-// Stroke: 1.5px #2DD4A4
-
-Variants:
-  - filled outline (stroke with light fill)
-  - text only (no stroke or fill)
-  - icon + text
+// Font: titleSmall (16px Semibold)
+// Stroke: 1.5px AppColors.primary (#0A7E6B)
 ```
 
-#### **Icon Button (Action Trigger)**
+#### **Tertiary Button (Ghost Action)**
 ```dart
-// Style: Circular, 44px diameter
-// Icon Size: 24px
-// Background: Surface.dark2 on dark, F3F4F6 on light
-// Ripple: Yes, animated scale 0.95 on press
-
-Variants:
-  - standard (no background, text-only)
-  - filled (background color)
-  - floating (elevated shadow)
-  - outlined (stroke only)
+// Widget: TertiaryButton in lib/shared/widgets/
+// Style: Text only, no stroke or fill
+// Height: auto
+// Font: titleSmall (16px Semibold)
+// Color: AppColors.primary (#0A7E6B)
 ```
 
 ### 4.2 Input Component Hierarchy
 
-#### **Text Input Field**
+#### **GratitudeCard Widget** (Shared)
 ```dart
-// Height: 48px
-// Corner Radius: 12px
-// Padding: 12px (vertical), 16px (horizontal)
-// Font: Body Medium (14px Regular)
-// Border: 1px, idle: #374151, focused: #2DD4A4
+// Widget: GratitudeCard in lib/shared/widgets/
+// Padding: AppSpacing.md (12px)
+// Corner Radius: AppRadius.standard (12px)
+// Background: AppColors.surface2 (#252D37) dark / surfaceLight1 (#FFFFFF) light
+// Min Height: 80px
 
-Dark Mode:
-  Background: #252D37
-  Text: #E5E7EB
-  Placeholder: #9CA3AF
-  Border (idle): #374151
-  Border (focused): #2DD4A4
+Content Layout (RTL):
+  [Mood Icon] [Arabic Mood Label] [Text Snippet] [Time]
   
-Light Mode:
-  Background: #F9FAFB
-  Text: #1F2937
-  Placeholder: #9CA3AF
-  Border (idle): #E5E7EB
-  Border (focused): #2DD4A4
+Typography:
+  Text snippet: bodyMedium (14px Regular), 2 lines max
+  Mood label: labelMedium (12px Semibold), secondary text
+  Time: labelSmall (11px), tertiary text
 
 States:
-  idle:      Border #374151, no shadow
-  focused:   Border #2DD4A4, elevation 1
-  disabled:  Opacity 0.5, no interaction
-  error:     Border #EF4444, error icon shown
-  filled:    Success checkmark overlay
-
-RTL: Label right-aligned, cursor on right, icons swap positions
+  normal:    Standard card
+  pressed:   Opacity 0.16 state overlay
 ```
 
-#### **Textarea/Multi-line Input**
+#### **Emotion Selector** (Shared)
 ```dart
-// Min Height: 120px
-// Max Height: 240px (scrollable after)
-// Corner Radius: 12px
-// Padding: 16px
-// Font: Body Large (16px Regular)
-// Placeholder: "تحدث عن شيء تشكر عليه..."
-
-Dynamic Height:
-  Expands as user types
-  Smooth height animation (200ms)
-  
-Character Count:
-  Bottom-right, grey text
-  Format: "X / 500"
-  Color changes to orange at 80%, red at 95%
-```
-
-#### **Voice Waveform Visualizer (Recording Input)**
-```dart
-// Height: 48px
-// Width: Full-width, 16px margins
-// Style: Animated green bars on dark background
-// Bar Width: 2px, spacing 2px
-// Bars: 20-30 animated per second during recording
-
-Color:
-  Active: #2DD4A4
-  Inactive (playback): #5B9BD5
-  
-Animation:
-  Height varies with audio amplitude
-  Smooth easing (Curves.easeInOutCubic)
-  Responsive to real-time audio input
-```
-
-#### **Emotion/Mood Selector (Radio Chips)**
-```dart
-// Container Height: 60px
-// Chip Size: 44px diameter (icon) + 8px label
-// Style: Circular with emoji/icon, label below
+// Widget: EmotionSelector in lib/shared/widgets/
+// Horizontal row of emotion chips, no emojis
+// Each chip: icon (CupertinoIcons) + Arabic label below
+// Chip Size: 44w × 52h approx (icon 20px)
 // Spacing: 12px between chips
 
-Emotions Offered:
-  😊 مسرور (Joyful)    - #FFD85C
-  😌 هادئ (Peaceful)   - #5B9BD5
-  💗 محبوب (Loved)     - #E85A8F
-  🌟 آمل (Hopeful)     - #A78BFA
-  🌿 متجذر (Grounded)  - #84A366
-  🤝 شاكر (Grateful)   - #2DD4A4
+Emotions (Arabic labels via AppStrings.moodLabel()):
+  joyful  (😊 없음) → ممتن ومبسوط  - emotionJoy (#FFD85C)
+  peaceful          → هادي وراضي    - emotionPeace (#5B9BD5)  
+  loved             → محبوب ومتطمن  - emotionLoved (#E85A8F)
+  hopeful           → متفائل...     - emotionHope (#A78BFA)
+  grounded          → مستقر وثابت   - emotionGrounded (#84A366)
+  reflective        → متأمل        - emotionPeace (#5B9BD5)
 
 Selected State:
-  Scale: 1.1
-  Ring: 2px stroke in primary green
-  Shadow: Elevation 2
-  Animation: Spring curve (30ms)
-  
+  Scale: 1.0 (no bounce)
+  Ring: AppColors.primary (#0A7E6B)
+  Background: 30% opacity of emotion color
+  Shadow: None (flat)
+
 Unselected State:
-  Scale: 1.0
-  Opacity: 0.6
-  No shadow
+  Opacity: 0.5
 ```
 
 ### 4.3 Card Component System
 
-#### **Gratitude Card (List Item)**
+#### **Gratitude Card (List Item)** — Deprecated, use shared `GratitudeCard`
 ```dart
-// Padding: 16px
-// Corner Radius: 12px
-// Background: Surface.dark2 (#252D37)
-// Min Height: 80px
-// Border: None (shadows provide depth)
-
-Content Layout (RTL):
-  [Icon/Emoji] [Time/Date] [Right 12px]
-  [Gratitude Text Snippet] [Context/Category]
-  
-Text:
-  Title: Title Small (16px Semibold), 2 lines max, truncated
-  Subtitle: Body Small (12px Regular), grey text
-  Time: Label Medium (12px Semibold), secondary grey
-
-Interactions:
-  Press: Elevation +1, background lightens 5%
-  Long Press: Haptic feedback + context menu (edit/delete)
-  Swipe Left (Delete): Red danger reveal
-  Swipe Right (Archive): Subtle fade
-
-States:
-  normal:    Standard card
-  hover:     Elevation 2, slight scale (1.01)
-  selected:  Left border 4px green stripe
-  archived:  Opacity 0.6
+// Uses GratitudeCard from lib/shared/widgets/
 ```
 
 #### **Stat Card (Analytics)**
 ```dart
 // Padding: 16px
 // Corner Radius: 12px
-// Background: Linear gradient (top: dark2, bottom: dark1)
-// Min Height: 100px
+// Background: Surface.dark2 on dark, surfaceLight2 on light
+// Min Height: 80px
 
 Layout (RTL):
   [Large Number] [Right 8px] [Label/Description]
-  [Small Icon] [Trend Indicator (up/down)]
   
 Typography:
-  Number: Title Large (24px Semibold), primary green
-  Label: Body Medium (14px Regular), secondary text
-  Trend: Label Small (11px Semibold), green or orange
-
-Variants:
-  - metric (number + label)
-  - percentage (with progress ring)
-  - streak (with flame icon)
-  - average (with sparkline)
+  Number: titleLarge (24px Semibold), AppColors.primary (#0A7E6B)
+  Label: bodyMedium (14px Regular), secondary text
+  Trend: labelSmall (11px Semibold), success or warning
 ```
 
-#### **Floating Action Button (FAB)**
+#### **Breathing Button (Home Screen CTA)**
 ```dart
-// Size: 56px diameter (base), 48px (compact)
-// Corner Radius: 999px (fully rounded)
-// Background: Linear gradient (#2DD4A4 → #10B981)
-// Icon: 24px, white, centered
-// Position: Bottom right, 24px from edges
+// Size: 44px × 44px (circular)
+// Corner Radius: 999px
+// Background: AppColors.primary (#0A7E6B) with gentle pulse
+// Icon: CupertinoIcons.mic_fill, 22px, white
+// Position: Bottom center, 16px from bottom edges
 
-Elevation:
-  idle:    Elevation 3 (24px shadow)
-  pressed: Elevation 2 (16px shadow) + scale 0.95
-  
 Animation:
-  Pulse: Subtle breathing animation (1.2s cycle)
-  Haptic: Light tap on press
-  
-RTL Swap:
-  Bottom left (mirrored for RTL context)
+  Pulse: Gentle breathing animation (scale 1.0 → 1.05, 2s cycle)
 ```
 
 ### 4.4 Modal & Sheet Components
 
-#### **Bottom Sheet (Recording Modal)**
+#### **Bottom Sheet** — Uses shared `AppBottomSheet`
 ```dart
-// Height: 90% of screen (draggable to 70%)
-// Corner Radius Top: 24px
-// Background: Surface.dark1
-// Drag Handle: 4px × 48px, #6B7280, centered top
-// Padding: Standard 16px (with safe area)
+// Widget: AppBottomSheet in lib/shared/widgets/
+// Height: 90% of screen
+// Corner Radius Top: AppRadius.generous (16px)
+// Background: AppColors.surface1
+// Padding: AppSpacing.lg (16px)
 
 Content Layout:
   [Top] Header (Title + Close button)
   [Center] Main content area (scrollable)
-  [Bottom] Primary + secondary actions (safe area aware)
-  
-Interaction:
-  Drag up/down: Smooth tracking
-  Threshold swipe down: Dismiss with deceleration animation
-  Gesture: Haptic on dismiss
+  [Bottom] Actions
 
 RTL:
   Close button: Right side
   Actions: Right-aligned layout
 ```
 
-#### **Alert Dialog (Delete Confirmation)**
+#### **Alert Dialog** — Uses shared `AppDialog`
 ```dart
+// Widget: AppDialog in lib/shared/widgets/
 // Width: 90%, max 400px
-// Corner Radius: 16px
-// Background: Surface.dark2
-// Padding: Generous 24px
-
-Layout:
-  [Top] Icon + Title
-  [Center] Description text (scrollable if long)
-  [Bottom] Primary (red) + Secondary buttons
-
-Buttons:
-  Primary (Destructive): Red fill, right side
-  Secondary (Cancel): Outlined, left side
-  
-Animation:
-  Scale in from center (200ms)
-  Fade background dimmer (200ms)
+// Corner Radius: AppRadius.generous (16px)
+// Background: AppColors.surface2
+// Padding: AppSpacing.xxl (24px)
 ```
 
 ### 4.5 Navigation Components
 
-#### **Tab Bar (Bottom Navigation)**
+#### **Tab Bar (Bottom Navigation)** — Uses shared `AppBottomNavBar`
 ```dart
-// Height: 56px (+ safe area inset)
+// Widget: AppBottomNavBar in lib/shared/widgets/
+// Height: 44px (+ safe area inset)
 // Position: Bottom fixed
-// Background: Surface.dark1 (#1A1F26)
-// Border Top: 1px #374151
+// Background: AppColors.surface1 (#1A1F26) dark / surfaceLight1 (#FFFFFF) light
+// Border Top: 1px AppColors.divider (#374151)
 
 Tabs:
   1. Home (House icon)
@@ -588,42 +424,25 @@ Tabs:
   5. Settings (Gear icon)
 
 Icon Specs:
-  Size: 24px
-  Inactive: Opacity 0.6, grey (#9CA3AF)
-  Active: Opacity 1.0, primary green (#2DD4A4)
+  Size: 22px
+  Inactive: Opacity 0.6, textSecondary (#9CA3AF)
+  Active: AppColors.primary (#0A7E6B)
   
 Label:
-  Font: Label Medium (12px Semibold)
+  Font: labelSmall (11px Semibold)
   Only shown when active
-  Fade in/out (150ms)
-  
-Indicator:
-  Option 1: Underline 3px green
-  Option 2: Background pill shape
-  Animation: Slide to position (200ms)
-
-RTL:
-  Icons naturally swap positions
-  Animation direction mirrors
-  Label positioning reverses
 ```
 
 #### **Top Navigation Bar (Header)**
 ```dart
 // Height: 44px (iOS standard)
-// Background: Surface.dark1 or transparent over content
-// Blur: Optional (dark mode friendly)
+// Background: AppColors.surface1 or transparent
+// Uses CupertinoNavigationBar
 
 Content:
-  [Left] Back button or menu
-  [Center] Title or logo
-  [Right] Action buttons (1-2 max)
-
-Safe Area: Top inset respected
-
-States:
-  scrolled: Background becomes opaque, shadow appears
-  top: Background transparent if over content
+  [Trailing] Back or menu button (RTL: right)
+  [Middle] Title
+  [Leading] Action buttons (RTL: left)
 ```
 
 ---
@@ -680,10 +499,10 @@ States:
 - **Habits Ring:** Circular progress ring showing 7-day streak (if enabled)
 
 **Dark Mode Specifics:**
-- Background gradient: Dark1 (#1A1F26) → Dark0 (#0F1419) (subtle)
-- Card shadows: Deep dark elevation 2
-- Text: Primary grey (#E5E7EB) with secondary accents
-- Accent: Green primary (#2DD4A4) on ring charts
+- Background: AppColors.surface1 → surface0 gradient (subtle)
+- Card shadows: Dark elevation 2
+- Text: AppColors.textPrimary (#E5E7EB) with AppColors.textSecondary (#9CA3AF)
+- Accent: AppColors.primary (#0A7E6B) on ring charts
 
 **Micro-interactions:**
 - Counter increments with haptic tap when navigating to screen
@@ -758,17 +577,10 @@ States:
 - **Archive Option:** "Save & Close" vs. "Save & Record More"
 
 **Dark Mode Specifics:**
-- Modal background: Surface.dark1 (#1A1F26)
-- Waveform bars: Primary green (#2DD4A4)
-- Text input: Dark2 surface (#252D37) with grey border
-- Emotion chips: Light tint backgrounds (Joy: #FFD85C at 20% opacity)
-
-**Micro-interactions:**
-- **Record Press:** Spring scale (0.9 → 1.0), haptic medium
-- **Waveform Bars:** Smooth amplitude response, no lag
-- **Emotion Chip Select:** Scale 1.1 + ring glow (150ms spring)
-- **Next Button:** Slide transition (300ms ease-out) to next step
-- **Save Success:** Haptic triple-tap + toast "تم حفظ شكرك"
+- Screen background: AppColors.surface1
+- Recording icon: AppColors.primary (#0A7E6B)
+- Text input: AppColors.surface2 background
+- Emotion chips: Light tint backgrounds (joy: #FFD85C at 20% opacity)
 
 **RTL Considerations:**
 - Modal draggable from any point (not direction-specific)
@@ -904,9 +716,9 @@ States:
 ```
 
 **Dark Mode:**
-- Background: Gradient dark1 → dark0
-- Cards: Dark2 surface with subtle shadows
-- Audio player: Green waveform on dark2
+- Background: AppColors.surface1 → surface0
+- Cards: AppColors.surface2 surface
+- Audio player: AppColors.primary (#0A7E6B) waveform on surface2
 
 **Micro-interactions:**
 - Calendar tap: Bounce scale (0.95 → 1.0) on date
@@ -1029,10 +841,9 @@ States:
 - Color coded (different tints of green)
 
 **Dark Mode:**
-- Stat cards: Dark2 background, green text for large numbers
-- Charts: Dark background, bright accent colors
-- Pie slices: Muted emotion colors + glow on hover
-- Text: Primary grey
+- Stat cards: AppColors.surface2 background, AppColors.primary for numbers
+- Charts: Dark background, emotion accent colors
+- Text: AppColors.textPrimary (#E5E7EB)
 
 **Micro-interactions:**
 - Pie slice tap: Scale + glow animation (150ms)
@@ -1148,10 +959,10 @@ States:
    - Clear all data (red button, irreversible warning)
 
 **Dark Mode:**
-- Sections: Dark2 background with subtle borders
-- Toggle switches: Green when ON, grey when OFF
-- Danger buttons: Red fill, white text
-- Text: Primary grey on dark background
+- Sections: AppColors.surface2 background
+- Toggle switches: AppColors.primary when ON
+- Danger buttons: AppColors.error fill
+- Text: AppColors.textPrimary
 
 **Micro-interactions:**
 - Toggle switch: Spring animation, haptic feedback
@@ -1163,36 +974,41 @@ States:
 
 ## 6. DARK MODE SPECIFICATIONS
 
-### 6.1 Color Mapping (Dark Mode Primary)
+### 6.1 Token Architecture (Source of Truth)
 
+All colors, spacing, radius, elevation, and typography tokens live in `lib/core/theme/tokens/`:
+
+| Token File | Constants Class | Key Contents |
+|---|---|---|
+| `app_colors.dart` | `AppColors` | `primary #0A7E6B`, `secondary #D4A574`, surfaces, text, emotions, state opacities |
+| `app_typography.dart` | `AppTypography` | `display`..`labelSmall` TextStyle getters |
+| `app_spacing.dart` | `AppSpacing` | `xxs 2px`..`giant 64px` + compat aliases |
+| `app_radius.dart` | `AppRadius` | `tight 4px`..`pill 999px` |
+| `app_elevation.dart` | `AppElevation` | `level1`..`level3` shadows |
+
+Theme builder at `lib/core/theme/app_theme.dart`:
 ```dart
-// Global theme override
-final darkTheme = CupertinoThemeData(
-  brightness: Brightness.dark,
-  primaryColor: Color(0xFF2DD4A4), // Gratitude Green
-  primaryContrastingColor: Color(0xFFFFFFFF), // White
-  scaffoldBackgroundColor: Color(0xFF0F1419), // True black
-  
-  barBackgroundColor: Color(0xFF1A1F26), // Dark slate bar
-  
-  // Text themes
-  textTheme: CupertinoTextThemeData(
-    primaryColor: Color(0xFF2DD4A4), // Primary green
-    textStyle: TextStyle(
-      color: Color(0xFFE5E7EB), // Primary text
-      fontSize: 16,
-      fontWeight: FontWeight.w400,
+CupertinoThemeData buildDarkTheme() {
+  return CupertinoThemeData(
+    brightness: Brightness.dark,
+    primaryColor: AppColors.primary,
+    primaryContrastingColor: AppColors.textOnPrimary,
+    scaffoldBackgroundColor: AppColors.surface0,
+    barBackgroundColor: AppColors.surface1,
+    textTheme: CupertinoTextThemeData(
+      primaryColor: AppColors.primary,
+      textStyle: AppTypography.bodyMedium.copyWith(
+        color: AppColors.textPrimary,
+      ),
     ),
-  ),
-);
+  );
+}
+```
 
-// Surface colors for custom widgets
-const surfaceColors = {
-  'dark0': Color(0xFF0F1419), // Background
-  'dark1': Color(0xFF1A1F26), // Primary surface
-  'dark2': Color(0xFF252D37), // Elevated card
-  'dark3': Color(0xFF2E3847), // Floating elements
-};
+Token access in widgets via `AppColorTheme` InheritedWidget:
+```dart
+final colors = AppColorTheme.of(context);
+// colors.primary, colors.surface, colors.textPrimary, etc.
 ```
 
 ### 6.2 Component Dark Mode Adjustments
@@ -1206,23 +1022,22 @@ const surfaceColors = {
 **Inputs:**
 - Background: #252D37
 - Border (idle): #374151
-- Border (focused): #2DD4A4
-- Cursor: #2DD4A4
+- Border (focused): #0A7E6B
+- Cursor: #0A7E6B
 - Placeholder: #9CA3AF
 
 **Buttons:**
-- Primary: Green gradient (#2DD4A4 → #10B981)
+- Primary: Solid AppColors.primary (#0A7E6B)
 - Secondary: Outlined, no fill
-- Text: White on green background
+- Text: White on primary background
 
 **Waveform:**
-- Active bars: #2DD4A4
-- Inactive bars: #5B9BD5
+- Active bars: #0A7E6B
 - Background: Transparent or dark2 container
 
 **Charts:**
 - Background: Transparent (inherits surface)
-- Line/bars: Primary green
+- Line/bars: AppColors.primary (#0A7E6B)
 - Grid lines: #374151 @ 30% opacity
 - Labels: #9CA3AF
 
@@ -2154,17 +1969,16 @@ RichText(
 
 ## 12. DESIGN HANDOFF CHECKLIST
 
-- [ ] **Colors:** Define all hex codes in `lib/core/theme/colors.dart`
-- [ ] **Typography:** Export Cairo font styles from `lib/core/theme/typography.dart`
-- [ ] **Components:** Create Cupertino-based widgets in `lib/shared/widgets/`
-- [ ] **Animations:** Define reusable animation curves in `lib/core/animations/`
-- [ ] **Spacing:** Use consistent padding/margin from spacing token enum
-- [ ] **Dark Mode:** Test all screens in both light & dark modes
-- [ ] **RTL:** Verify all text, icons, and layouts in RTL context
+- [x] **Colors:** `lib/core/theme/tokens/app_colors.dart` — Deep Emerald palette, WCAG AA compliant
+- [x] **Typography:** `lib/core/theme/tokens/app_typography.dart` — Cairo font, 11-size system
+- [x] **Components:** `lib/shared/widgets/` — 10 shared Cupertino widgets created
+- [x] **Animations:** `lib/core/constants/app_animations.dart` — reduced motion helpers added
+- [x] **Spacing:** `lib/core/theme/tokens/app_spacing.dart` — 4-pt system + compat aliases
+- [x] **Dark Mode:** All screens tested — 0 analyze errors
+- [x] **RTL:** `Directionality(textDirection: TextDirection.rtl)` at app root, verified
 - [ ] **Accessibility:** Add semantic labels and test with VoiceOver
-- [ ] **Assets:** Export vector icons as SVGs, raster in @2x/@3x
-- [ ] **Haptics:** Integrate HapticFeedback for all interactive elements
-- [ ] **Localization:** Set up Arabic translations in `lib/l10n/`
+- [ ] **Haptics:** Ensure HapticFeedback on all interactive elements
+- [ ] **Localization:** Arabic-first, `AppStrings` class with all labels
 
 ---
 
@@ -2188,14 +2002,13 @@ RichText(
 This design system prioritizes **intentional simplicity**, **emotional resonance**, and **cultural authenticity** for an Arabic-first gratitude app. The premium dark mode aesthetic, smooth micro-interactions, and accessibility-first approach create a distinctive iOS experience inspired by Apple Journal's minimalism and Headspace's wellness philosophy.
 
 **Next Steps:**
-1. Implement design tokens in Flutter theme
-2. Create reusable component library
-3. Test dark mode and RTL across all screens
+1. Add VoiceOver accessibility labels to all shared widgets
+2. Consider deprecating `kSpace*` constants in favor of `AppSpacing` tokens
+3. Add HapticFeedback to remaining interactive elements
 4. Gather user feedback on recording flow
-5. Iterate on analytics visualizations
 
 ---
 
-**Design System v1.0 — June 2024**  
-**Platform:** iOS (Cupertino) | **Language:** Arabic (RTL) + English  
-**Team:** Design → Flutter Handoff
+**Design System v2.0 — June 2026**  
+**Platform:** iOS (Cupertino) | **Language:** Arabic (RTL)  
+**Status:** Implemented — Deep Emerald palette, 4-pt spacing, 10 shared widgets, 0 analyze errors

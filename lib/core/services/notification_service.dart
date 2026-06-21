@@ -24,8 +24,8 @@ class NotificationService {
     await cancelAll();
     const androidDetails = AndroidNotificationDetails(
       'gratitude_daily',
-      'Daily Gratitude Reminder',
-      channelDescription: 'Reminds you to record your daily gratitude',
+      'تذكير أثر',
+      channelDescription: 'يذكّرك تسجّل لحظاتك اليومية',
       importance: Importance.high,
       priority: Priority.high,
     );
@@ -41,8 +41,8 @@ class NotificationService {
     }
     await _plugin.periodicallyShow(
       id: 0,
-      title: 'Time for your daily gratitude \u{1F64F}',
-      body: 'Take 30 seconds to appreciate something today',
+      title: 'أثر',
+      body: 'في حاجة حلوة حصلت النهارده؟ سجّلها قبل ما تنسى',
       repeatInterval: RepeatInterval.daily,
       notificationDetails: details,
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
@@ -56,8 +56,8 @@ class NotificationService {
   Future<void> showTestNotification() async {
     const androidDetails = AndroidNotificationDetails(
       'gratitude_daily',
-      'Daily Gratitude Reminder',
-      channelDescription: 'Test notification',
+      'تذكير أثر',
+      channelDescription: 'إشعار اختبار',
       importance: Importance.high,
       priority: Priority.high,
     );
@@ -68,8 +68,8 @@ class NotificationService {
     );
     await _plugin.show(
       id: 999,
-      title: 'Daily Gratitude \u{1F64F}',
-      body: 'This is a test notification',
+      title: 'أثر',
+      body: 'ده إشعار تجريبي',
       notificationDetails: details,
     );
   }
