@@ -8,6 +8,7 @@ import 'core/constants/app_constants.dart';
 import 'core/constants/app_theme.dart';
 import 'core/di/injection.dart';
 import 'core/router/app_router.dart';
+import 'core/services/audio_service.dart';
 import 'data/models/gratitude_entry.dart';
 import 'data/models/user_stats.dart';
 import 'features/onboarding/presentation/bloc/onboarding_cubit.dart';
@@ -23,13 +24,50 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(GratitudeEntryAdapter());
   Hive.registerAdapter(UserStatsAdapter());
-  await Hive.openBox<GratitudeEntry>(kEntriesBox);
-  await Hive.openBox<UserStats>(kStatsBox);
-  await Hive.openBox(kSettingsBox);
+
+  await Future.wait([
+    Hive.openBox<GratitudeEntry>(kEntriesBox),
+    Hive.openBox<UserStats>(kStatsBox),
+    Hive.openBox(kSettingsBox),
+  ]);
+
   await setupDependencies();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
+  _compactHiveIfNeeded();
+  _cleanupOrphanedAudio();
+
   runApp(const MyApp());
+}
+
+const int _compactionThreshold = 50;
+
+void _compactHiveIfNeeded() {
+  WidgetsBinding.instance.addPostFrameCallback((_) async {
+    try {
+      final settingsBox = Hive.box(kSettingsBox);
+      final deletions = settingsBox.get(kDeletionsSinceCompaction, defaultValue: 0) as int;
+      if (deletions >= _compactionThreshold) {
+        await Hive.box<GratitudeEntry>(kEntriesBox).compact();
+        await Hive.box<UserStats>(kStatsBox).compact();
+        await settingsBox.put(kDeletionsSinceCompaction, 0);
+      }
+    } catch (_) {}
+  });
+}
+
+void _cleanupOrphanedAudio() {
+  WidgetsBinding.instance.addPostFrameCallback((_) async {
+    try {
+      final audioService = sl<AudioService>();
+      final entries = Hive.box<GratitudeEntry>(kEntriesBox).values.toList();
+      final referencedPaths = entries
+          .where((e) => e.audioPath != null && e.audioPath!.isNotEmpty)
+          .map((e) => e.audioPath!)
+          .toSet();
+      await audioService.cleanupOrphanedAudioFiles(referencedPaths);
+    } catch (_) {}
+  });
 }
 
 class MyApp extends StatelessWidget {

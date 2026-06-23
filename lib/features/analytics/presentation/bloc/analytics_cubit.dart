@@ -30,22 +30,31 @@ class AnalyticsCubit extends Cubit<AnalyticsState> {
   final StatsRepository _statsRepo;
   final EntryRepository _entryRepo;
 
+  int _lastEntryCount = -1;
+  AnalyticsLoadedState? _cachedState;
+
   AnalyticsCubit(this._statsRepo, this._entryRepo) : super(AnalyticsLoadingState());
 
   Future<void> loadAnalytics() async {
-    emit(AnalyticsLoadingState());
     try {
-      final stats = await _statsRepo.getStats();
       final entries = await _entryRepo.getAllEntries();
+      if (_cachedState != null && entries.length == _lastEntryCount) {
+        emit(_cachedState!);
+        return;
+      }
+      emit(AnalyticsLoadingState());
+      final stats = await _statsRepo.getStats();
       final weekActivity = _calculateWeekActivity(entries);
       final topTopics = _getTopTopics(stats);
       final moodDistribution = _calculateMoodDistribution(entries);
-      emit(AnalyticsLoadedState(
+      _lastEntryCount = entries.length;
+      _cachedState = AnalyticsLoadedState(
         stats: stats,
         weekActivity: weekActivity,
-        topTopics: topTopics,
         moodDistribution: moodDistribution,
-      ));
+        topTopics: topTopics,
+      );
+      emit(_cachedState!);
     } catch (e) {
       emit(AnalyticsErrorState('Failed to load analytics'));
     }

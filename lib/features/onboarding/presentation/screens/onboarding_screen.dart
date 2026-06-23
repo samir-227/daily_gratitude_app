@@ -193,9 +193,14 @@ class OnboardingScreen extends StatelessWidget {
   }
 
   static Widget _buildReminderPage(BuildContext context) {
-    return BlocBuilder<OnboardingCubit, OnboardingState>(
-      builder: (context, state) {
-        final s = state as OnboardingPageState;
+    return BlocSelector<OnboardingCubit, OnboardingState, ({int hour, int minute})>(
+      selector: (state) {
+        if (state is OnboardingPageState) {
+          return (hour: state.reminderHour, minute: state.reminderMinute);
+        }
+        return (hour: 20, minute: 0);
+      },
+      builder: (context, time) {
         return Column(
           key: const ValueKey('reminder'),
           mainAxisAlignment: MainAxisAlignment.center,
@@ -216,7 +221,7 @@ class OnboardingScreen extends StatelessWidget {
               textAlign: TextAlign.center),
             SizedBox(height: AppSpacing.xxl),
             CupertinoButton(
-              onPressed: () => _showTimePicker(context, s.reminderHour, s.reminderMinute),
+              onPressed: () => _showTimePicker(context, time.hour, time.minute),
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: AppSpacing.spacious, vertical: AppSpacing.standard),
                 decoration: BoxDecoration(
@@ -224,7 +229,7 @@ class OnboardingScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(AppRadius.standard),
                 ),
                 child: Text(
-                  '${s.reminderHour.toString().padLeft(2, '0')}:${s.reminderMinute.toString().padLeft(2, '0')}',
+                  '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}',
                   style: AppTextStyles.titleLarge.copyWith(color: AppColors.primary)),
               ),
             ),

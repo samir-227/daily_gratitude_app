@@ -22,6 +22,19 @@ class EntryRepository {
     return entries;
   }
 
+  Future<List<GratitudeEntry>> getEntriesPage({
+    required int page,
+    int pageSize = 20,
+  }) async {
+    final box = await _entriesBox;
+    final all = box.values.toList();
+    all.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    final start = page * pageSize;
+    if (start >= all.length) return [];
+    final end = (start + pageSize).clamp(0, all.length);
+    return all.sublist(start, end);
+  }
+
   Future<List<GratitudeEntry>> getEntriesByDate(DateTime date) async {
     final box = await _entriesBox;
     return box.values.where((e) {
@@ -45,6 +58,9 @@ class EntryRepository {
   Future<void> deleteEntry(String id) async {
     final box = await _entriesBox;
     await box.delete(id);
+    final settingsBox = await Hive.openBox(kSettingsBox);
+    final count = (settingsBox.get(kDeletionsSinceCompaction, defaultValue: 0) as int) + 1;
+    await settingsBox.put(kDeletionsSinceCompaction, count);
   }
 
   Future<bool> hasEntryToday() async {

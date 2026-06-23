@@ -8,12 +8,41 @@ import 'package:audio_session/audio_session.dart';
 class AudioService {
   final AudioRecorder _recorder = AudioRecorder();
   final AudioPlayer _player = AudioPlayer();
-  StreamSubscription<Duration>? _positionSub;
-  StreamSubscription<Duration?>? _durationSub;
   String? _currentRecordingPath;
 
-  StreamSubscription<Duration>? get positionSub => _positionSub;
-  StreamSubscription<Duration?>? get durationSub => _durationSub;
+  Future<void> cleanupOrphanedAudioFiles(Set<String> referencedPaths) async {
+    try {
+      final dirPath = await _recordingsDir;
+      final dir = Directory(dirPath);
+      if (!await dir.exists()) return;
+      final files = await dir.list().toList();
+      for (final entity in files) {
+        if (entity is File && entity.path.endsWith('.wav')) {
+          final filename = entity.path.split('/').last;
+          if (!referencedPaths.contains(filename)) {
+            await entity.delete();
+          }
+        }
+      }
+    } catch (_) {}
+  }
+
+  Future<int> getStorageUsedBytes() async {
+    int total = 0;
+    try {
+      final dirPath = await _recordingsDir;
+      final dir = Directory(dirPath);
+      if (await dir.exists()) {
+        final files = await dir.list().toList();
+        for (final entity in files) {
+          if (entity is File) {
+            total += await entity.length();
+          }
+        }
+      }
+    } catch (_) {}
+    return total;
+  }
 
   Future<String> get _recordingsDir async {
     final appDir = await getApplicationDocumentsDirectory();
@@ -115,8 +144,6 @@ class AudioService {
   }
 
   Future<void> dispose() async {
-    await _positionSub?.cancel();
-    await _durationSub?.cancel();
     _recorder.dispose();
     _player.dispose();
   }

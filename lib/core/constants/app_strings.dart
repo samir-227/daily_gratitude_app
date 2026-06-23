@@ -67,6 +67,7 @@ abstract class AppStrings {
   static const String ok = 'تمام';
   static const String done = 'خلاص تم';
   static const String version = 'الإصدار';
+  static const String storageUsed = 'المساحة المستخدمة';
   static const String notificationsSection = 'التذكيرات';
   static const String speechRecognitionSection = 'التعرف على صوتك';
   static const String dataSection = 'البيانات والخصوصية';

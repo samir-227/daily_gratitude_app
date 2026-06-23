@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path_provider/path_provider.dart';
 import '../../../../data/repositories/stats_repository.dart';
 import '../../../../data/repositories/entry_repository.dart';
+import '../../../../data/models/gratitude_entry.dart';
 import '../../../../core/services/notification_service.dart';
 import '../../../../core/services/speech_service.dart';
 import '../../../../core/services/audio_service.dart';
@@ -15,10 +16,12 @@ class SettingsLoadedState extends SettingsState {
   final bool notificationsEnabled;
   final bool hasArabicLocale;
   final String? arabicLocaleName;
+  final int storageUsedBytes;
   SettingsLoadedState({
     required this.notificationsEnabled,
     required this.hasArabicLocale,
     this.arabicLocaleName,
+    this.storageUsedBytes = 0,
   });
 }
 
@@ -66,12 +69,21 @@ class SettingsCubit extends Cubit<SettingsState> {
       final locale = await _speechService.getBestArabicLocale();
       localeName = locale;
     }
+    final storageBytes = await _getStorageUsedBytes();
     _lastLoadedState = SettingsLoadedState(
       notificationsEnabled: notifEnabled,
       hasArabicLocale: hasArabic && localeName != null,
       arabicLocaleName: localeName,
+      storageUsedBytes: storageBytes,
     );
     emit(_lastLoadedState!);
+  }
+
+  Future<int> _getStorageUsedBytes() async {
+    final audioBytes = await _audioService.getStorageUsedBytes();
+    final hivePath = Hive.box<GratitudeEntry>(kEntriesBox).path;
+    final hiveBytes = hivePath != null ? await File(hivePath).length() : 0;
+    return audioBytes + hiveBytes;
   }
 
   Future<void> toggleNotifications(bool enabled) async {

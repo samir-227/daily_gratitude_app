@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../bloc/timeline_cubit.dart';
 import '../bloc/timeline_state.dart';
 import '../../../../core/constants/app_colors.dart';
@@ -22,32 +24,46 @@ class TimelineScreen extends StatefulWidget {
 
 class _TimelineScreenState extends State<TimelineScreen> {
   late final AudioService _audioService;
+  final _scrollController = ScrollController();
+  StreamSubscription? _entriesSubscription;
 
   @override
   void initState() {
     super.initState();
     _audioService = sl<AudioService>();
+    _scrollController.addListener(_onScroll);
+    _entriesSubscription = Hive.box<GratitudeEntry>(kEntriesBox).watch().listen((_) {
+      if (mounted) context.read<TimelineCubit>().refresh();
+    });
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200) {
+      context.read<TimelineCubit>().loadMore();
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    _entriesSubscription?.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final brightness = CupertinoTheme.of(context).brightness ?? Brightness.dark;
-    return BlocProvider(
-      create: (_) {
-        final cubit = sl<TimelineCubit>();
-        cubit.loadEntries();
-        return cubit;
-      },
-      child: CupertinoPageScaffold(
-        backgroundColor: AppColors.surface(0, brightness),
-        navigationBar: CupertinoNavigationBar(
-          backgroundColor: AppColors.surface(1, brightness),
-          border: Border(bottom: BorderSide(color: AppColors.divider, width: 0.5)),
-          middle: Text(AppStrings.timeline,
-            style: AppTextStyles.titleSmall.copyWith(color: AppColors.onSurface(brightness))),
-        ),
-        child: SafeArea(
-          child: BlocConsumer<TimelineCubit, TimelineState>(
+    return CupertinoPageScaffold(
+      backgroundColor: AppColors.surface(0, brightness),
+      navigationBar: CupertinoNavigationBar(
+        backgroundColor: AppColors.surface(1, brightness),
+        border: Border(bottom: BorderSide(color: AppColors.divider, width: 0.5)),
+        middle: Text(AppStrings.timeline,
+          style: AppTextStyles.titleSmall.copyWith(color: AppColors.onSurface(brightness))),
+      ),
+      child: SafeArea(
+        child: BlocConsumer<TimelineCubit, TimelineState>(
             listener: (context, state) {
               if (state is TimelineLoadedState && state.audioErrorMessage != null) {
                 showCupertinoDialog(
@@ -88,6 +104,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
               }
               if (state is TimelineLoadedState) {
                 return CustomScrollView(
+                  controller: _scrollController,
                   slivers: [
                     SliverToBoxAdapter(child: _buildSearchBar(context, brightness)),
                     SliverToBoxAdapter(child: _buildFilterBar(context, state)),
@@ -103,7 +120,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
                           ),
                         ),
                       )
-                    else
+                    else ...[
                       ...state.groupedEntries.entries.map((group) => [
                         SliverToBoxAdapter(child: _buildSectionHeader(group.key, brightness)),
                         SliverList(
@@ -120,6 +137,14 @@ class _TimelineScreenState extends State<TimelineScreen> {
                           ),
                         ),
                       ]).expand((e) => e),
+                      if (state.isLoadingMore)
+                        SliverToBoxAdapter(
+                          child: Padding(
+                            padding: EdgeInsets.all(kSpace16),
+                            child: const Center(child: CupertinoActivityIndicator()),
+                          ),
+                        ),
+                    ],
                   ],
                 );
               }
@@ -127,8 +152,7 @@ class _TimelineScreenState extends State<TimelineScreen> {
             },
           ),
         ),
-      ),
-    );
+      );
   }
 
   Widget _buildSearchBar(BuildContext context, Brightness brightness) {
@@ -225,15 +249,16 @@ class _TimelineEntryCardState extends State<_TimelineEntryCard> {
   }
 
   void _confirmDelete(BuildContext context, GratitudeEntry entry) {
+    final brightness = CupertinoTheme.of(context).brightness ?? Brightness.dark;
     showCupertinoDialog(
       context: context,
       builder: (_) => CupertinoAlertDialog(
         title: Text(AppStrings.confirmDelete,
-          style: AppTextStyles.titleMedium.copyWith(color: AppColors.textPrimary)),
+          style: AppTextStyles.titleMedium.copyWith(color: AppColors.onSurface(brightness))),
         actions: [
           CupertinoDialogAction(
             child: Text(AppStrings.cancel,
-              style: AppTextStyles.titleSmall.copyWith(color: AppColors.textSecondary)),
+              style: AppTextStyles.titleSmall.copyWith(color: AppColors.onSurface(brightness, secondary: true))),
             onPressed: () => Navigator.of(context).pop(),
           ),
           CupertinoDialogAction(

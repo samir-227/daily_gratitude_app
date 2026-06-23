@@ -18,19 +18,47 @@ class TimelineCubit extends Cubit<TimelineState> {
   String _searchQuery = '';
   TimelineFilter _currentFilter = TimelineFilter.all;
   Timer? _searchDebounce;
+  int _currentPage = 0;
+  bool _hasMore = true;
+  static const int _pageSize = 20;
 
   TimelineCubit(this._entryRepo, this._audioService) : super(TimelineLoadingState());
 
   Future<void> loadEntries({TimelineFilter? filter}) async {
     emit(TimelineLoadingState());
     try {
-      _allEntries = await _entryRepo.getAllEntries();
+      _currentPage = 0;
+      _allEntries = await _entryRepo.getEntriesPage(page: 0, pageSize: _pageSize);
+      _hasMore = _allEntries.length >= _pageSize;
       if (isClosed) return;
       if (filter != null) _currentFilter = filter;
       _applyFilters();
     } catch (e) {
       if (isClosed) return;
       emit(TimelineErrorState('Failed to load entries'));
+    }
+  }
+
+  Future<void> loadMore() async {
+    if (!_hasMore) return;
+    final current = state;
+    if (current is! TimelineLoadedState) return;
+    if (current.isLoadingMore) return;
+    emit(current.copyWith(isLoadingMore: true));
+    try {
+      _currentPage++;
+      final more = await _entryRepo.getEntriesPage(page: _currentPage, pageSize: _pageSize);
+      if (isClosed) return;
+      if (more.isEmpty) {
+        _hasMore = false;
+      } else {
+        _allEntries.addAll(more);
+        _hasMore = more.length >= _pageSize;
+      }
+      _applyFilters();
+    } catch (e) {
+      if (isClosed) return;
+      _applyFilters();
     }
   }
 
@@ -43,7 +71,7 @@ class TimelineCubit extends Cubit<TimelineState> {
   void setSearchQuery(String query) {
     _searchQuery = query;
     _searchDebounce?.cancel();
-    _searchDebounce = Timer(const Duration(milliseconds: 300), _applyFilters);
+    _searchDebounce = Timer(const Duration(milliseconds: 400), _applyFilters);
   }
 
   Future<void> playEntry(GratitudeEntry entry) async {
@@ -53,32 +81,19 @@ class TimelineCubit extends Cubit<TimelineState> {
       if (current.playingEntryId == entry.id) {
         await _audioService.stopAudio();
         if (isClosed) return;
-        emit(TimelineLoadedState(
-          groupedEntries: current.groupedEntries,
-          filter: current.filter,
-          playingEntryId: null,
-          searchQuery: current.searchQuery,
-        ));
+        emit(current.copyWith(playingEntryId: null));
       } else {
         await _audioService.stopAudio();
         final started = await _audioService.playAudio(entry.audioPath!);
         if (isClosed) return;
         if (!started) {
-          emit(TimelineLoadedState(
-            groupedEntries: current.groupedEntries,
-            filter: current.filter,
+          emit(current.copyWith(
             playingEntryId: null,
-            searchQuery: current.searchQuery,
             audioErrorMessage: AppStrings.audioFileNotFound,
           ));
           return;
         }
-        emit(TimelineLoadedState(
-          groupedEntries: current.groupedEntries,
-          filter: current.filter,
-          playingEntryId: entry.id,
-          searchQuery: current.searchQuery,
-        ));
+        emit(current.copyWith(playingEntryId: entry.id));
       }
     }
   }
@@ -118,6 +133,18 @@ class TimelineCubit extends Cubit<TimelineState> {
     }
   }
 
+  Future<void> refresh() async {
+    try {
+      _currentPage = 0;
+      _allEntries = await _entryRepo.getEntriesPage(page: 0, pageSize: _pageSize);
+      _hasMore = _allEntries.length >= _pageSize;
+      if (isClosed) return;
+      _applyFilters();
+    } catch (e) {
+      if (isClosed) return;
+    }
+  }
+
   @override
   Future<void> close() {
     _searchDebounce?.cancel();
@@ -154,6 +181,8 @@ class TimelineCubit extends Cubit<TimelineState> {
       playingEntryId: _getPlayingId(),
       searchQuery: _searchQuery,
       audioErrorMessage: null,
+      isLoadingMore: false,
+      hasMore: _hasMore,
     ));
   }
 

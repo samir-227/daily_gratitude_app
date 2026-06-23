@@ -9,6 +9,7 @@ const String kReminderTime = 'reminder_time';
 const String kNotificationsEnabled = 'notifications_enabled';
 const String kLastMilestoneShown = 'last_milestone_shown';
 const String kDarkModeEnabled = 'dark_mode_enabled';
+const String kDeletionsSinceCompaction = 'deletions_since_compaction';
 
 const String kArabicLocaleEG = 'ar-EG';
 const String kArabicLocaleSA = 'ar-SA';

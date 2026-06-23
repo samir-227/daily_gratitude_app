@@ -175,6 +175,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
               AppStrings.version,
               '1.0.0',
               brightness,
+            ),
+            _divider(brightness),
+            _buildInfoTile(
+              AppStrings.storageUsed,
+              _formatBytes(state.storageUsedBytes),
+              brightness,
               isLast: true,
             ),
           ],
@@ -339,6 +345,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
         ),
       ),
     );
+  }
+
+  static String _formatBytes(int bytes) {
+    if (bytes < 1024) return '$bytes B';
+    if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
+    return '${(bytes / (1024 * 1024)).toStringAsFixed(1)} MB';
   }
 
   static void _confirmClearAll(BuildContext context) {

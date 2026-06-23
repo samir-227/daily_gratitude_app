@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uuid/uuid.dart';
@@ -73,6 +74,9 @@ class RecordingCubit extends Cubit<RecordingState> {
   int _durationMs = 0;
   String? _selectedMood;
   int? _lastCheckedMilestone;
+  Timer? _sttThrottle;
+  String _lastEmittedText = '';
+  static const _throttleDuration = Duration(milliseconds: 200);
 
   void selectMood(String? mood) {
     _selectedMood = mood;
@@ -115,7 +119,7 @@ class RecordingCubit extends Cubit<RecordingState> {
       await _speechService.startListening(
         onResult: (text) {
           _currentText = text;
-          emit(RecordingInProgressState(text, selectedMood: _selectedMood));
+          _throttleSttResult(text);
         },
         onError: (error) {
           emit(RecordingErrorState(error, selectedMood: _selectedMood));
@@ -222,6 +226,23 @@ class RecordingCubit extends Cubit<RecordingState> {
       final stats = await _statsRepo.getStats();
       await _checkMilestone(stats.currentStreak);
     } catch (_) {}
+  }
+
+  void _throttleSttResult(String text) {
+    _sttThrottle?.cancel();
+    if (_lastEmittedText == text) return;
+    _sttThrottle = Timer(_throttleDuration, () {
+      _lastEmittedText = text;
+      emit(RecordingInProgressState(text, selectedMood: _selectedMood));
+    });
+  }
+
+  @override
+  Future<void> close() {
+    _sttThrottle?.cancel();
+    _speechService.stopListening();
+    _audioService.cancelRecording();
+    return super.close();
   }
 
   void reset() {
