@@ -29,20 +29,15 @@ void main() async {
   await setupDependencies();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-  final settingsBox = await Hive.openBox(kSettingsBox);
-  final onboardingComplete =
-      settingsBox.get(kOnboardingComplete, defaultValue: false) as bool;
-
-  runApp(MyApp(initialRoute: onboardingComplete ? '/home' : '/onboarding'));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final String initialRoute;
-  const MyApp({super.key, required this.initialRoute});
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final router = appRouter(initialRoute);
+    final router = appRouter();
 
     return ScreenUtilInit(
       designSize: const Size(375, 812),
