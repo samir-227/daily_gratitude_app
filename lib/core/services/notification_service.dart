@@ -6,7 +6,7 @@ class NotificationService {
 
   Future<void> initialize() async {
     if (_initialized) return;
-    const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidSettings = AndroidInitializationSettings('athar_logo');
     const iosSettings = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -22,15 +22,19 @@ class NotificationService {
 
   Future<void> scheduleDaily(int hour, int minute) async {
     await cancelAll();
-    const androidDetails = AndroidNotificationDetails(
+    final androidDetails = AndroidNotificationDetails(
       'gratitude_daily',
       'تذكير أثر',
       channelDescription: 'يذكّرك تسجّل لحظاتك اليومية',
       importance: Importance.high,
       priority: Priority.high,
+      styleInformation: BigPictureStyleInformation(
+        DrawableResourceAndroidBitmap('athar_logo'),
+        largeIcon: DrawableResourceAndroidBitmap('athar_logo'),
+      ),
     );
     const iosDetails = DarwinNotificationDetails();
-    const details = NotificationDetails(
+    final details = NotificationDetails(
       android: androidDetails,
       iOS: iosDetails,
     );
@@ -54,15 +58,19 @@ class NotificationService {
   }
 
   Future<void> showTestNotification() async {
-    const androidDetails = AndroidNotificationDetails(
+    final androidDetails = AndroidNotificationDetails(
       'gratitude_daily',
       'تذكير أثر',
       channelDescription: 'إشعار اختبار',
       importance: Importance.high,
       priority: Priority.high,
+      styleInformation: BigPictureStyleInformation(
+        DrawableResourceAndroidBitmap('athar_logo'),
+        largeIcon: DrawableResourceAndroidBitmap('athar_logo'),
+      ),
     );
     const iosDetails = DarwinNotificationDetails();
-    const details = NotificationDetails(
+    final details = NotificationDetails(
       android: androidDetails,
       iOS: iosDetails,
     );
