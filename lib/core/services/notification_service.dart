@@ -1,4 +1,7 @@
+import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tzdata;
 
 class NotificationService {
   final FlutterLocalNotificationsPlugin _plugin = FlutterLocalNotificationsPlugin();
@@ -6,6 +9,9 @@ class NotificationService {
 
   Future<void> initialize() async {
     if (_initialized) return;
+    tzdata.initializeTimeZones();
+    final timezoneInfo = await FlutterTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation(timezoneInfo.identifier));
     const androidSettings = AndroidInitializationSettings('athar_logo');
     const iosSettings = DarwinInitializationSettings(
       requestAlertPermission: true,
@@ -18,6 +24,14 @@ class NotificationService {
     );
     await _plugin.initialize(settings: initSettings);
     _initialized = true;
+  }
+
+  DarwinNotificationDetails _iosDetails() {
+    return const DarwinNotificationDetails(
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+    );
   }
 
   Future<void> scheduleDaily(int hour, int minute) async {
@@ -33,23 +47,23 @@ class NotificationService {
         largeIcon: DrawableResourceAndroidBitmap('athar_logo'),
       ),
     );
-    const iosDetails = DarwinNotificationDetails();
     final details = NotificationDetails(
       android: androidDetails,
-      iOS: iosDetails,
+      iOS: _iosDetails(),
     );
-    final now = DateTime.now();
-    var scheduledDate = DateTime(now.year, now.month, now.day, hour, minute);
+    final now = tz.TZDateTime.now(tz.local);
+    var scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
-    await _plugin.periodicallyShow(
+    await _plugin.zonedSchedule(
       id: 0,
       title: 'أثر',
       body: 'في حاجة حلوة حصلت النهارده؟ سجّلها قبل ما تنسى',
-      repeatInterval: RepeatInterval.daily,
+      scheduledDate: scheduledDate,
       notificationDetails: details,
       androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      matchDateTimeComponents: DateTimeComponents.time,
     );
   }
 
@@ -69,10 +83,9 @@ class NotificationService {
         largeIcon: DrawableResourceAndroidBitmap('athar_logo'),
       ),
     );
-    const iosDetails = DarwinNotificationDetails();
     final details = NotificationDetails(
       android: androidDetails,
-      iOS: iosDetails,
+      iOS: _iosDetails(),
     );
     await _plugin.show(
       id: 999,

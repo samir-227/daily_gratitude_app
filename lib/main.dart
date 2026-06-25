@@ -9,6 +9,7 @@ import 'core/constants/app_theme.dart';
 import 'core/di/injection.dart';
 import 'core/router/app_router.dart';
 import 'core/services/audio_service.dart';
+import 'core/services/notification_service.dart';
 import 'data/models/gratitude_entry.dart';
 import 'data/models/user_stats.dart';
 import 'features/onboarding/presentation/bloc/onboarding_cubit.dart';
@@ -32,6 +33,7 @@ void main() async {
   ]);
 
   await setupDependencies();
+  await sl<NotificationService>().initialize();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   _compactHiveIfNeeded();
