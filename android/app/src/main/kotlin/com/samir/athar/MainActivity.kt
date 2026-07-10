@@ -1,4 +1,4 @@
-package com.example.daily_gratitude_app
+package com.samir.athar
 
 import io.flutter.embedding.android.FlutterActivity
 
