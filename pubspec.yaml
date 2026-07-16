@@ -1,7 +1,7 @@
 name: daily_gratitude_app
 description: "A gratitude journal app for Arabic speakers with voice recording and STT."
 publish_to: 'none'
-version: 1.0.0+2
+version: 1.0.0+3
 
 environment:
   sdk: ^3.11.5
