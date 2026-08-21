@@ -79,6 +79,20 @@ class RecentEntriesCarousel extends StatelessWidget {
         ),
         child: Column(
           children: [
+            Container(
+              width: 48.w,
+              height: 48.w,
+              decoration: BoxDecoration(
+                color: AppColors.primary.withValues(alpha: 0.12),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                CupertinoIcons.heart,
+                size: 22.w,
+                color: AppColors.primary,
+              ),
+            ),
+            SizedBox(height: kSpace12),
             Text(
               AppStrings.noEntriesYet,
               style: AppTextStyles.labelLarge.copyWith(

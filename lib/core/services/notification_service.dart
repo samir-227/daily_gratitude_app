@@ -35,36 +35,38 @@ class NotificationService {
   }
 
   Future<void> scheduleDaily(int hour, int minute) async {
-    await cancelAll();
-    final androidDetails = AndroidNotificationDetails(
-      'gratitude_daily',
-      'تذكير أثر',
-      channelDescription: 'يذكّرك تسجّل لحظاتك اليومية',
-      importance: Importance.high,
-      priority: Priority.high,
-      styleInformation: BigPictureStyleInformation(
-        DrawableResourceAndroidBitmap('athar_logo'),
-        largeIcon: DrawableResourceAndroidBitmap('athar_logo'),
-      ),
-    );
-    final details = NotificationDetails(
-      android: androidDetails,
-      iOS: _iosDetails(),
-    );
-    final now = tz.TZDateTime.now(tz.local);
-    var scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
-    if (scheduledDate.isBefore(now)) {
-      scheduledDate = scheduledDate.add(const Duration(days: 1));
-    }
-    await _plugin.zonedSchedule(
-      id: 0,
-      title: 'أثر',
-      body: 'في حاجة حلوة حصلت النهارده؟ سجّلها قبل ما تنسى',
-      scheduledDate: scheduledDate,
-      notificationDetails: details,
-      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-      matchDateTimeComponents: DateTimeComponents.time,
-    );
+    try {
+      await cancelAll();
+      final androidDetails = AndroidNotificationDetails(
+        'gratitude_daily',
+        'تذكير أثر',
+        channelDescription: 'يذكّرك تسجّل لحظاتك اليومية',
+        importance: Importance.high,
+        priority: Priority.high,
+        styleInformation: BigPictureStyleInformation(
+          DrawableResourceAndroidBitmap('athar_logo'),
+          largeIcon: DrawableResourceAndroidBitmap('athar_logo'),
+        ),
+      );
+      final details = NotificationDetails(
+        android: androidDetails,
+        iOS: _iosDetails(),
+      );
+      final now = tz.TZDateTime.now(tz.local);
+      var scheduledDate = tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
+      if (scheduledDate.isBefore(now)) {
+        scheduledDate = scheduledDate.add(const Duration(days: 1));
+      }
+      await _plugin.zonedSchedule(
+        id: 0,
+        title: 'أثر',
+        body: 'في حاجة حلوة حصلت النهارده؟ سجّلها قبل ما تنسى',
+        scheduledDate: scheduledDate,
+        notificationDetails: details,
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+        matchDateTimeComponents: DateTimeComponents.time,
+      );
+    } catch (_) {}
   }
 
   Future<void> cancelAll() async {

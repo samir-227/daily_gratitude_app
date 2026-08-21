@@ -26,8 +26,8 @@ class StatsRowCard extends StatelessWidget {
         _buildMiniCard(
           icon: CupertinoIcons.heart_fill,
           iconColor: AppColors.accent,
-          title: 'حاسس بإيه النهاردة؟',
-          subtitle: stats.currentStreak > 3 ? 'أقرب ليك' : 'سجل يومياتك',
+          title: AppStrings.howDoYouFeel,
+          subtitle: stats.currentStreak > 3 ? AppStrings.emotionLoved : AppStrings.recordNow,
           brightness: brightness,
         ),
         SizedBox(width: kSpace10),
@@ -38,7 +38,7 @@ class StatsRowCard extends StatelessWidget {
               : AppColors.textTertiary,
           title: AppStrings.today,
           subtitle: todayEntry != null
-              ? 'تمام، سجّلت النهاردة!'
+              ? AppStrings.entrySaved
               : AppStrings.noEntryToday,
           brightness: brightness,
         ),

@@ -3,6 +3,7 @@ import '../../../../data/repositories/stats_repository.dart';
 import '../../../../data/repositories/entry_repository.dart';
 import '../../../../data/models/user_stats.dart';
 import '../../../../data/models/gratitude_entry.dart';
+import '../../../../core/constants/app_strings.dart';
 
 abstract class HomeState {}
 
@@ -12,11 +13,13 @@ class HomeLoadedState extends HomeState {
   final UserStats stats;
   final GratitudeEntry? todayEntry;
   final List<GratitudeEntry> recentEntries;
+  final List<GratitudeEntry> allEntries;
 
   HomeLoadedState({
     required this.stats,
     this.todayEntry,
     required this.recentEntries,
+    required this.allEntries,
   });
 }
 
@@ -36,16 +39,17 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       final stats = await _statsRepo.getStats();
       final todayEntry = await _getTodayEntry();
-      final recentEntries = await _entryRepo.getAllEntries();
+      final allEntries = await _entryRepo.getAllEntries();
       emit(
         HomeLoadedState(
           stats: stats,
           todayEntry: todayEntry,
-          recentEntries: recentEntries.take(3).toList(),
+          recentEntries: allEntries.take(3).toList(),
+          allEntries: allEntries,
         ),
       );
     } catch (e) {
-      emit(HomeErrorState('Failed to load home data'));
+      emit(HomeErrorState(AppStrings.errorFailedToLoadHome));
     }
   }
 

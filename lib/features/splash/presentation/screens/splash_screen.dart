@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -109,15 +109,16 @@ class _AtherSplashScreenState extends State<AtherSplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final brightness = CupertinoTheme.of(context).brightness ?? Brightness.dark;
+    final isDark = brightness == Brightness.dark;
     final bgColor = isDark ? AppColors.surface0 : const Color(0xFFFFFFFF);
     final primaryColor = AppColors.primary;
     final accentColor = AppColors.secondary;
     final textColor = isDark ? AppColors.textPrimary : AppColors.primary;
 
-    return Scaffold(
+    return CupertinoPageScaffold(
       backgroundColor: bgColor,
-      body: AnimatedBuilder(
+      child: AnimatedBuilder(
         animation: _mainController,
         builder: (context, child) {
           const double leftStartOffset = -100.0;

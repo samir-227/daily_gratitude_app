@@ -3,6 +3,7 @@ import '../../../../data/repositories/stats_repository.dart';
 import '../../../../data/repositories/entry_repository.dart';
 import '../../../../data/models/user_stats.dart';
 import '../../../../data/models/gratitude_entry.dart';
+import '../../../../core/constants/app_strings.dart';
 
 abstract class AnalyticsState {}
 
@@ -56,7 +57,7 @@ class AnalyticsCubit extends Cubit<AnalyticsState> {
       );
       emit(_cachedState!);
     } catch (e) {
-      emit(AnalyticsErrorState('Failed to load analytics'));
+      emit(AnalyticsErrorState(AppStrings.errorFailedToLoadAnalytics));
     }
   }
 

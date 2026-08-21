@@ -148,7 +148,7 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
               ),
               if (entry.topics.isNotEmpty) ...[
                 SizedBox(height: AppSpacing.standard),
-                Text('المواضيع',
+                Text(AppStrings.topics,
                   style: AppTextStyles.labelLarge.copyWith(color: AppColors.onSurface(brightness, secondary: true))),
                 SizedBox(height: AppSpacing.tight),
                 Wrap(

@@ -35,7 +35,7 @@ class TimelineCubit extends Cubit<TimelineState> {
       _applyFilters();
     } catch (e) {
       if (isClosed) return;
-      emit(TimelineErrorState('Failed to load entries'));
+      emit(TimelineErrorState(AppStrings.errorFailedToLoadEntries));
     }
   }
 
@@ -105,7 +105,7 @@ class TimelineCubit extends Cubit<TimelineState> {
       await loadEntries(filter: _currentFilter);
     } catch (e) {
       if (isClosed) return;
-      emit(TimelineErrorState('Failed to delete entry'));
+      emit(TimelineErrorState(AppStrings.errorFailedToDeleteEntry));
     }
   }
 
@@ -129,7 +129,7 @@ class TimelineCubit extends Cubit<TimelineState> {
       await loadEntries(filter: _currentFilter);
     } catch (e) {
       if (isClosed) return;
-      emit(TimelineErrorState('Failed to update entry'));
+      emit(TimelineErrorState(AppStrings.errorFailedToUpdateEntry));
     }
   }
 
@@ -202,8 +202,8 @@ class TimelineCubit extends Cubit<TimelineState> {
     final entryDate = DateTime(date.year, date.month, date.day);
     final diff = today.difference(entryDate).inDays;
 
-    if (diff == 0) return 'Today';
-    if (diff == 1) return 'Yesterday';
+    if (diff == 0) return AppStrings.today;
+    if (diff == 1) return AppStrings.yesterday;
 
     const weekdays = [
       'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت', 'الأحد',

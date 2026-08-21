@@ -9,6 +9,7 @@ import '../../../../data/repositories/stats_repository.dart';
 import '../../../../data/models/gratitude_entry.dart';
 import '../../../../core/utils/arabic_text_utils.dart';
 import '../../../../core/constants/app_constants.dart';
+import '../../../../core/constants/app_strings.dart';
 
 abstract class RecordingState {
   final String? selectedMood;
@@ -16,14 +17,12 @@ abstract class RecordingState {
 }
 
 class RecordingIdleState extends RecordingState {
-  RecordingIdleState({String? selectedMood})
-    : super(selectedMood: selectedMood);
+  RecordingIdleState({super.selectedMood});
 }
 
 class RecordingInProgressState extends RecordingState {
   final String liveText;
-  RecordingInProgressState(this.liveText, {String? selectedMood})
-    : super(selectedMood: selectedMood);
+  RecordingInProgressState(this.liveText, {super.selectedMood});
 }
 
 class RecordingDoneState extends RecordingState {
@@ -34,12 +33,12 @@ class RecordingDoneState extends RecordingState {
     this.text,
     this.audioPath,
     this.durationMs, {
-    String? selectedMood,
-  }) : super(selectedMood: selectedMood);
+    super.selectedMood,
+  });
 }
 
 class SavingEntryState extends RecordingState {
-  SavingEntryState({String? selectedMood}) : super(selectedMood: selectedMood);
+  SavingEntryState({super.selectedMood});
 }
 
 class EntrySavedState extends RecordingState {
@@ -49,8 +48,7 @@ class EntrySavedState extends RecordingState {
 
 class RecordingErrorState extends RecordingState {
   final String message;
-  RecordingErrorState(this.message, {String? selectedMood})
-    : super(selectedMood: selectedMood);
+  RecordingErrorState(this.message, {super.selectedMood});
 }
 
 class RecordingCubit extends Cubit<RecordingState> {
@@ -109,7 +107,7 @@ class RecordingCubit extends Cubit<RecordingState> {
       if (!initialized) {
         emit(
           RecordingErrorState(
-            'Speech recognition failed to initialize',
+            AppStrings.errorSpeechInitFailed,
             selectedMood: _selectedMood,
           ),
         );
@@ -129,7 +127,7 @@ class RecordingCubit extends Cubit<RecordingState> {
     } catch (e) {
       emit(
         RecordingErrorState(
-          'Failed to start recording',
+          AppStrings.errorFailedToStartRecording,
           selectedMood: _selectedMood,
         ),
       );
@@ -151,7 +149,7 @@ class RecordingCubit extends Cubit<RecordingState> {
     } catch (e) {
       emit(
         RecordingErrorState(
-          'Failed to stop recording',
+          AppStrings.errorFailedToStopRecording,
           selectedMood: _selectedMood,
         ),
       );
@@ -202,7 +200,7 @@ class RecordingCubit extends Cubit<RecordingState> {
     } catch (e) {
       emit(
         RecordingErrorState(
-          'Failed to save entry',
+          AppStrings.errorFailedToSaveEntry,
           selectedMood: _selectedMood,
         ),
       );

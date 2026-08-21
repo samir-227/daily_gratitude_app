@@ -30,7 +30,7 @@ class RecordingStatusHeader extends StatelessWidget {
       accent = AppColors.error;
     } else if (isDone) {
       title = AppStrings.doneRecording;
-      subtitle = 'يمكنك الآن إضافة مشاعرك أو نص إضافي قبل الحفظ.';
+      subtitle = AppStrings.addFeelingsOrText;
       accent = AppColors.primary;
     } else {
       title = AppStrings.startRecordingText;

@@ -31,7 +31,21 @@ class OnboardingScreen extends StatelessWidget {
                      padding: EdgeInsets.all(AppSpacing.lg),
                     child: Column(
                       children: [
-                        _buildPageIndicator(state.page),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildPageIndicator(state.page),
+                            CupertinoButton(
+                              padding: EdgeInsets.zero,
+                              onPressed: () {
+                                context.read<OnboardingCubit>().completeOnboarding();
+                              },
+                              child: Text(AppStrings.skip,
+                                style: AppTextStyles.labelLarge.copyWith(
+                                  color: AppColors.textSecondary)),
+                            ),
+                          ],
+                        ),
                         const Spacer(),
                         AnimatedSwitcher(
                           duration: const Duration(milliseconds: 400),
@@ -56,6 +70,7 @@ class OnboardingScreen extends StatelessWidget {
   static Widget _buildPageIndicator(int page) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: List.generate(3, (index) {
         return AnimatedContainer(
           duration: const Duration(milliseconds: 300),

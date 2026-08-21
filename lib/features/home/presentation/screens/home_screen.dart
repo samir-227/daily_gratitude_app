@@ -214,6 +214,7 @@ class HomeDashboardTab extends StatelessWidget {
                         ReflectionCard(
                           onRecordTap: onRecordTap,
                           brightness: brightness,
+                          allEntries: state.allEntries,
                         ),
                         SizedBox(height: kSpace20),
                       ]),

@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import '../bloc/settings_cubit.dart';
 import '../bloc/theme_cubit.dart';
+import '../../../home/presentation/bloc/home_cubit.dart';
+import '../../../timeline/presentation/bloc/timeline_cubit.dart';
+import '../../../analytics/presentation/bloc/analytics_cubit.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/constants/app_theme.dart';
@@ -21,6 +25,19 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  String _appVersion = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadVersion();
+  }
+
+  Future<void> _loadVersion() async {
+    final info = await PackageInfo.fromPlatform();
+    if (mounted) setState(() => _appVersion = info.version);
+  }
+
   @override
   Widget build(BuildContext context) {
     final brightness = CupertinoTheme.of(context).brightness ?? Brightness.dark;
@@ -48,6 +65,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ));
               }
               if (state is SettingsClearedState) {
+                context.read<HomeCubit>().refresh();
+                context.read<TimelineCubit>().loadEntries();
+                context.read<AnalyticsCubit>().loadAnalytics();
                 showCupertinoDialog(
                   context: context,
                   builder: (_) => CupertinoAlertDialog(
@@ -78,7 +98,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
             builder: (context, state) {
               if (state is SettingsLoadedState) {
-                return _buildSettingsList(context, state, brightness);
+                return _buildSettingsList(context, state, brightness, _appVersion);
               }
               if (state is SettingsExportingState || state is SettingsClearingState) {
                 return const Center(child: CupertinoActivityIndicator());
@@ -92,7 +112,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   static Widget _buildSettingsList(
-      BuildContext context, SettingsLoadedState state, Brightness brightness) {
+      BuildContext context, SettingsLoadedState state, Brightness brightness, String appVersion) {
     return ListView(
       padding: EdgeInsets.all(AppSpacing.standard),
       children: [
@@ -177,7 +197,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           children: [
             SettingsInfoTile(
               label: AppStrings.version,
-              value: '1.0.0',
+              value: appVersion.isNotEmpty ? appVersion : '—',
               brightness: brightness,
             ),
             const SettingsDivider(),

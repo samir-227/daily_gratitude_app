@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../bloc/timeline_cubit.dart';
 import '../bloc/timeline_state.dart';
@@ -51,6 +52,91 @@ class _TimelineScreenState extends State<TimelineScreen> {
     _scrollController.dispose();
     _entriesSubscription?.cancel();
     super.dispose();
+  }
+
+  Widget _buildSearchEmptyState(Brightness brightness) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(AppSpacing.standard),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 64.w,
+              height: 64.w,
+              decoration: BoxDecoration(
+                color: AppColors.primary.withValues(alpha: 0.12),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                CupertinoIcons.search,
+                size: 28.w,
+                color: AppColors.primary,
+              ),
+            ),
+            SizedBox(height: AppSpacing.standard),
+            Text(
+              AppStrings.noMatchSearch,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.onSurface(brightness, secondary: true),
+                height: 1.5,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTimelineEmptyState(Brightness brightness) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(AppSpacing.standard),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 72.w,
+              height: 72.w,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    AppColors.primary.withValues(alpha: 0.15),
+                    AppColors.primary.withValues(alpha: 0.05),
+                  ],
+                ),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                CupertinoIcons.book,
+                size: 32.w,
+                color: AppColors.primary,
+              ),
+            ),
+            SizedBox(height: AppSpacing.standard),
+            Text(
+              AppStrings.timelineEmptyTitle,
+              style: AppTextStyles.titleSmall.copyWith(
+                color: AppColors.onSurface(brightness),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(height: AppSpacing.compact),
+            Text(
+              AppStrings.timelineEmptySubtitle,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.onSurface(brightness, secondary: true),
+                height: 1.5,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   @override
@@ -112,15 +198,9 @@ class _TimelineScreenState extends State<TimelineScreen> {
                     SliverToBoxAdapter(child: TimelineFilterBar(state: state)),
                     if (state.groupedEntries.isEmpty)
                       SliverFillRemaining(
-                        child: Center(
-                          child: Text(
-                            state.searchQuery.isNotEmpty
-                                ? AppStrings.noMatchSearch
-                                : AppStrings.noEntriesYet,
-                            style: AppTextStyles.bodyLarge.copyWith(
-                              color: AppColors.onSurface(brightness, secondary: true)),
-                          ),
-                        ),
+                        child: state.searchQuery.isNotEmpty
+                            ? _buildSearchEmptyState(brightness)
+                            : _buildTimelineEmptyState(brightness),
                       )
                     else ...[
                       ...state.groupedEntries.entries.map((group) => [

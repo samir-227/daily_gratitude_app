@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../bloc/analytics_cubit.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
@@ -57,6 +58,10 @@ class AnalyticsScreen extends StatelessWidget {
                 );
               }
               if (state is AnalyticsLoadedState) {
+                final hasData = state.stats.totalEntries > 0;
+                if (!hasData) {
+                  return _buildEmptyAnalytics(context, brightness);
+                }
                 return SingleChildScrollView(
                   padding: EdgeInsets.all(AppSpacing.standard),
                   child: Column(
@@ -90,6 +95,56 @@ class AnalyticsScreen extends StatelessWidget {
               return const SizedBox.shrink();
             },
           ),
+        ),
+      ),
+    );
+  }
+
+  static Widget _buildEmptyAnalytics(BuildContext context, Brightness brightness) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(AppSpacing.standard),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 72.w,
+              height: 72.w,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    AppColors.emotionPeace.withValues(alpha: 0.2),
+                    AppColors.emotionPeace.withValues(alpha: 0.05),
+                  ],
+                ),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                CupertinoIcons.chart_bar_fill,
+                size: 32.w,
+                color: AppColors.emotionPeace,
+              ),
+            ),
+            SizedBox(height: AppSpacing.standard),
+            Text(
+              AppStrings.analyticsEmptyTitle,
+              style: AppTextStyles.titleSmall.copyWith(
+                color: AppColors.onSurface(brightness),
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            SizedBox(height: AppSpacing.compact),
+            Text(
+              AppStrings.analyticsEmptySubtitle,
+              textAlign: TextAlign.center,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.onSurface(brightness, secondary: true),
+                height: 1.5,
+              ),
+            ),
+          ],
         ),
       ),
     );

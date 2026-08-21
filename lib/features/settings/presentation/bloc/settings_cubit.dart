@@ -8,6 +8,7 @@ import '../../../../core/services/notification_service.dart';
 import '../../../../core/services/speech_service.dart';
 import '../../../../core/services/audio_service.dart';
 import '../../../../core/constants/app_constants.dart';
+import '../../../../core/constants/app_strings.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 abstract class SettingsState {}
@@ -80,25 +81,38 @@ class SettingsCubit extends Cubit<SettingsState> {
   }
 
   Future<int> _getStorageUsedBytes() async {
-    final audioBytes = await _audioService.getStorageUsedBytes();
-    final hivePath = Hive.box<GratitudeEntry>(kEntriesBox).path;
-    final hiveBytes = hivePath != null ? await File(hivePath).length() : 0;
-    return audioBytes + hiveBytes;
+    int total = 0;
+    try {
+      final audioBytes = await _audioService.getStorageUsedBytes();
+      total += audioBytes;
+    } catch (_) {}
+    try {
+      final hivePath = Hive.box<GratitudeEntry>(kEntriesBox).path;
+      if (hivePath != null) {
+        final hiveFile = File(hivePath);
+        if (await hiveFile.exists()) {
+          total += await hiveFile.length();
+        }
+      }
+    } catch (_) {}
+    return total;
   }
 
   Future<void> toggleNotifications(bool enabled) async {
     final settingsBox = await Hive.openBox(kSettingsBox);
     await settingsBox.put(kNotificationsEnabled, enabled);
-    if (enabled) {
-      final timeStr = settingsBox.get(kReminderTime, defaultValue: '20:0') as String;
-      final parts = timeStr.split(':');
-      await _notificationService.scheduleDaily(
-        int.parse(parts[0]),
-        int.parse(parts[1]),
-      );
-    } else {
-      await _notificationService.cancelAll();
-    }
+    try {
+      if (enabled) {
+        final timeStr = settingsBox.get(kReminderTime, defaultValue: '20:0') as String;
+        final parts = timeStr.split(':');
+        await _notificationService.scheduleDaily(
+          int.parse(parts[0]),
+          int.parse(parts[1]),
+        );
+      } else {
+        await _notificationService.cancelAll();
+      }
+    } catch (_) {}
     _lastLoadedState = SettingsLoadedState(
       notificationsEnabled: enabled,
       hasArabicLocale: _lastLoadedState?.hasArabicLocale ?? false,
@@ -115,7 +129,7 @@ class SettingsCubit extends Cubit<SettingsState> {
       for (final entry in entries) {
         buffer.writeln('--- ${entry.createdAt} ---');
         buffer.writeln(entry.text);
-        if (entry.moodTag != null) buffer.writeln('Mood: ${entry.moodTag}');
+        if (entry.moodTag != null) buffer.writeln('${AppStrings.moodPrefix} ${entry.moodTag}');
         buffer.writeln();
       }
       final dir = await getApplicationDocumentsDirectory();
@@ -124,7 +138,7 @@ class SettingsCubit extends Cubit<SettingsState> {
       emit(SettingsExportDoneState(file.path));
       if (_lastLoadedState != null) emit(_lastLoadedState!);
     } catch (e) {
-      emit(SettingsErrorState('Failed to export entries'));
+      emit(SettingsErrorState(AppStrings.errorFailedToExportEntries));
       if (_lastLoadedState != null) emit(_lastLoadedState!);
     }
   }
@@ -145,7 +159,7 @@ class SettingsCubit extends Cubit<SettingsState> {
       emit(SettingsClearedState());
       await loadSettings();
     } catch (e) {
-      emit(SettingsErrorState('Failed to clear data'));
+      emit(SettingsErrorState(AppStrings.errorFailedToClearData));
       if (_lastLoadedState != null) emit(_lastLoadedState!);
     }
   }
@@ -155,7 +169,9 @@ class SettingsCubit extends Cubit<SettingsState> {
     await settingsBox.put(kReminderTime, '$hour:$minute');
     final notifEnabled = settingsBox.get(kNotificationsEnabled, defaultValue: true) as bool;
     if (notifEnabled) {
-      await _notificationService.scheduleDaily(hour, minute);
+      try {
+        await _notificationService.scheduleDaily(hour, minute);
+      } catch (_) {}
     }
     _lastLoadedState = SettingsLoadedState(
       notificationsEnabled: notifEnabled,

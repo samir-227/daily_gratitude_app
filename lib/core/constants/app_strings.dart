@@ -168,4 +168,42 @@ abstract class AppStrings {
   static const String editButton = 'تعديل الكلمة';
   static const String settingsClearConfirmButton =
       'أيوة، امسح كل حاجة وخلينا نبدأ من جديد';
+
+  static const String errorFailedToLoadHome = 'مش عارفين نحمّل البيانات';
+  static const String errorFailedToLoadEntries = 'مش عارفين نحمّل اللحظات';
+  static const String errorFailedToDeleteEntry = 'مش عارفين نمسح اللحظة دي';
+  static const String errorFailedToUpdateEntry = 'مش عارفين نعدّل اللحظة';
+  static const String errorFailedToLoadAnalytics = 'مش عارفين نحمّل تحليلاتك';
+  static const String errorFailedToExportEntries = 'مش عارفين نطلّع النسخة';
+  static const String errorFailedToClearData = 'مش عارفين نمسح البيانات';
+  static const String errorSpeechInitFailed =
+      'التعرف على الصوت ما اشتغلش — جرّب تاني';
+  static const String errorFailedToStartRecording =
+      'مش عارفين نبدأ التسجيل — جرّب تاني';
+  static const String errorFailedToStopRecording =
+      'مش عارفين نوقف التسجيل';
+  static const String errorFailedToSaveEntry =
+      'مش عارفين نحفظ اللحظة — جرّب تاني';
+  static const String errorNoArabicPack =
+      'مفيش حزمة لغة عربية على جهازك';
+  static const String topics = 'المواضيع';
+  static const String moodPrefix = 'المزاج:';
+  static const String analyticsEmptyTitle = 'رحلتك لسه ما بدتش';
+  static const String analyticsEmptySubtitle = 'سجّل أول لحظة ليك وهتبدأ تشوف إحصائياتك وتتطورك مع الوقت.';
+  static const String timelineEmptyTitle = 'لسه مفيش لحظات';
+  static const String timelineEmptySubtitle = 'كل لحظة حلوة تستاهل تتفتّر. ابدأ سجّل أول أثر ليك النهارده.';
+  static const String noAudioYet = 'لسه مفيش تسجيلات صوتية';
+  static const String monthlyReflection = 'ملخص الشهر ده';
+  static const String monthlyReflectionEmpty = 'لسه مفيش كفاية لحظات الشهر ده. سجّل أكتر وهنعملك ملخص حلو.';
+  static const String daysWithEntries = 'يوم سجّلت فيه';
+  static const String mostCommonMood = 'المزاج الأكثر تكراراً';
+  static const String totalMinutesRecorded = 'دقيقة مسجلة';
+  static const String permissionDeniedTitle = 'محتاجين إذنك';
+  static const String permissionDeniedMessage = 'تطبيق "أثر" محتاج إذن الميكروفون عشان يقدر يسجّل لحظاتك بصوتك. ممكن تفعّله من إعدادات الجهاز.';
+  static const String notificationPermissionTitle = 'فعّل التذكيرات';
+  static const String notificationPermissionMessage = 'عشان نقدر نذكّرك كل يوم تسجّل لحظتك، محتاجين تفعّل الإشعارات من الإعدادات.';
+  static const String connectionError = 'مفيش اتصال بالإنترنت';
+  static const String connectionErrorHint = 'اتصل بالشبكة وجرّب تاني.';
+  static const String skip = 'تقديم';
+  static const String addFeelingsOrText = 'يمكنك الآن إضافة مشاعرك أو نص إضافي قبل الحفظ.';
 }

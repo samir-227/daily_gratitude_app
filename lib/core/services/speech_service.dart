@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import '../constants/app_constants.dart';
+import '../constants/app_strings.dart';
 
 class SpeechService {
   final SpeechToText _speech = SpeechToText();
@@ -9,9 +9,7 @@ class SpeechService {
   bool get isAvailable => _speech.isAvailable;
 
   Future<bool> initialize() async {
-    return await _speech.initialize(
-      onError: (error) => debugPrint('STT Error: $error'),
-    );
+    return await _speech.initialize();
   }
 
   Future<void> startListening({
@@ -20,7 +18,7 @@ class SpeechService {
   }) async {
     final locale = await getBestArabicLocale();
     if (locale == null) {
-      onError('No Arabic language pack found');
+      onError(AppStrings.errorNoArabicPack);
       return;
     }
 

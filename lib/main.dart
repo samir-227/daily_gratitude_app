@@ -124,8 +124,15 @@ class MyApp extends StatelessWidget {
                 routerConfig: router,
                 title: kAppName,
                 theme: brightness == Brightness.dark ? AppTheme.dark : AppTheme.light,
-                builder: (context, child) =>
-                    Directionality(textDirection: TextDirection.rtl, child: child!),
+                builder: (context, child) => Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: DefaultTextStyle(
+                    style: DefaultTextStyle.of(context).style.copyWith(
+                      fontFamily: AppTheme.fontFamily,
+                    ),
+                    child: child!,
+                  ),
+                ),
               );
             },
           ),
